@@ -24,7 +24,7 @@ REST play works without Fly. Set `FLY_SOCKET_ORIGIN=https://<app>.fly.dev` on th
 
 This agent cannot log into Cloudflare or GoDaddy. After Fly/Netlify gives you a hostname:
 
-**jubuddy.com/poker** — Cloudflare Worker + static assets (`cloudflare/src/worker.ts`, `cloudflare/wrangler.jsonc`). Same-origin on the existing jubuddy.com zone: route `jubuddy.com/poker*` only. Apex `jubuddy.com/` stays the Vercel jubuddy-game app. Lobby/hand state hydrates from Supabase (Workers are isolate-scoped; no Fly VM).
+**jubuddy.com/poker** — live Cloudflare Worker `jubuddy-poker` (`jubuddy-poker.yying2010.workers.dev`) with zone routes `jubuddy.com/poker*` and `www.jubuddy.com/poker*` only. Apex `jubuddy.com/` stays the Vercel jubuddy-game app. Assets `html_handling` is `none` so `/poker` is not 307'd onto the Vercel `/`. Lobby/hand state hydrates from Supabase.
 
 Fly.io is **optional** and Pay As You Go ($0 plan fee). Idle cut: destroyed `jubit-litellm-proxy` (empty/suspended) and `jubit-litellm-db` (always-on 256MB + **1GB volume** billed while stopped). Left running, already minimum `shared-cpu-1x` 256MB **no volume**: `zaydenclips-api`. Do not create `jub-poker` until overdue invoices are paid; when you do, `fly.toml` now scales to zero (`auto_stop_machines=stop`, `min_machines_running=0`) because tables persist in Supabase.
 

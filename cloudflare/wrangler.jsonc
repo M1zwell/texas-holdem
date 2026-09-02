@@ -10,14 +10,7 @@
     "directory": "../platform/web/dist",
     "binding": "ASSETS",
     "html_handling": "none",
-    "run_worker_first": [
-      "/poker/api/*",
-      "/poker/*",
-      "/poker",
-      "/api/*",
-      "/poker/socket.io*",
-      "/socket.io*"
-    ],
+    "run_worker_first": ["/poker/*", "/poker", "/api/*", "/socket.io*"],
     "not_found_handling": "single-page-application"
   },
   "vars": {
