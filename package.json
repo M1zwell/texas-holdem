@@ -24,7 +24,8 @@
     "start": "tsx platform/server/index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "deploy:cf": "bash scripts/cf-deploy.sh"
+    "deploy:cf": "bash scripts/cf-deploy.sh",
+    "deploy:miz": "npx netlify deploy --prod --build"
   },
   "author": "themez",
   "dependencies": {

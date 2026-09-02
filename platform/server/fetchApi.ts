@@ -1,6 +1,7 @@
 import type { GameKind } from '../shared/types'
 import { guestUser, readBearer, signInvite, signSession, verifyInvite, verifySession } from './auth'
 import { config } from './config'
+import { isMizHost } from './hosts'
 import { ensureLobby, ensureLobbyByCode } from './hydrate'
 import { applyPlay } from './play'
 import { rooms } from './rooms/registry'
@@ -34,7 +35,12 @@ function requireUser(request: Request) {
   return verifySession(token)
 }
 
-function publicBase(): string {
+function publicBase(request: Request): string {
+  const url = new URL(request.url)
+  if (isMizHost(url.hostname)) {
+    const host = url.hostname === 'www.miz.gg' ? 'miz.gg' : url.hostname
+    return `${url.protocol}//${host}`
+  }
   const base = config.basePath || ''
   return `${config.publicUrl}${base}`
 }
@@ -118,7 +124,7 @@ export async function handlePokerApi(request: Request): Promise<Response> {
       return json(
         {
           lobby: publicLobby(lobby, true),
-          inviteUrl: `${publicBase()}/join?token=${token}`,
+          inviteUrl: `${publicBase(request)}/join?token=${token}`,
           code: lobby.invite.code,
           expiresAt: lobby.invite.expiresAt,
         },
@@ -212,7 +218,7 @@ export async function handlePokerApi(request: Request): Promise<Response> {
         return json({
           code: invite.code,
           expiresAt: invite.expiresAt,
-          inviteUrl: `${publicBase()}/join?token=${token}`,
+          inviteUrl: `${publicBase(request)}/join?token=${token}`,
         })
       }
       if (method === 'POST' && action === 'approve') {
