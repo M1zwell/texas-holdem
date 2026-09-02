@@ -6,7 +6,7 @@ Play-chip social tables only — no real-money wagering.
 
 目标部署 / intended hosts:
 
-- https://jubuddy.com/poker (Cloudflare Worker route; apex stays Vercel)
+- https://jubuddy.com/poker — live Cloudflare Worker `jubuddy-poker` (apex stays Vercel jubuddy-game)
 - http://miz.gg/ — live Netlify site `jub-poker` (`https://jub-poker.netlify.app`)
 - https://m1z.gg (DNS not pointed yet)
 
