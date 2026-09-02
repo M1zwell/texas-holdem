@@ -27,7 +27,20 @@ export function attachSocket(httpServer: HttpServer, bus: Bus) {
   })
 
   rooms.listeners.add((lobbyId, state) => {
-    io.to(lobbyId).emit('gameState', state)
+    const lobby = store.lobbies.get(lobbyId)
+    if (lobby && state.kind === 'holdem') {
+      void io
+        .in(lobbyId)
+        .fetchSockets()
+        .then((sockets) => {
+          for (const sock of sockets) {
+            const viewer = sock.data.user as { id: string } | undefined
+            sock.emit('gameState', rooms.snapshot(lobby, viewer?.id))
+          }
+        })
+    } else {
+      io.to(lobbyId).emit('gameState', state)
+    }
     void bus.publish('game-moves', JSON.stringify({ lobbyId, state }))
   })
 
