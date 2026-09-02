@@ -6,7 +6,8 @@
 #   fly secrets set JWT_SECRET=... SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=...
 #   fly deploy
 #
-# Do NOT enable auto_stop — a sleeping machine drops in-memory hands.
+# Hands hydrate from Supabase, so this optional VM may scale to zero.
+# Creating the app is still blocked while Fly invoices are overdue.
 
 app = "jub-poker"
 primary_region = "sin"
@@ -25,9 +26,9 @@ primary_region = "sin"
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "off"
+  auto_stop_machines = "stop"
   auto_start_machines = true
-  min_machines_running = 1
+  min_machines_running = 0
   processes = ["app"]
 
   [http_service.concurrency]
