@@ -1,0 +1,27 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "jubuddy-poker",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-09-02",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "../platform/web/dist",
+    "binding": "ASSETS",
+    "html_handling": "none",
+    "run_worker_first": ["/poker/*", "/poker", "/api/*", "/socket.io*"],
+    "not_found_handling": "single-page-application"
+  },
+  "vars": {
+    "BASE_PATH": "/poker",
+    "PUBLIC_URL": "https://jubuddy.com",
+    "CLOUDFLARE_WORKER": "1",
+    "SUPABASE_URL": "https://kiztaihzanqnrcrqaxsv.supabase.co",
+    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpenRhaWh6YW5xbnJjcnFheHN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2MjgxNzcsImV4cCI6MjA2NzIwNDE3N30.a9ZXqVSmFOH2fBbrMeELPainodMGTAkbyiUVwjmFTK8"
+  },
+  "routes": [
+    { "pattern": "jubuddy.com/poker*", "zone_name": "jubuddy.com" },
+    { "pattern": "www.jubuddy.com/poker*", "zone_name": "jubuddy.com" }
+  ]
+}

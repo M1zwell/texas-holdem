@@ -1,18 +1,21 @@
-# Static frontend preview. Real-time tables need the Node/Socket.IO process
-# (Docker / any Node host). Point VITE_API and Socket.IO at that origin.
+# Apex deploy for http://miz.gg/ (DNS already points at Netlify).
 [build]
   command = "npm run build"
   publish = "platform/web/dist"
 
 [build.environment]
-  VITE_BASE_PATH = "/poker/"
+  VITE_BASE_PATH = "/"
+  PUBLIC_URL = "https://miz.gg"
+  BASE_PATH = ""
+  VITE_SUPABASE_URL = "https://kiztaihzanqnrcrqaxsv.supabase.co"
+  VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpenRhaWh6YW5xbnJjcnFheHN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2MjgxNzcsImV4cCI6MjA2NzIwNDE3N30.a9ZXqVSmFOH2fBbrMeELPainodMGTAkbyiUVwjmFTK8"
+  SUPABASE_URL = "https://kiztaihzanqnrcrqaxsv.supabase.co"
+  SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpenRhaWh6YW5xbnJjcnFheHN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2MjgxNzcsImV4cCI6MjA2NzIwNDE3N30.a9ZXqVSmFOH2fBbrMeELPainodMGTAkbyiUVwjmFTK8"
 
+# Do not rewrite /api/* to /.netlify/functions/api/:splat — that turns
+# /api/health into /.netlify/functions/api/health (404). The function's
+# config.path already binds /api/* and /poker/api/* to handlePokerApi.
 [[redirects]]
-  from = "/poker/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/poker/*"
-  to = "/poker/index.html"
+  from = "/*"
+  to = "/index.html"
   status = 200

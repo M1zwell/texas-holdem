@@ -513,4 +513,65 @@ export class HoldemTable {
       this.toAct = next
     }
   }
+
+  toSnapshot(): HoldemSnapshot {
+    return {
+      config: this.config,
+      seats: this.seats.map((s) => ({ ...s, hole: s.hole ? [...s.hole] : undefined })),
+      board: [...this.board],
+      pot: this.pot,
+      pots: this.pots.map((p) => ({ ...p, contributors: [...p.contributors] })),
+      street: this.street,
+      status: this.status,
+      handId: this.handId,
+      currentBet: this.currentBet,
+      minRaise: this.minRaise,
+      toAct: this.toAct,
+      lastAggressor: this.lastAggressor,
+      acted: [...this.acted],
+      dealerIndex: this.dealerIndex,
+      winners: [...this.winners],
+      deck: [...this.deck],
+    }
+  }
+
+  loadSnapshot(snap: HoldemSnapshot): void {
+    this.seats = snap.seats.map((s) => ({
+      ...s,
+      hole: s.hole ? [s.hole[0], s.hole[1]] : undefined,
+    }))
+    this.board = [...snap.board]
+    this.pot = snap.pot
+    this.pots = snap.pots.map((p) => ({ ...p, contributors: [...p.contributors] }))
+    this.street = snap.street
+    this.status = snap.status
+    this.handId = snap.handId
+    this.currentBet = snap.currentBet
+    this.minRaise = snap.minRaise
+    this.toAct = snap.toAct
+    this.lastAggressor = snap.lastAggressor
+    this.acted = new Set(snap.acted)
+    this.dealerIndex = snap.dealerIndex
+    this.winners = [...snap.winners]
+    this.deck = [...snap.deck]
+  }
+}
+
+export interface HoldemSnapshot {
+  config: HoldemConfig
+  seats: Seat[]
+  board: CardCode[]
+  pot: number
+  pots: Pot[]
+  street: Street | null
+  status: TableStatus
+  handId: number
+  currentBet: number
+  minRaise: number
+  toAct: string | null
+  lastAggressor: string | null
+  acted: string[]
+  dealerIndex: number
+  winners: WinnerShare[]
+  deck: CardCode[]
 }

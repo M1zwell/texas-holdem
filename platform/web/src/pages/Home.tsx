@@ -117,7 +117,7 @@ export function HomePage() {
             <div className="display" style={{ fontSize: 28 }}>
               Jub Poker · 聚牌
             </div>
-            <div className="muted">Play-chip tables · jubuddy.com/poker · m1z.gg</div>
+            <div className="muted">Play-chip tables · miz.gg · jubuddy.com/poker</div>
           </div>
         </div>
         <div className="muted">Social chips only · 仅社交筹码</div>

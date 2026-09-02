@@ -160,3 +160,16 @@ export interface ChatMessage {
   text: string
   at: number
 }
+
+export type PlayRequest =
+  | { type: 'start' }
+  | { type: 'holdem'; action: ClientAction }
+  | { type: 'baccarat_bet'; seat: 'player' | 'banker' | 'tie'; amount: number }
+  | { type: 'ttt_move'; index: number }
+  | { type: 'ttt_reset' }
+  | { type: 'fortyfive_hit' }
+  | { type: 'fortyfive_stand' }
+  | { type: 'blackjack_deal'; amount?: number }
+  | { type: 'blackjack_hit' }
+  | { type: 'blackjack_stand' }
+  | { type: 'chat'; text: string }

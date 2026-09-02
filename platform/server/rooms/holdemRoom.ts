@@ -1,14 +1,22 @@
-import { HoldemTable } from '../../engine/holdem'
+import { HoldemTable, type HoldemSnapshot } from '../../engine/holdem'
 import { botAction, DEFAULT_THETA } from '../../engine/genetic'
 import { estimateEquity } from '../../engine/montecarlo'
 import type { ClientAction, PublicHoldemState, PublicPlayer } from '../../shared/types'
 import type { Lobby } from '../store'
 import { config } from '../config'
 
+export interface HoldemRoomSnap {
+  kind: 'holdem'
+  table: HoldemSnapshot
+  turnEndsAt: number | null
+  handOverAt: number | null
+}
+
 export class HoldemRoom {
   table = new HoldemTable()
   turnTimer: ReturnType<typeof setTimeout> | null = null
   turnEndsAt: number | null = null
+  handOverAt: number | null = null
   onChange: (state: PublicHoldemState) => void = () => undefined
 
   constructor(private lobby: Lobby) {
@@ -46,26 +54,43 @@ export class HoldemRoom {
     }
   }
 
-  act(userId: string, action: ClientAction): void {
+  act(userId: string, action: ClientAction, opts: { skipBot?: boolean } = {}): void {
     this.table.apply(userId, action)
     this.clearTurn()
     if (this.table.status === 'handOver') {
       this.lobby.status = 'waiting'
+      this.handOverAt = Date.now()
       this.emit()
-      setTimeout(() => {
-        if (this.table.canStart()) {
-          this.table.startHand()
-          this.lobby.status = 'playing'
-          this.armTurn()
-          this.emit()
-          this.maybeBot()
-        }
-      }, 3500)
+      if (!config.serverless) {
+        setTimeout(() => this.maybeResume(), 3500)
+      }
       return
     }
     this.armTurn()
     this.emit()
-    this.maybeBot()
+    if (!opts.skipBot) this.maybeBot()
+  }
+
+  serialize(): HoldemRoomSnap {
+    return {
+      kind: 'holdem',
+      table: this.table.toSnapshot(),
+      turnEndsAt: this.turnEndsAt,
+      handOverAt: this.handOverAt,
+    }
+  }
+
+  hydrate(snap: HoldemRoomSnap): void {
+    this.table.loadSnapshot(snap.table)
+    this.turnEndsAt = snap.turnEndsAt
+    this.handOverAt = snap.handOverAt
+    this.flush()
+  }
+
+  flush(): void {
+    this.tickExpired()
+    this.maybeResume()
+    this.flushBots()
   }
 
   publicState(viewerId?: string): PublicHoldemState {
@@ -110,12 +135,67 @@ export class HoldemRoom {
     }
   }
 
+  private maybeResume(): void {
+    if (!this.handOverAt) return
+    if (Date.now() - this.handOverAt < 3500) return
+    this.handOverAt = null
+    if (this.table.canStart()) {
+      this.table.startHand()
+      this.lobby.status = 'playing'
+      this.armTurn()
+      this.emit()
+      this.maybeBot()
+    }
+  }
+
+  private tickExpired(): void {
+    if (!this.turnEndsAt || Date.now() < this.turnEndsAt || !this.table.toAct) return
+    const id = this.table.toAct
+    const legal = this.table.legalActions(id)
+    const auto =
+      legal.find((a) => a.type === 'check') ?? legal.find((a) => a.type === 'fold') ?? legal[0]
+    if (auto) {
+      try {
+        this.act(id, auto, { skipBot: true })
+      } catch {
+        /* seat left */
+      }
+    }
+  }
+
+  private flushBots(): void {
+    for (let i = 0; i < 12; i++) {
+      const id = this.table.toAct
+      if (!id) return
+      const seat = this.table.seats.find((s) => s.id === id)
+      if (!seat?.isBot) return
+      const legal = this.table.legalActions(id)
+      const action = botAction({
+        street: this.table.street ?? 'preflop',
+        seat,
+        board: this.table.board,
+        pot: this.table.pot,
+        toCall: this.table.currentBet - seat.bet,
+        legal,
+        theta: DEFAULT_THETA,
+        cashCap: this.table.config.startingChips,
+      })
+      try {
+        this.act(id, action, { skipBot: true })
+      } catch {
+        return
+      }
+      if (this.table.status === 'handOver') return
+    }
+  }
+
   private armTurn(): void {
     this.clearTurn()
     if (this.table.status !== 'playing' || !this.table.toAct) {
       return
     }
     this.turnEndsAt = Date.now() + config.turnMs
+    if (config.serverless) return
     this.turnTimer = setTimeout(() => {
       const id = this.table.toAct
       if (!id) return
@@ -141,6 +221,10 @@ export class HoldemRoom {
   }
 
   private maybeBot(): void {
+    if (config.serverless) {
+      this.flushBots()
+      return
+    }
     const id = this.table.toAct
     if (!id) return
     const seat = this.table.seats.find((s) => s.id === id)

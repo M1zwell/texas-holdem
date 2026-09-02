@@ -23,7 +23,10 @@
     "build": "vite build --config platform/web/vite.config.ts",
     "start": "tsx platform/server/index.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "deploy:cf": "bash scripts/cf-deploy.sh",
+    "deploy:miz": "npx netlify deploy --prod --build",
+    "deploy:fly": "bash scripts/fly-deploy.sh"
   },
   "author": "themez",
   "dependencies": {
@@ -62,7 +65,8 @@
     "tslint-config-prettier": "1.17.0",
     "typescript": "^5.8.2",
     "vite": "^6.2.1",
-    "vitest": "^3.0.8"
+    "vitest": "^3.0.8",
+    "wrangler": "^4.128.0"
   },
   "husky": {
     "hooks": {

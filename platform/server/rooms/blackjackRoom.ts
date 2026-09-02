@@ -1,8 +1,14 @@
 import { blackjackHit, blackjackPayout, blackjackStand, newBlackjack } from '../../engine/blackjack'
-import { blackjackTotal } from '../../engine/points'
+import { blackjackTotal, type BlackjackState } from '../../engine/points'
 import type { PublicBlackjackState } from '../../shared/types'
 import type { Lobby } from '../store'
 import { store } from '../store'
+
+export interface BlackjackRoomSnap {
+  kind: 'blackjack'
+  engine: BlackjackState | null
+  state: PublicBlackjackState
+}
 
 export class BlackjackRoom {
   state: PublicBlackjackState
@@ -41,6 +47,19 @@ export class BlackjackRoom {
   snapshot(viewerId?: string): PublicBlackjackState {
     if (viewerId) this.publish(viewerId)
     return this.state
+  }
+
+  serialize(): BlackjackRoomSnap {
+    return { kind: 'blackjack', engine: this.engine, state: this.state }
+  }
+
+  hydrate(snap: BlackjackRoomSnap): void {
+    this.engine = snap.engine
+    this.state = snap.state
+  }
+
+  flush(): void {
+    /* blackjack has no delayed timers */
   }
 
   private settleIfDone(userId: string): void {

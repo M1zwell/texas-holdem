@@ -6,8 +6,9 @@ Play-chip social tables only — no real-money wagering.
 
 目标部署 / intended hosts:
 
-- https://jubuddy.com/poker
-- https://m1z.gg
+- https://jubuddy.com/poker — live Cloudflare Worker `jubuddy-poker` (apex stays Vercel jubuddy-game)
+- http://miz.gg/ — live Netlify site `jub-poker` (`https://jub-poker.netlify.app`)
+- https://m1z.gg (DNS not pointed yet)
 
 `https://github.com/M1zwell/poker.git` is the intended sibling product repo. It is **not reachable** (GitHub 404, including authenticated clone). This repository (`M1zwell/texas-holdem`, fork of `themez/texas-holdem-house`) is therefore the implementation home until that remote exists.
 
@@ -75,6 +76,16 @@ docker compose up --build
 Use the `m1z.gg` server block in `nginx/poker.conf`.
 
 Set `JWT_SECRET` in production. Redis is optional but required for multi-node WebSocket consistency.
+
+Optional Socket.IO VM (elliot1985@hotmail.com / org Elliot):
+
+```bash
+unset FLY_API_TOKEN
+npm run deploy:fly   # needs a card on https://fly.io/dashboard/elliot-562/billing
+npx wrangler secret put FLY_SOCKET_ORIGIN --config cloudflare/wrangler.jsonc
+# paste https://jub-poker.fly.dev
+npm run deploy:cf
+```
 
 ## Library (original bot engine)
 

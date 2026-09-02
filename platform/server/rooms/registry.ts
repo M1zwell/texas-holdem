@@ -5,6 +5,7 @@ import { BaccaratRoom } from './baccaratRoom'
 import { TttRoom } from './tictactoeRoom'
 import { FortyFiveRoom } from './fortyfiveRoom'
 import { BlackjackRoom } from './blackjackRoom'
+import type { RoomSnapshot } from './snapshot'
 
 export type AnyRoom = HoldemRoom | BaccaratRoom | TttRoom | FortyFiveRoom | BlackjackRoom
 
@@ -22,9 +23,42 @@ export class RoomRegistry {
 
   snapshot(lobby: Lobby, viewerId?: string): PublicGameState {
     const room = this.get(lobby)
+    room.flush()
     if (room instanceof HoldemRoom) return room.publicState(viewerId)
     if (room instanceof BlackjackRoom) return room.snapshot(viewerId)
     return room.snapshot()
+  }
+
+  serialize(lobby: Lobby): RoomSnapshot | null {
+    const room = this.rooms.get(lobby.id)
+    if (!room) return null
+    return room.serialize()
+  }
+
+  hydrate(lobby: Lobby, snap: RoomSnapshot): AnyRoom {
+    const room = this.get(lobby)
+    switch (snap.kind) {
+      case 'holdem':
+        if (room instanceof HoldemRoom) room.hydrate(snap)
+        break
+      case 'baccarat':
+        if (room instanceof BaccaratRoom) room.hydrate(snap)
+        break
+      case 'tictactoe':
+        if (room instanceof TttRoom) room.hydrate(snap)
+        break
+      case 'fortyfive':
+        if (room instanceof FortyFiveRoom) room.hydrate(snap)
+        break
+      case 'blackjack':
+        if (room instanceof BlackjackRoom) room.hydrate(snap)
+        break
+      default: {
+        const _n: never = snap
+        throw new Error(`Unknown room snapshot ${JSON.stringify(_n)}`)
+      }
+    }
+    return room
   }
 
   private create(lobby: Lobby): AnyRoom {

@@ -1,14 +1,19 @@
-# Fly.io stateful WebSocket engine for Jub Poker.
-# Game timers / seats live in this VM. Supabase holds wallets + lobby cards.
+# OPTIONAL fallback. Preferred production path is Cloudflare Workers
+# (cloudflare/wrangler.jsonc → jubuddy.com/poker). Use Fly only if you need
+# always-on Socket.IO timers on a VM.
 #
 #   fly launch --copy-config --no-deploy
 #   fly secrets set JWT_SECRET=... SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=...
 #   fly deploy
 #
-# Do NOT enable auto_stop — a sleeping machine drops in-memory hands.
+# Hands hydrate from Supabase, so this optional VM may scale to zero.
+# Target org: Elliot (elliot1985@hotmail.com). Deploy: bash scripts/fly-deploy.sh
+# App create is blocked until a card is on
+# https://fly.io/dashboard/elliot-562/billing
+# Do not use the yying2010@gmail.com FLY_API_TOKEN (overdue invoices).
 
 app = "jub-poker"
-primary_region = "nrt"
+primary_region = "sin"
 
 [build]
   dockerfile = "Dockerfile"
@@ -16,13 +21,17 @@ primary_region = "nrt"
 [env]
   PORT = "8080"
   NODE_ENV = "production"
+  BASE_PATH = "/poker"
+  PUBLIC_URL = "https://jubuddy.com"
+  SUPABASE_URL = "https://kiztaihzanqnrcrqaxsv.supabase.co"
+  VITE_SUPABASE_URL = "https://kiztaihzanqnrcrqaxsv.supabase.co"
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "off"
+  auto_stop_machines = "stop"
   auto_start_machines = true
-  min_machines_running = 1
+  min_machines_running = 0
   processes = ["app"]
 
   [http_service.concurrency]

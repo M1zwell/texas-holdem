@@ -2,6 +2,12 @@ import { emptyTtt, minimaxMove, playTtt, type TttState } from '../../engine/tict
 import type { PublicTttState } from '../../shared/types'
 import type { Lobby } from '../store'
 
+export interface TttRoomSnap {
+  kind: 'tictactoe'
+  game: TttState
+  seats: { X?: string; O?: string }
+}
+
 export class TttRoom {
   game: TttState = emptyTtt()
   seats: { X?: string; O?: string } = {}
@@ -41,6 +47,23 @@ export class TttRoom {
     }
     this.game = emptyTtt()
     this.emit()
+  }
+
+  serialize(): TttRoomSnap {
+    return { kind: 'tictactoe', game: this.game, seats: { ...this.seats } }
+  }
+
+  hydrate(snap: TttRoomSnap): void {
+    this.game = snap.game
+    this.seats = { ...snap.seats }
+  }
+
+  flush(): void {
+    if (!this.game.winner && this.seats.O === 'bot-ttt' && !this.game.xIsNext) {
+      const idx = minimaxMove(this.game.board, 'O')
+      this.game = playTtt(this.game, idx)
+      this.emit()
+    }
   }
 
   snapshot(): PublicTttState {
