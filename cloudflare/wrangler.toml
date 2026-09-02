@@ -3,7 +3,7 @@ main = "poker-worker.js"
 compatibility_date = "2026-09-01"
 
 [vars]
-POKER_ORIGIN = "jub-poker.vercel.app"
+POKER_ORIGIN = "jub-poker.fly.dev"
 
 # After first deploy, attach a route in the Cloudflare dashboard:
 #   jubuddy.com/poker*

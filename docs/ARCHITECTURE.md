@@ -25,7 +25,9 @@ Edge Functions are a poor home for 15s fold timers. Keep the state machine in a 
 
 This agent cannot log into Cloudflare or GoDaddy. After Fly/Netlify gives you a hostname:
 
-**jubuddy.com/poker** — same-origin under the existing Cloudflare zone (no GoDaddy). Deploy this repo as a Vercel project (`vercel.json`, `VITE_BASE_PATH=/poker/`). Attach `cloudflare/poker-worker.js` to route `jubuddy.com/poker*` to that origin. Do not change the apex — `jubuddy.com/` stays the existing jubuddy-game app. miz.gg / m1z.gg wait until GoDaddy login works.
+**jubuddy.com/poker** — Fly.io stateful Node (`fly.toml`, region `sin`, `auto_stop_machines = "off"`) is the live engine. `scripts/fly-up.sh` creates `jub-poker` and deploys. Cloudflare Worker `cloudflare/poker-worker.js` routes `jubuddy.com/poker*` to `jub-poker.fly.dev` and keeps the `/poker` prefix (same-origin, no GoDaddy). Apex `jubuddy.com/` stays the existing jubuddy-game Vercel app.
+
+Fly org `personal` (`yying2010@gmail.com`) currently **cannot create new apps** until overdue invoices are paid: https://fly.io/dashboard/yying2010-gmail-com/billing — do not overwrite `zaydenclips-api`, `jubit-litellm-*`, or `jubit-pi-sandbox`. miz.gg / m1z.gg wait until GoDaddy login works.
 
 **m1z.gg** — in Cloudflare or GoDaddy add:
 

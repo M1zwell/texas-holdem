@@ -11,7 +11,7 @@ export default {
     if (!url.pathname.startsWith('/poker')) {
       return fetch(request)
     }
-    const origin = env.POKER_ORIGIN || 'jub-poker.vercel.app'
+    const origin = env.POKER_ORIGIN || 'jub-poker.fly.dev'
     const dest = new URL(request.url)
     dest.hostname = origin
     dest.protocol = 'https:'

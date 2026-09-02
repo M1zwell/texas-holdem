@@ -8,7 +8,7 @@
 # Do NOT enable auto_stop — a sleeping machine drops in-memory hands.
 
 app = "jub-poker"
-primary_region = "nrt"
+primary_region = "sin"
 
 [build]
   dockerfile = "Dockerfile"
@@ -16,6 +16,10 @@ primary_region = "nrt"
 [env]
   PORT = "8080"
   NODE_ENV = "production"
+  BASE_PATH = "/poker"
+  PUBLIC_URL = "https://jubuddy.com"
+  SUPABASE_URL = "https://kiztaihzanqnrcrqaxsv.supabase.co"
+  VITE_SUPABASE_URL = "https://kiztaihzanqnrcrqaxsv.supabase.co"
 
 [http_service]
   internal_port = 8080
