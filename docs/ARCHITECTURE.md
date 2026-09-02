@@ -25,9 +25,9 @@ Edge Functions are a poor home for 15s fold timers. Keep the state machine in a 
 
 This agent cannot log into Cloudflare or GoDaddy. After Fly/Netlify gives you a hostname:
 
-**jubuddy.com/poker** — Fly.io stateful Node (`fly.toml`, region `sin`, `auto_stop_machines = "off"`) is the live engine. `scripts/fly-up.sh` creates `jub-poker` and deploys. Cloudflare Worker `cloudflare/poker-worker.js` routes `jubuddy.com/poker*` to `jub-poker.fly.dev` and keeps the `/poker` prefix (same-origin, no GoDaddy). Apex `jubuddy.com/` stays the existing jubuddy-game Vercel app.
+**jubuddy.com/poker** — Cloudflare Worker + static assets (`cloudflare/src/worker.ts`, `cloudflare/wrangler.jsonc`). Same-origin on the existing jubuddy.com zone: route `jubuddy.com/poker*` only. Apex `jubuddy.com/` stays the Vercel jubuddy-game app. Lobby/hand state hydrates from Supabase (Workers are isolate-scoped; no Fly VM).
 
-Fly org `personal` (`yying2010@gmail.com`) currently **cannot create new apps** until overdue invoices are paid: https://fly.io/dashboard/yying2010-gmail-com/billing — do not overwrite `zaydenclips-api`, `jubit-litellm-*`, or `jubit-pi-sandbox`. miz.gg / m1z.gg wait until GoDaddy login works.
+Fly.io is **optional**. The personal org is overdue; cancel/limit that plan in the Fly dashboard if you want to stop the ~$35/mo bill. Do not convert a legacy Hobby plan to Pay As You Go if you still want the 3×256MB free allowance — and do not overwrite `zaydenclips-api` / `jubit-litellm-*`. miz.gg / m1z.gg wait until GoDaddy login works.
 
 **m1z.gg** — in Cloudflare or GoDaddy add:
 

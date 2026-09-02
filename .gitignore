@@ -4,5 +4,7 @@ platform/web/dist
 .env
 .netlify
 .vercel
+.wrangler
+cloudflare/.wrangler
 .DS_Store
 *.log
