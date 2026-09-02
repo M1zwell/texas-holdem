@@ -2,22 +2,35 @@ import { io, Socket } from 'socket.io-client'
 import { api, getToken } from './api'
 
 let socket: Socket | null = null
+let socketAllowed: boolean | undefined
 
-export function connectSocket(): Socket {
+async function socketsEnabled(): Promise<boolean> {
+  if (socketAllowed !== undefined) return socketAllowed
+  try {
+    const health = await api.health()
+    socketAllowed = Boolean(health.socket)
+  } catch {
+    socketAllowed = false
+  }
+  return socketAllowed
+}
+
+export async function connectSocket(): Promise<Socket | null> {
   if (socket?.connected) return socket
+  if (!(await socketsEnabled())) return null
   socket = io({
     path: `${import.meta.env.BASE_URL.replace(/\/$/, '')}/socket.io`,
     auth: { token: getToken() },
   })
   socket.on('connect_error', () => {
-    /* Vercel/serverless has no long-lived Socket.IO; REST play is the fallback. */
+    /* Serverless hosts have no long-lived Socket.IO; REST play is the fallback. */
   })
   return socket
 }
 
 export async function play(lobbyId: string, body: Record<string, unknown>) {
-  const sock = connectSocket()
-  if (sock.connected) {
+  const sock = await connectSocket()
+  if (sock?.connected) {
     const type = String(body.type ?? '')
     if (type === 'start') sock.emit('start_hand', { lobbyId })
     else if (type === 'holdem') sock.emit('player_action', { lobbyId, action: body.action })

@@ -37,12 +37,16 @@ export function TablePage() {
         setState(r.state)
       })
       .catch((err) => setError(err.message))
-    const socket = connectSocket()
-    socket.emit('join_room', { lobbyId: id })
-    socket.on('gameState', (s: PublicGameState) => setState(s))
-    socket.on('lobby', (l) => setLobby((prev: any) => ({ ...prev, ...l })))
-    socket.on('chat', (m) => setChat((c) => [...c.slice(-30), `${m.name}: ${m.text}`]))
-    socket.on('error', (e) => setError(e.message))
+    let socket: Awaited<ReturnType<typeof connectSocket>> = null
+    void connectSocket().then((s) => {
+      if (!live || !s) return
+      socket = s
+      s.emit('join_room', { lobbyId: id })
+      s.on('gameState', (st: PublicGameState) => setState(st))
+      s.on('lobby', (l) => setLobby((prev: any) => ({ ...prev, ...l })))
+      s.on('chat', (m) => setChat((c) => [...c.slice(-30), `${m.name}: ${m.text}`]))
+      s.on('error', (e) => setError(e.message))
+    })
     const onPlay = (event: Event) => {
       const result = (event as CustomEvent).detail as
         | { lobby?: any; state?: PublicGameState }
@@ -59,7 +63,7 @@ export function TablePage() {
     window.addEventListener('jub-play', onPlay)
     window.addEventListener('jub-play-error', onPlayError)
     const poll = window.setInterval(() => {
-      if (socket.connected) return
+      if (socket?.connected) return
       api
         .getLobby(id)
         .then((r) => {
@@ -79,10 +83,10 @@ export function TablePage() {
       window.clearInterval(poll)
       window.removeEventListener('jub-play', onPlay)
       window.removeEventListener('jub-play-error', onPlayError)
-      socket.off('gameState')
-      socket.off('lobby')
-      socket.off('chat')
-      socket.off('error')
+      socket?.off('gameState')
+      socket?.off('lobby')
+      socket?.off('chat')
+      socket?.off('error')
     }
   }, [id])
 

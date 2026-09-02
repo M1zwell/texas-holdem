@@ -58,7 +58,12 @@ export function createHttp() {
   const api = express.Router()
 
   api.get('/health', (_req, res) => {
-    res.json({ ok: true, service: 'jub-poker', time: Date.now() })
+    res.json({
+      ok: true,
+      service: 'jub-poker',
+      time: Date.now(),
+      socket: true,
+    })
   })
 
   api.post('/session', (req, res) => {

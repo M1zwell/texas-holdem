@@ -7,9 +7,10 @@ describe('fetch poker API', () => {
     const b = await handlePokerApi(new Request('https://jubuddy.com/api/health'))
     expect(a.status).toBe(200)
     expect(b.status).toBe(200)
-    const body = (await a.json()) as { ok: boolean; service: string }
+    const body = (await a.json()) as { ok: boolean; service: string; socket?: boolean }
     expect(body.ok).toBe(true)
     expect(body.service).toBe('jub-poker')
+    expect(typeof body.socket).toBe('boolean')
   })
 
   it('creates a guest session and a tictactoe lobby over REST', async () => {

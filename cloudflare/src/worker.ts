@@ -13,6 +13,7 @@ export interface Env {
 }
 
 function applyEnv(env: Env, hostname: string): void {
+  if (env.FLY_SOCKET_ORIGIN) process.env.FLY_SOCKET_ORIGIN = env.FLY_SOCKET_ORIGIN
   if (env.JWT_SECRET) process.env.JWT_SECRET = env.JWT_SECRET
   if (env.SUPABASE_URL) {
     process.env.SUPABASE_URL = env.SUPABASE_URL

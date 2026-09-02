@@ -32,6 +32,7 @@ async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
+  health: () => req<{ ok: boolean; socket?: boolean; supabase?: boolean }>('/health'),
   session: (name: string) =>
     req<{ token: string; user: SessionUser; balance: number }>('/session', {
       method: 'POST',
