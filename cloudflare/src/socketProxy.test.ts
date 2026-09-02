@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { proxySocketToFly } from './worker'
+import { proxySocketToFly, serveAsset, type Env } from './worker'
 
 describe('hybrid Socket.IO proxy', () => {
   it('rewrites the Host header to the Fly origin and keeps the /poker/socket.io path', async () => {
@@ -25,5 +25,25 @@ describe('hybrid Socket.IO proxy', () => {
     } finally {
       globalThis.fetch = originalFetch
     }
+  })
+})
+
+describe('serveAsset', () => {
+  it('follows Assets /index.html → / without returning the redirect', async () => {
+    const env: Env = {
+      ASSETS: {
+        fetch: async (request) => {
+          const path = new URL(request.url).pathname
+          if (path === '/index.html') {
+            return new Response(null, { status: 307, headers: { location: '/' } })
+          }
+          if (path === '/') return new Response('<html>poker</html>', { status: 200 })
+          return new Response('missing', { status: 404 })
+        },
+      },
+    }
+    const res = await serveAsset(env, '/index.html')
+    expect(res.status).toBe(200)
+    expect(await res.text()).toBe('<html>poker</html>')
   })
 })

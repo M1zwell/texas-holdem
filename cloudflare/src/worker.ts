@@ -36,6 +36,20 @@ function isSocketPath(pathname: string): boolean {
   return pathname.includes('/socket.io')
 }
 
+const assetOrigin = 'https://assets.local'
+
+/** Fetch Worker assets without leaking /index.html → / redirects onto jubuddy.com. */
+export async function serveAsset(env: Env, pathname: string): Promise<Response> {
+  const first = await env.ASSETS.fetch(new Request(new URL(pathname, assetOrigin)))
+  if (first.status < 300 || first.status >= 400) return first
+  const loc = first.headers.get('location') ?? ''
+  const dest = loc.startsWith('http') ? new URL(loc).pathname : loc.split('?')[0] || loc
+  if (dest === '/' || dest === '/index.html') {
+    return env.ASSETS.fetch(new Request(new URL('/', assetOrigin)))
+  }
+  return first
+}
+
 export async function proxySocketToFly(request: Request, origin: string): Promise<Response> {
   const incoming = new URL(request.url)
   const dest = new URL(incoming.pathname + incoming.search, origin)
@@ -83,16 +97,14 @@ export default {
       return handlePokerApi(request)
     }
     if (url.pathname === '/poker' || url.pathname === '/poker/') {
-      const index = new URL('/index.html', url.origin)
-      return env.ASSETS.fetch(new Request(index, request))
+      return serveAsset(env, '/')
     }
     if (url.pathname.startsWith('/poker/')) {
-      const stripped = new URL(url.pathname.slice('/poker'.length) || '/', url.origin)
-      stripped.search = url.search
-      const asset = await env.ASSETS.fetch(new Request(stripped, request))
+      const stripped = url.pathname.slice('/poker'.length) || '/'
+      const asset = await serveAsset(env, stripped)
       if (asset.status !== 404) return asset
-      return env.ASSETS.fetch(new Request(new URL('/index.html', url.origin), request))
+      return serveAsset(env, '/')
     }
-    return env.ASSETS.fetch(request)
+    return serveAsset(env, url.pathname || '/')
   },
 }
