@@ -10,12 +10,17 @@ export function setToken(token: string): void {
   localStorage.setItem(tokenKey, token)
 }
 
+export function apiRoot(): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+  return `${base}/api`
+}
+
 async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers)
   headers.set('Content-Type', 'application/json')
   const token = getToken()
   if (token) headers.set('Authorization', `Bearer ${token}`)
-  const res = await fetch(`/api${path}`, { ...init, headers })
+  const res = await fetch(`${apiRoot()}${path}`, { ...init, headers })
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
     throw Object.assign(new Error(data.error || res.statusText), {
@@ -78,4 +83,9 @@ export const api = {
         status: string
       }>
     }>('/lobbies'),
+  play: (id: string, body: Record<string, unknown>) =>
+    req<{ lobby: any; state: any; chat?: { name: string; text: string } }>(`/lobbies/${id}/play`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
 }

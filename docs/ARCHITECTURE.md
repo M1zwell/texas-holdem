@@ -25,7 +25,7 @@ Edge Functions are a poor home for 15s fold timers. Keep the state machine in a 
 
 This agent cannot log into Cloudflare or GoDaddy. After Fly/Netlify gives you a hostname:
 
-**jubuddy.com/poker** — on the existing jubuddy host, proxy `/poker` with `nginx/poker.conf` (no extra DNS).
+**jubuddy.com/poker** — same-origin under the existing Cloudflare zone (no GoDaddy). Deploy this repo as a Vercel project (`vercel.json`, `VITE_BASE_PATH=/poker/`). Attach `cloudflare/poker-worker.js` to route `jubuddy.com/poker*` to that origin. Do not change the apex — `jubuddy.com/` stays the existing jubuddy-game app. miz.gg / m1z.gg wait until GoDaddy login works.
 
 **m1z.gg** — in Cloudflare or GoDaddy add:
 

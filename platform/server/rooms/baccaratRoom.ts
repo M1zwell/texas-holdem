@@ -1,7 +1,15 @@
 import { newBaccaratShoe, resolveBaccarat, type BaccaratBetSeat } from '../../engine/baccarat'
-import type { PublicBaccaratState } from '../../shared/types'
+import type { CardCode, PublicBaccaratState } from '../../shared/types'
 import type { Lobby } from '../store'
 import { store } from '../store'
+import { config } from '../config'
+
+export interface BaccaratRoomSnap {
+  kind: 'baccarat'
+  shoe: CardCode[]
+  bets: Array<[string, { seat: BaccaratBetSeat; amount: number }]>
+  state: PublicBaccaratState
+}
 
 export class BaccaratRoom {
   shoe = newBaccaratShoe()
@@ -13,6 +21,43 @@ export class BaccaratRoom {
   constructor(private lobby: Lobby) {
     this.state = this.base('betting')
     this.arm()
+  }
+
+  serialize(): BaccaratRoomSnap {
+    return {
+      kind: 'baccarat',
+      shoe: [...this.shoe],
+      bets: [...this.bets.entries()],
+      state: this.state,
+    }
+  }
+
+  hydrate(snap: BaccaratRoomSnap): void {
+    this.shoe = [...snap.shoe]
+    this.bets = new Map(snap.bets)
+    this.state = snap.state
+    this.flush()
+  }
+
+  flush(): void {
+    if (
+      this.state.status === 'settled' &&
+      this.state.bettingEndsAt &&
+      Date.now() >= this.state.bettingEndsAt
+    ) {
+      this.bets.clear()
+      this.state = this.base('betting')
+      this.arm()
+      this.emit()
+      return
+    }
+    if (
+      this.state.status === 'betting' &&
+      this.state.bettingEndsAt &&
+      Date.now() >= this.state.bettingEndsAt
+    ) {
+      this.deal()
+    }
   }
 
   place(userId: string, seat: BaccaratBetSeat, amount: number): void {
@@ -31,6 +76,7 @@ export class BaccaratRoom {
   private arm(): void {
     const ends = Date.now() + 18_000
     this.state.bettingEndsAt = ends
+    if (config.serverless) return
     this.timer = setTimeout(() => this.deal(), 18_000)
   }
 
@@ -65,6 +111,10 @@ export class BaccaratRoom {
       bettingEndsAt: null,
     }
     this.emit()
+    if (config.serverless) {
+      this.state.bettingEndsAt = Date.now() + 5_000
+      return
+    }
     setTimeout(() => {
       this.bets.clear()
       this.state = this.base('betting')

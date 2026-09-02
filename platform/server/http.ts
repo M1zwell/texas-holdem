@@ -7,7 +7,10 @@ import { config } from './config'
 import { guestUser, readBearer, signInvite, signSession, verifyInvite, verifySession } from './auth'
 import { store } from './store'
 import { rooms } from './rooms/registry'
-import { persistLobby } from './supabase'
+import { listRemoteLobbies, persistRuntime } from './supabase'
+import { ensureLobby, ensureLobbyByCode } from './hydrate'
+import { applyPlay } from './play'
+import { publicLobby } from './view'
 import type { GameKind } from '../shared/types'
 
 const joinLimiter = rateLimit({
@@ -76,7 +79,7 @@ export function createHttp() {
     }
   })
 
-  api.post('/lobbies', createLimiter, (req, res) => {
+  api.post('/lobbies', createLimiter, async (req, res) => {
     try {
       const user = auth(req)
       const game = (req.body?.game ?? 'holdem') as GameKind
@@ -117,7 +120,7 @@ export function createHttp() {
         },
         config.inviteTtlMs,
       )
-      void persistLobby(lobby)
+      await persistRuntime(lobby)
       res.status(201).json({
         lobby: publicLobby(lobby, true),
         inviteUrl: `${publicBase()}/join?token=${token}`,
@@ -129,12 +132,13 @@ export function createHttp() {
     }
   })
 
-  api.get('/lobbies/preview', joinLimiter, (req, res) => {
+  api.get('/lobbies/preview', joinLimiter, async (req, res) => {
     try {
       const token = typeof req.query.token === 'string' ? req.query.token : ''
       const code = typeof req.query.code === 'string' ? req.query.code.trim().toUpperCase() : ''
       if (token) {
         const claims = verifyInvite(token)
+        await ensureLobby(claims.lobbyId)
         const preview = store.preview(claims.lobbyId)
         if (claims.code !== store.requireLobby(claims.lobbyId).invite.code) {
           res.status(400).json({
@@ -150,29 +154,47 @@ export function createHttp() {
         res.status(400).json({ error: 'Invite credential missing.', reason: 'missing' })
         return
       }
+      await ensureLobbyByCode(code)
       res.json({ valid: true, preview: store.previewByCode(code) })
     } catch (err) {
       sendErr(res, err)
     }
   })
 
-  api.post('/lobbies/:id/join', joinLimiter, (req, res) => {
+  api.post('/lobbies/:id/join', joinLimiter, async (req, res) => {
     try {
       const user = auth(req)
-      const result = store.requestJoin(req.params.id, user)
-      const lobby = store.requireLobby(req.params.id)
+      const lobby = await ensureLobby(req.params.id)
+      const result = store.requestJoin(lobby.id, user)
       if (result.joined) {
         rooms.get(lobby)
       }
+      await persistRuntime(lobby)
       res.json(result)
     } catch (err) {
       sendErr(res, err)
     }
   })
 
-  api.post('/lobbies/:id/regenerate', (req, res) => {
+  api.post('/lobbies/:id/play', async (req, res) => {
     try {
       const user = auth(req)
+      await ensureLobby(req.params.id)
+      const result = await applyPlay(
+        req.params.id,
+        user,
+        (req.body ?? {}) as Record<string, unknown>,
+      )
+      res.json(result)
+    } catch (err) {
+      sendErr(res, err)
+    }
+  })
+
+  api.post('/lobbies/:id/regenerate', async (req, res) => {
+    try {
+      const user = auth(req)
+      await ensureLobby(req.params.id)
       const invite = store.regenerateInvite(req.params.id, user.id)
       const token = signInvite(
         {
@@ -185,6 +207,7 @@ export function createHttp() {
         },
         config.inviteTtlMs,
       )
+      await persistRuntime(store.requireLobby(req.params.id))
       res.json({
         code: invite.code,
         expiresAt: invite.expiresAt,
@@ -195,51 +218,57 @@ export function createHttp() {
     }
   })
 
-  api.post('/lobbies/:id/approve', (req, res) => {
+  api.post('/lobbies/:id/approve', async (req, res) => {
     try {
       const user = auth(req)
+      await ensureLobby(req.params.id)
       const approved = store.approve(req.params.id, user.id, String(req.body?.userId ?? ''))
+      await persistRuntime(store.requireLobby(req.params.id))
       res.json({ approved })
     } catch (err) {
       sendErr(res, err)
     }
   })
 
-  api.post('/lobbies/:id/streamer', (req, res) => {
+  api.post('/lobbies/:id/streamer', async (req, res) => {
     try {
       const user = auth(req)
-      const lobby = store.requireLobby(req.params.id)
+      const lobby = await ensureLobby(req.params.id)
       if (lobby.hostId !== user.id) {
         res.status(403).json({ error: 'Only the host can toggle streamer mode' })
         return
       }
       lobby.streamerMode = Boolean(req.body?.enabled)
+      await persistRuntime(lobby)
       res.json({ streamerMode: lobby.streamerMode })
     } catch (err) {
       sendErr(res, err)
     }
   })
 
-  api.get('/lobbies/:id', (req, res) => {
+  api.get('/lobbies/:id', async (req, res) => {
     try {
       const user = auth(req)
-      const lobby = store.requireLobby(req.params.id)
+      const lobby = await ensureLobby(req.params.id)
       const member = lobby.members.some((m) => m.id === user.id) || lobby.hostId === user.id
       if (!member) {
         res.status(403).json({ error: 'Join the lobby first' })
         return
       }
+      const state = rooms.snapshot(lobby, user.id)
+      await persistRuntime(lobby)
       res.json({
         lobby: publicLobby(lobby, lobby.hostId === user.id),
-        state: rooms.snapshot(lobby, user.id),
+        state,
       })
     } catch (err) {
       sendErr(res, err)
     }
   })
 
-  api.get('/lobbies', (_req, res) => {
-    const list = [...store.lobbies.values()]
+  api.get('/lobbies', async (_req, res) => {
+    const remote = await listRemoteLobbies()
+    const memory = [...store.lobbies.values()]
       .filter((l) => l.status !== 'closed')
       .map((l) => ({
         id: l.id,
@@ -249,6 +278,8 @@ export function createHttp() {
         maxPlayers: l.maxPlayers,
         status: l.status,
       }))
+    const seen = new Set(memory.map((l) => l.id))
+    const list = [...memory, ...remote.filter((l) => !seen.has(l.id))]
     res.json({ lobbies: list })
   })
 
@@ -284,30 +315,4 @@ export function createHttp() {
 function publicBase(): string {
   const base = config.basePath || ''
   return `${config.publicUrl}${base}`
-}
-
-function publicLobby(lobby: ReturnType<typeof store.requireLobby>, hostView: boolean) {
-  return {
-    id: lobby.id,
-    name: lobby.name,
-    game: lobby.game,
-    hostId: lobby.hostId,
-    hostName: lobby.hostName,
-    status: lobby.status,
-    maxPlayers: lobby.maxPlayers,
-    approvalRequired: lobby.approvalRequired,
-    streamerMode: lobby.streamerMode,
-    members: lobby.members,
-    waitlist: hostView ? lobby.waitlist : [],
-    code:
-      hostView && !lobby.streamerMode
-        ? lobby.invite.code
-        : hostView
-        ? lobby.invite.code
-        : undefined,
-    codeBlurred: lobby.streamerMode,
-    expiresAt: lobby.invite.expiresAt,
-    blinds: lobby.blinds,
-    fillBots: lobby.fillBots,
-  }
 }

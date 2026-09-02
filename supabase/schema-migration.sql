@@ -86,3 +86,54 @@ exception
   when duplicate_object then null;
   when undefined_object then null;
 end $$;
+
+-- Serverless runtime: hydrate lobbies + room snapshots across Vercel instances
+alter table public.jub_game_lobbies add column if not exists invite_code text;
+alter table public.jub_game_lobbies add column if not exists payload jsonb;
+alter table public.jub_game_lobbies add column if not exists room_state jsonb;
+create index if not exists jub_game_lobbies_invite_code_idx on public.jub_game_lobbies (invite_code);
+
+create or replace function public.jub_upsert_lobby(lobby_row jsonb)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.jub_game_lobbies (
+    id, name, game, host_id, host_name, status, max_players, player_count,
+    approval_required, join_token_hash, invite_code, payload, room_state, updated_at
+  ) values (
+    (lobby_row->>'id')::uuid,
+    lobby_row->>'name',
+    lobby_row->>'game',
+    (lobby_row->>'host_id')::uuid,
+    lobby_row->>'host_name',
+    coalesce(lobby_row->>'status', 'waiting'),
+    coalesce((lobby_row->>'max_players')::int, 6),
+    coalesce((lobby_row->>'player_count')::int, 1),
+    coalesce((lobby_row->>'approval_required')::boolean, false),
+    coalesce(lobby_row->>'join_token_hash', ''),
+    lobby_row->>'invite_code',
+    lobby_row->'payload',
+    lobby_row->'room_state',
+    now()
+  )
+  on conflict (id) do update set
+    name = excluded.name,
+    game = excluded.game,
+    host_id = excluded.host_id,
+    host_name = excluded.host_name,
+    status = excluded.status,
+    max_players = excluded.max_players,
+    player_count = excluded.player_count,
+    approval_required = excluded.approval_required,
+    join_token_hash = excluded.join_token_hash,
+    invite_code = excluded.invite_code,
+    payload = excluded.payload,
+    room_state = excluded.room_state,
+    updated_at = now();
+end;
+$$;
+
+grant execute on function public.jub_upsert_lobby(jsonb) to anon, authenticated, service_role;

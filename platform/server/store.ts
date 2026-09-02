@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import type { GameKind, LobbyPreview, LobbyStatus, SessionUser } from '../shared/types'
+import type { ChatMessage, GameKind, LobbyPreview, LobbyStatus, SessionUser } from '../shared/types'
 import {
   DEFAULT_INVITE_TTL_MS,
   isInviteLive,
@@ -30,6 +30,7 @@ export interface Lobby {
   createdAt: number
   blinds?: { small: number; big: number }
   fillBots: boolean
+  chats: ChatMessage[]
 }
 
 export class MemoryStore {
@@ -88,10 +89,27 @@ export class MemoryStore {
       createdAt: now,
       blinds: args.blinds,
       fillBots: args.fillBots,
+      chats: [],
     }
     this.lobbies.set(id, lobby)
     this.codes.set(invite.code, id)
     return lobby
+  }
+
+  putLobby(lobby: Lobby): Lobby {
+    if (!lobby.chats) lobby.chats = []
+    this.lobbies.set(lobby.id, lobby)
+    this.codes.set(lobby.invite.code, lobby.id)
+    for (const member of lobby.members) {
+      this.upsertUser(member)
+    }
+    return lobby
+  }
+
+  addChat(lobbyId: string, message: ChatMessage): ChatMessage {
+    const lobby = this.requireLobby(lobbyId)
+    lobby.chats = [...lobby.chats.slice(-39), message]
+    return message
   }
 
   regenerateInvite(lobbyId: string, hostId: string, ttlMs = DEFAULT_INVITE_TTL_MS): InviteRecord {

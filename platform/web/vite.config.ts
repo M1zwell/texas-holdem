@@ -18,7 +18,9 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': 'http://127.0.0.1:8080',
+      '/poker/api': 'http://127.0.0.1:8080',
       '/socket.io': { target: 'http://127.0.0.1:8080', ws: true },
+      '/poker/socket.io': { target: 'http://127.0.0.1:8080', ws: true },
     },
   },
   build: {

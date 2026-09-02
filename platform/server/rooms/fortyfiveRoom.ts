@@ -4,9 +4,16 @@ import {
   fortyFiveStand,
   newFortyFive,
 } from '../../engine/fortyfive'
-import { fortyFiveTotal } from '../../engine/points'
+import { fortyFiveTotal, type FortyFiveState } from '../../engine/points'
 import type { PublicFortyFiveState } from '../../shared/types'
 import type { Lobby } from '../store'
+import { config } from '../config'
+
+export interface FortyFiveRoomSnap {
+  kind: 'fortyfive'
+  engine: FortyFiveState
+  state: PublicFortyFiveState
+}
 
 export class FortyFiveRoom {
   state: PublicFortyFiveState
@@ -47,7 +54,25 @@ export class FortyFiveRoom {
     return this.state
   }
 
+  serialize(): FortyFiveRoomSnap {
+    return { kind: 'fortyfive', engine: this.engine, state: this.state }
+  }
+
+  hydrate(snap: FortyFiveRoomSnap): void {
+    this.engine = snap.engine
+    this.state = snap.state
+    this.flush()
+  }
+
+  flush(): void {
+    this.flushBots()
+  }
+
   private maybeBot(): void {
+    if (config.serverless) {
+      this.flushBots()
+      return
+    }
     const id = this.engine.toAct
     if (!id || !id.startsWith('bot')) return
     const seat = this.engine.seats.find((s) => s.id === id)
@@ -62,6 +87,23 @@ export class FortyFiveRoom {
         /* ignore */
       }
     }, 500)
+  }
+
+  private flushBots(): void {
+    for (let i = 0; i < 12; i++) {
+      const id = this.engine.toAct
+      if (!id || !id.startsWith('bot')) return
+      const seat = this.engine.seats.find((s) => s.id === id)
+      if (!seat) return
+      const choice = fortyFiveBotChoice(seat.cards)
+      try {
+        if (choice === 'hit') this.engine = fortyFiveHit(this.engine, id)
+        else this.engine = fortyFiveStand(this.engine, id)
+        this.publish()
+      } catch {
+        return
+      }
+    }
   }
 
   private waiting(): PublicFortyFiveState {

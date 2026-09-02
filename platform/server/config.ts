@@ -7,4 +7,5 @@ export const config = {
   turnMs: Number(process.env.TURN_MS ?? 30_000),
   corsOrigin: process.env.CORS_ORIGIN ?? true,
   publicUrl: process.env.PUBLIC_URL ?? 'http://localhost:8080',
+  serverless: Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME),
 }

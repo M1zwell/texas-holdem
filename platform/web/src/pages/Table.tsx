@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { api, getToken } from '../lib/api'
-import { connectSocket } from '../lib/socket'
+import { connectSocket, play } from '../lib/socket'
 import { PlayingCard } from '../components/PlayingCard'
 import type {
   ClientAction,
@@ -43,8 +43,35 @@ export function TablePage() {
     socket.on('lobby', (l) => setLobby((prev: any) => ({ ...prev, ...l })))
     socket.on('chat', (m) => setChat((c) => [...c.slice(-30), `${m.name}: ${m.text}`]))
     socket.on('error', (e) => setError(e.message))
+    const onPlay = (event: Event) => {
+      const result = (event as CustomEvent).detail as
+        | { lobby?: any; state?: PublicGameState }
+        | undefined
+      if (!live || !result) return
+      if (result.lobby) setLobby(result.lobby)
+      if (result.state) setState(result.state)
+    }
+    window.addEventListener('jub-play', onPlay)
+    const poll = window.setInterval(() => {
+      if (socket.connected) return
+      api
+        .getLobby(id)
+        .then((r) => {
+          if (!live) return
+          setLobby(r.lobby)
+          setState(r.state)
+          if (Array.isArray(r.lobby?.chats)) {
+            setChat(
+              r.lobby.chats.map((m: { name: string; text: string }) => `${m.name}: ${m.text}`),
+            )
+          }
+        })
+        .catch(() => undefined)
+    }, 1600)
     return () => {
       live = false
+      window.clearInterval(poll)
+      window.removeEventListener('jub-play', onPlay)
       socket.off('gameState')
       socket.off('lobby')
       socket.off('chat')
@@ -81,7 +108,9 @@ export function TablePage() {
         <form
           onSubmit={(e) => {
             e.preventDefault()
-            connectSocket().emit('chat', { lobbyId: id, text })
+            void play(id, { type: 'chat', text }).then((r) => {
+              if (r?.chat) setChat((c) => [...c.slice(-30), `${r.chat.name}: ${r.chat.text}`])
+            })
             setText('')
           }}
         >
@@ -142,10 +171,7 @@ function HostControls({
         >
           {lobby.streamerMode ? 'Unblur' : 'Streamer blur'}
         </button>
-        <button
-          className="btn"
-          onClick={() => connectSocket().emit('start_hand', { lobbyId: lobby.id })}
-        >
+        <button className="btn" onClick={() => void play(lobby.id, { type: 'start' })}>
           Start
         </button>
       </div>
@@ -265,7 +291,7 @@ function BaccaratView({ state, lobbyId }: { state: PublicBaccaratState; lobbyId:
             className="btn"
             disabled={state.status !== 'betting'}
             onClick={() => {
-              connectSocket().emit('baccarat_bet', { lobbyId, seat, amount: 100 })
+              void play(lobbyId, { type: 'baccarat_bet', seat, amount: 100 })
             }}
           >
             Bet 100 {seat}
@@ -286,13 +312,13 @@ function TttView({ state, me, lobbyId }: { state: PublicTttState; me: string; lo
       </p>
       <div className="ttt">
         {state.board.map((cell, i) => (
-          <button key={i} onClick={() => connectSocket().emit('ttt_move', { lobbyId, index: i })}>
+          <button key={i} onClick={() => void play(lobbyId, { type: 'ttt_move', index: i })}>
             {cell ?? ''}
           </button>
         ))}
       </div>
       {mark && <p>You are {mark}</p>}
-      <button className="btn ghost" onClick={() => connectSocket().emit('ttt_reset', { lobbyId })}>
+      <button className="btn ghost" onClick={() => void play(lobbyId, { type: 'ttt_reset' })}>
         Reset
       </button>
     </div>
@@ -329,15 +355,12 @@ function FortyFiveView({
       </div>
       {state.toAct === me && (
         <div className="actions">
-          <button
-            className="btn"
-            onClick={() => connectSocket().emit('fortyfive_hit', { lobbyId })}
-          >
+          <button className="btn" onClick={() => void play(lobbyId, { type: 'fortyfive_hit' })}>
             Hit · 拿牌
           </button>
           <button
             className="btn ghost"
-            onClick={() => connectSocket().emit('fortyfive_stand', { lobbyId })}
+            onClick={() => void play(lobbyId, { type: 'fortyfive_stand' })}
           >
             Stand · 停牌
           </button>
@@ -381,21 +404,21 @@ function BlackjackView({ state, lobbyId }: { state: PublicBlackjackState; lobbyI
       <div className="actions">
         <button
           className="btn"
-          onClick={() => connectSocket().emit('blackjack_deal', { lobbyId, amount: 100 })}
+          onClick={() => void play(lobbyId, { type: 'blackjack_deal', amount: 100 })}
         >
           Deal 100
         </button>
         <button
           className="btn"
           disabled={state.status !== 'playing'}
-          onClick={() => connectSocket().emit('blackjack_hit', { lobbyId })}
+          onClick={() => void play(lobbyId, { type: 'blackjack_hit' })}
         >
           Hit
         </button>
         <button
           className="btn ghost"
           disabled={state.status !== 'playing'}
-          onClick={() => connectSocket().emit('blackjack_stand', { lobbyId })}
+          onClick={() => void play(lobbyId, { type: 'blackjack_stand' })}
         >
           Stand
         </button>
@@ -405,7 +428,7 @@ function BlackjackView({ state, lobbyId }: { state: PublicBlackjackState; lobbyI
 }
 
 function act(lobbyId: string, action: ClientAction) {
-  connectSocket().emit('player_action', { lobbyId, action })
+  void play(lobbyId, { type: 'holdem', action })
 }
 
 function label(a: ClientAction): string {
