@@ -7,6 +7,8 @@ export interface Env {
   SUPABASE_ANON_KEY?: string
   BASE_PATH?: string
   PUBLIC_URL?: string
+  /** Fly.io origin for long-lived Socket.IO, e.g. https://jub-poker.fly.dev */
+  FLY_SOCKET_ORIGIN?: string
 }
 
 function applyEnv(env: Env): void {
@@ -24,10 +26,39 @@ function applyEnv(env: Env): void {
   process.env.CLOUDFLARE_WORKER = '1'
 }
 
+function isSocketPath(pathname: string): boolean {
+  return pathname.includes('/socket.io')
+}
+
+export async function proxySocketToFly(request: Request, origin: string): Promise<Response> {
+  const incoming = new URL(request.url)
+  const dest = new URL(incoming.pathname + incoming.search, origin)
+  const headers = new Headers(request.headers)
+  headers.set('host', dest.host)
+  return fetch(
+    new Request(dest.toString(), {
+      method: request.method,
+      headers,
+      body: request.body,
+      redirect: 'manual',
+    }),
+  )
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     applyEnv(env)
     const url = new URL(request.url)
+    if (isSocketPath(url.pathname)) {
+      const origin = env.FLY_SOCKET_ORIGIN
+      if (!origin) {
+        return new Response(JSON.stringify({ error: 'Socket backend not configured' }), {
+          status: 503,
+          headers: { 'content-type': 'application/json' },
+        })
+      }
+      return proxySocketToFly(request, origin)
+    }
     if (url.pathname.startsWith('/poker/api') || url.pathname.startsWith('/api')) {
       return handlePokerApi(request)
     }
