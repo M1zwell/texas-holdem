@@ -1,5 +1,6 @@
-# Fly.io stateful WebSocket engine for Jub Poker.
-# Game timers / seats live in this VM. Supabase holds wallets + lobby cards.
+# OPTIONAL fallback. Preferred production path is Cloudflare Workers
+# (cloudflare/wrangler.jsonc → jubuddy.com/poker). Use Fly only if you need
+# always-on Socket.IO timers on a VM.
 #
 #   fly launch --copy-config --no-deploy
 #   fly secrets set JWT_SECRET=... SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=...
