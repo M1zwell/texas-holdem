@@ -1,2 +1,7 @@
 node_modules
 dist
+platform/web/dist
+.env
+.netlify
+.DS_Store
+*.log

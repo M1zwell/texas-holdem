@@ -1,51 +1,98 @@
-# Texas-holdem-house
+# Jub Poker · 聚牌
 
-A texas hold'em game engine for bot players
+Online multiplayer **Texas Hold'em**, **Baccarat**, and **Tic-Tac-Toe** built on this repo’s `texas-holdem-house` engine and industry poker-platform patterns (private lobbies, JWT invites, Socket.IO, optional Redis pub/sub).
 
+Play-chip social tables only — no real-money wagering.
+
+目标部署 / intended hosts:
+
+- https://jubuddy.com/poker
+- https://m1z.gg
+
+`https://github.com/M1zwell/poker.git` is the intended sibling product repo. It is **not reachable** (GitHub 404, including authenticated clone). This repository (`M1zwell/texas-holdem`, fork of `themez/texas-holdem-house`) is therefore the implementation home until that remote exists.
+
+## Stack
+
+| Layer    | Choice                                                                       |
+| -------- | ---------------------------------------------------------------------------- |
+| Engine   | Pure TypeScript: 64-bit card masks, side pots, baccarat tableau, minimax TTT |
+| AI       | Monte Carlo equity; 10-d / 80-param genetic policy (CPU); TTT minimax        |
+| API      | Express + JWT session + signed invite tokens + rate limits                   |
+| Realtime | Socket.IO after HTTP preview/join — server is the authority                  |
+| Sync     | Dual Redis pub/sub clients when `REDIS_URL` is set; in-process bus otherwise |
+| UI       | Vite + React (felt table, streamer blur, host approval waitlist)             |
+
+## Private lobby security
+
+1. Host creates a room → 6-char Crockford join code + 15-minute signed JWT link (never a raw lobby id).
+2. Guest hits **preview** (REST). No WebSocket yet. Failures distinguish expired / full / already playing.
+3. Guest **confirms join**. Optional host-approval waitlist and one-use codes.
+4. Host can **regenerate** the code (old links die) and enable **streamer blur**.
+5. Only then does the client open Socket.IO with the session JWT.
+
+## Develop
+
+```bash
+npm install
+npm test
+npm run dev
 ```
-➜ npm i texas-holdem-house
+
+- Web: http://localhost:5173
+- API / WS: http://localhost:8080
+
+```bash
+npm run build && npm start   # serves the built UI from Express
 ```
 
-## Start Game
+## Docker / deploy
+
+```bash
+docker compose up --build
+```
+
+**jubuddy.com/poker**
+
+```bash
+export BASE_PATH=/poker
+export VITE_BASE_PATH=/poker/
+export PUBLIC_URL=https://jubuddy.com
+docker compose up --build
+```
+
+Point the existing jubuddy host at `nginx/poker.conf` (`location /poker/` + Socket.IO upgrade).
+
+**m1z.gg**
+
+```bash
+export BASE_PATH=
+export VITE_BASE_PATH=/
+export PUBLIC_URL=https://m1z.gg
+docker compose up --build
+```
+
+Use the `m1z.gg` server block in `nginx/poker.conf`.
+
+Set `JWT_SECRET` in production. Redis is optional but required for multi-node WebSocket consistency.
+
+## Library (original bot engine)
 
 ```ts
-import { startGame, Player, CallPlayer, RandomPlayer } from 'texas-holdem-house'
-
-const builtInPlayers = _.range(0, 7).map(i =>
-  i < 4 ? new CallPlayer(`CallPlayer-${i}`) : new RandomPlayer(`RandomPlayer-${i}`),
-)
-
-// write your own bot
-class MyPlayer implements Player {
-  constructor(public name: string) {}
-  // join the game with an event emitter to listen to game event
-  join(event: EventEmitter, position: number): void {
-    // your code
-  }
-  // deal two card to you
-  deal(cards: [Card, Card]): void {
-    // your code
-  }
-  // your turn to action
-  async action(actionList: Action[]): Promise<Action> {
-    // your code
-    ...
-  }
-}
-
-startGame([...builtInPlayers, new MyPlayer('MySeasonedPlayer')])
+import {
+  startGame,
+  Player,
+  CallPlayer,
+  RandomPlayer,
+  SimpleStratetyPlayer,
+} from 'texas-holdem-house'
 ```
 
-## Texas hold'em rules
+The house engine in `src/` is unchanged in spirit: clockwise dealer / SB / BB, raise sizing, and side-pot collection. The live site uses the state-machine port in `platform/engine/holdem.ts` so humans and sockets can drive one action at a time.
 
-- For clockwise direction dealder followed by small blind, big blind
-- deal from small blind
-- first round betting start from the one next to big blind, big blind is the last one to action, second/third/fourth round betting start from small blind
-- player can only raise multiple to previous bet
+## Tests
 
-## 德州扑克规则
+```bash
+npm test
+```
 
-- 顺时针，dealer 左边依次是小盲，大盲
-- 从小盲开始发牌
-- 第一轮从大盲左边一位开始行动，到大盲最后一个 call/raise，后面轮次从小盲开始行动
-- 每轮 raise 必须是 bet 的整数倍
+Covers hand ranking, side pots / chip conservation, baccarat tableau, minimax TTT, invite expiry, and lobby preview/approval.

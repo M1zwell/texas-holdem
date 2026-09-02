@@ -1,0 +1,18 @@
+# Static frontend preview. Real-time tables need the Node/Socket.IO process
+# (Docker / any Node host). Point VITE_API and Socket.IO at that origin.
+[build]
+  command = "npm run build"
+  publish = "platform/web/dist"
+
+[build.environment]
+  VITE_BASE_PATH = "/poker/"
+
+[[redirects]]
+  from = "/poker/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/poker/*"
+  to = "/poker/index.html"
+  status = 200
