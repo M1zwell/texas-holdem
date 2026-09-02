@@ -27,7 +27,7 @@ This agent cannot log into Cloudflare or GoDaddy. After Fly/Netlify gives you a 
 
 **jubuddy.com/poker** — Cloudflare Worker + static assets (`cloudflare/src/worker.ts`, `cloudflare/wrangler.jsonc`). Same-origin on the existing jubuddy.com zone: route `jubuddy.com/poker*` only. Apex `jubuddy.com/` stays the Vercel jubuddy-game app. Lobby/hand state hydrates from Supabase (Workers are isolate-scoped; no Fly VM).
 
-Fly.io is **optional**. The personal org is overdue; cancel/limit that plan in the Fly dashboard if you want to stop the ~$35/mo bill. Do not convert a legacy Hobby plan to Pay As You Go if you still want the 3×256MB free allowance — and do not overwrite `zaydenclips-api` / `jubit-litellm-*`. miz.gg / m1z.gg wait until GoDaddy login works.
+Fly.io is **optional**. The personal org is already Pay As You Go ($0 plan fee); the ~$35/mo invoices are usage from always-on VMs. Stopping or destroying unused apps cuts the bill — there is no cheaper plan to switch to. Do not overwrite `zaydenclips-api` / `jubit-litellm-*`. miz.gg / m1z.gg wait until GoDaddy login works.
 
 **m1z.gg** — in Cloudflare or GoDaddy add:
 
