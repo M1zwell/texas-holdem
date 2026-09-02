@@ -28,6 +28,8 @@ This agent cannot log into Cloudflare or GoDaddy. After Fly/Netlify gives you a 
 
 Fly.io is **optional** and already Pay As You Go ($0 plan fee). Unused demo/sandbox apps were removed (markitdown, jubitmind-demo, pi-sandbox, browser-harness). Left running: `zaydenclips-api`, `jubit-litellm-db`, `jubit-litellm-proxy`. miz.gg / m1z.gg wait until GoDaddy login works.
 
+**http://miz.gg/** — DNS already points at **Netlify** (`75.2.60.5`). The hostname is attached to the `zaydenclips` football-academy site. Poker is configured for apex (`VITE_BASE_PATH=/`, `/api/*` function). To go live: create a Netlify site from this repo and **move** the `miz.gg` domain off `zaydenclips` onto the poker site (do not delete the zaydenclips project). Fly cannot create `jub-poker` while invoices are overdue.
+
 **m1z.gg** — in Cloudflare or GoDaddy add:
 
 - `CNAME @` → your Fly app (`jub-poker.fly.dev`) or the static host
