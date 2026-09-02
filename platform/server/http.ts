@@ -7,6 +7,7 @@ import { config } from './config'
 import { guestUser, readBearer, signInvite, signSession, verifyInvite, verifySession } from './auth'
 import { store } from './store'
 import { rooms } from './rooms/registry'
+import { persistLobby } from './supabase'
 import type { GameKind } from '../shared/types'
 
 const joinLimiter = rateLimit({
@@ -36,12 +37,10 @@ function auth(req: express.Request): ReturnType<typeof verifySession> {
 function sendErr(res: express.Response, err: unknown): void {
   const e = err as { status?: number; message?: string; reason?: string; name?: string }
   if (e.name === 'TokenExpiredError') {
-    res
-      .status(410)
-      .json({
-        error: 'This invite link has expired. Ask the host for a new code.',
-        reason: 'expired',
-      })
+    res.status(410).json({
+      error: 'This invite link has expired. Ask the host for a new code.',
+      reason: 'expired',
+    })
     return
   }
   res.status(e.status ?? 400).json({ error: e.message ?? 'Bad request', reason: e.reason })
@@ -81,7 +80,13 @@ export function createHttp() {
     try {
       const user = auth(req)
       const game = (req.body?.game ?? 'holdem') as GameKind
-      if (game !== 'holdem' && game !== 'baccarat' && game !== 'tictactoe') {
+      if (
+        game !== 'holdem' &&
+        game !== 'baccarat' &&
+        game !== 'tictactoe' &&
+        game !== 'blackjack' &&
+        game !== 'fortyfive'
+      ) {
         res.status(400).json({ error: 'Unknown game' })
         return
       }
@@ -89,7 +94,9 @@ export function createHttp() {
         host: user,
         name: String(req.body?.name ?? ''),
         game,
-        maxPlayers: Number(req.body?.maxPlayers ?? (game === 'holdem' ? 6 : 2)),
+        maxPlayers: Number(
+          req.body?.maxPlayers ?? (game === 'tictactoe' ? 2 : game === 'blackjack' ? 6 : 6),
+        ),
         approvalRequired: Boolean(req.body?.approvalRequired),
         singleUseInvites: Boolean(req.body?.singleUseInvites),
         streamerMode: Boolean(req.body?.streamerMode),
@@ -110,6 +117,7 @@ export function createHttp() {
         },
         config.inviteTtlMs,
       )
+      void persistLobby(lobby)
       res.status(201).json({
         lobby: publicLobby(lobby, true),
         inviteUrl: `${publicBase()}/join?token=${token}`,
@@ -129,12 +137,10 @@ export function createHttp() {
         const claims = verifyInvite(token)
         const preview = store.preview(claims.lobbyId)
         if (claims.code !== store.requireLobby(claims.lobbyId).invite.code) {
-          res
-            .status(400)
-            .json({
-              error: 'This invite was regenerated. Ask the host for the new code.',
-              reason: 'invalid',
-            })
+          res.status(400).json({
+            error: 'This invite was regenerated. Ask the host for the new code.',
+            reason: 'invalid',
+          })
           return
         }
         res.json({ valid: true, preview })

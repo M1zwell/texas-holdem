@@ -233,6 +233,10 @@ function defaultName(game: GameKind): string {
       return 'Private Baccarat'
     case 'tictactoe':
       return 'Private Tic-Tac-Toe'
+    case 'blackjack':
+      return 'Private Blackjack'
+    case 'fortyfive':
+      return 'Private 45-Bust'
     default: {
       const _n: never = game
       return _n
@@ -241,7 +245,14 @@ function defaultName(game: GameKind): string {
 }
 
 function clampMax(game: GameKind, n: number): number {
-  const max = game === 'holdem' ? 9 : game === 'baccarat' ? 8 : 2
+  const max =
+    game === 'holdem'
+      ? 9
+      : game === 'baccarat' || game === 'fortyfive'
+      ? 8
+      : game === 'blackjack'
+      ? 6
+      : 2
   const min = 2
   return Math.min(max, Math.max(min, Math.floor(n) || max))
 }

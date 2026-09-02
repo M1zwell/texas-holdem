@@ -3,8 +3,10 @@ import type { Lobby } from '../store'
 import { HoldemRoom } from './holdemRoom'
 import { BaccaratRoom } from './baccaratRoom'
 import { TttRoom } from './tictactoeRoom'
+import { FortyFiveRoom } from './fortyfiveRoom'
+import { BlackjackRoom } from './blackjackRoom'
 
-export type AnyRoom = HoldemRoom | BaccaratRoom | TttRoom
+export type AnyRoom = HoldemRoom | BaccaratRoom | TttRoom | FortyFiveRoom | BlackjackRoom
 
 export class RoomRegistry {
   rooms = new Map<string, AnyRoom>()
@@ -21,7 +23,7 @@ export class RoomRegistry {
   snapshot(lobby: Lobby, viewerId?: string): PublicGameState {
     const room = this.get(lobby)
     if (room instanceof HoldemRoom) return room.publicState(viewerId)
-    if (room instanceof BaccaratRoom) return room.snapshot()
+    if (room instanceof BlackjackRoom) return room.snapshot(viewerId)
     return room.snapshot()
   }
 
@@ -39,6 +41,16 @@ export class RoomRegistry {
       }
       case 'tictactoe': {
         const room = new TttRoom(lobby)
+        room.onChange = (state) => this.broadcast(lobby.id, state)
+        return room
+      }
+      case 'fortyfive': {
+        const room = new FortyFiveRoom(lobby)
+        room.onChange = (state) => this.broadcast(lobby.id, state)
+        return room
+      }
+      case 'blackjack': {
+        const room = new BlackjackRoom(lobby)
         room.onChange = (state) => this.broadcast(lobby.id, state)
         return room
       }

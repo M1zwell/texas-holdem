@@ -1,6 +1,6 @@
 /** Shared protocol types for Jub Poker (play-chip social tables). */
 
-export type GameKind = 'holdem' | 'baccarat' | 'tictactoe'
+export type GameKind = 'holdem' | 'baccarat' | 'tictactoe' | 'blackjack' | 'fortyfive'
 
 export type RankChar = '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'T' | 'J' | 'Q' | 'K' | 'A'
 export type SuitChar = 's' | 'h' | 'd' | 'c'
@@ -120,7 +120,38 @@ export interface PublicTttState {
   names: Record<string, string>
 }
 
-export type PublicGameState = PublicHoldemState | PublicBaccaratState | PublicTttState
+export interface PublicFortyFiveState {
+  kind: 'fortyfive'
+  status: 'waiting' | 'playing' | 'settled'
+  target: 45
+  toAct: string | null
+  seats: Array<{
+    id: string
+    name: string
+    cards: CardCode[]
+    total: number
+    status: 'playing' | 'stand' | 'bust' | 'blackjack'
+    isBot: boolean
+  }>
+  winners: { id: string; total: number; amount: number }[]
+}
+
+export interface PublicBlackjackState {
+  kind: 'blackjack'
+  status: 'betting' | 'playing' | 'settled'
+  player: { cards: CardCode[]; total: number; status: string }
+  dealer: { cards: CardCode[]; total: number; status: string; holeHidden: boolean }
+  outcome: 'player' | 'dealer' | 'push' | null
+  bet: number
+  balance: number
+}
+
+export type PublicGameState =
+  | PublicHoldemState
+  | PublicBaccaratState
+  | PublicTttState
+  | PublicFortyFiveState
+  | PublicBlackjackState
 
 export interface ChatMessage {
   id: string

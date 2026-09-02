@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { api, getToken, setToken } from '../lib/api'
+import { subscribeLobbies } from '../lib/realtime'
 import type { GameKind } from '@shared/types'
 
 const GAMES: { kind: GameKind; title: string; zh: string; blurb: string }[] = [
@@ -21,6 +22,18 @@ const GAMES: { kind: GameKind; title: string; zh: string; blurb: string }[] = [
     title: 'Tic-Tac-Toe',
     zh: '井字棋',
     blurb: 'Minimax seat · private room · turn-based sync',
+  },
+  {
+    kind: 'blackjack',
+    title: 'Blackjack',
+    zh: '二十一点',
+    blurb: 'Hit / stand · dealer 17 · 3:2 blackjack · play chips',
+  },
+  {
+    kind: 'fortyfive',
+    title: '45-Bust',
+    zh: '四十五点 · 爆破',
+    blurb: 'Keep drawing · closest to 45 wins · over 45 busts',
   },
 ]
 
@@ -51,6 +64,18 @@ export function HomePage() {
       .list()
       .then((r) => setOpen(r.lobbies))
       .catch(() => undefined)
+    return subscribeLobbies((rows) => {
+      setOpen(
+        rows.map((l) => ({
+          id: l.id,
+          name: l.name,
+          game: l.game,
+          playerCount: l.player_count,
+          maxPlayers: l.max_players,
+          status: l.status,
+        })),
+      )
+    })
   }, [])
 
   async function ensureSession() {
@@ -67,7 +92,7 @@ export function HomePage() {
       const created = await api.createLobby({
         name: roomName,
         game,
-        maxPlayers: game === 'holdem' ? 6 : game === 'baccarat' ? 6 : 2,
+        maxPlayers: game === 'tictactoe' ? 2 : 6,
         approvalRequired: approval,
         singleUseInvites: singleUse,
         streamerMode: streamer,

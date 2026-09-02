@@ -6,7 +6,9 @@ import { PlayingCard } from '../components/PlayingCard'
 import type {
   ClientAction,
   PublicBaccaratState,
+  PublicBlackjackState,
   PublicGameState,
+  PublicFortyFiveState,
   PublicHoldemState,
   PublicTttState,
 } from '@shared/types'
@@ -69,6 +71,8 @@ export function TablePage() {
       {state?.kind === 'holdem' && <HoldemView state={state} me={me} lobbyId={id!} />}
       {state?.kind === 'baccarat' && <BaccaratView state={state} lobbyId={id!} />}
       {state?.kind === 'tictactoe' && <TttView state={state} me={me} lobbyId={id!} />}
+      {state?.kind === 'fortyfive' && <FortyFiveView state={state} me={me} lobbyId={id!} />}
+      {state?.kind === 'blackjack' && <BlackjackView state={state} lobbyId={id!} />}
       <section className="card" style={{ marginTop: 18 }}>
         <div className="muted">Table chat</div>
         {chat.map((line, i) => (
@@ -291,6 +295,111 @@ function TttView({ state, me, lobbyId }: { state: PublicTttState; me: string; lo
       <button className="btn ghost" onClick={() => connectSocket().emit('ttt_reset', { lobbyId })}>
         Reset
       </button>
+    </div>
+  )
+}
+
+function FortyFiveView({
+  state,
+  me,
+  lobbyId,
+}: {
+  state: PublicFortyFiveState
+  me: string
+  lobbyId: string
+}) {
+  return (
+    <div className="card">
+      <h2>45-Bust · 四十五点爆破</h2>
+      <p className="muted">Closest to 45 without going over. 越接近 45 越大，超过即爆。</p>
+      <div className="grid-3">
+        {state.seats.map((s) => (
+          <div key={s.id} className={state.toAct === s.id ? 'seat to-act' : ''}>
+            <div className="name">
+              {s.name} · {s.total}
+              {s.status === 'bust' ? ' · 爆破' : ''}
+            </div>
+            <div className="board">
+              {s.cards.map((c) => (
+                <PlayingCard key={c} card={c} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      {state.toAct === me && (
+        <div className="actions">
+          <button
+            className="btn"
+            onClick={() => connectSocket().emit('fortyfive_hit', { lobbyId })}
+          >
+            Hit · 拿牌
+          </button>
+          <button
+            className="btn ghost"
+            onClick={() => connectSocket().emit('fortyfive_stand', { lobbyId })}
+          >
+            Stand · 停牌
+          </button>
+        </div>
+      )}
+      {state.winners.length > 0 && (
+        <p className="gold">
+          Winner · 胜者：{state.winners.map((w) => `${w.id.slice(0, 6)} (${w.total})`).join(', ')}
+        </p>
+      )}
+    </div>
+  )
+}
+
+function BlackjackView({ state, lobbyId }: { state: PublicBlackjackState; lobbyId: string }) {
+  return (
+    <div className="card">
+      <h2>Blackjack · 二十一点</h2>
+      <p className="muted">
+        Bet {state.bet} · balance {state.balance} · {state.status}
+      </p>
+      <div className="grid-3">
+        <div>
+          <h3>Dealer · 庄 {state.dealer.holeHidden ? '' : state.dealer.total}</h3>
+          <div className="board">
+            {state.dealer.cards.map((c, i) => (
+              <PlayingCard key={`${c}-${i}`} card={c} hidden={state.dealer.holeHidden && i === 1} />
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3>You · 闲 {state.player.total}</h3>
+          <div className="board">
+            {state.player.cards.map((c, i) => (
+              <PlayingCard key={`${c}-${i}`} card={c} />
+            ))}
+          </div>
+        </div>
+      </div>
+      {state.outcome && <p className="gold">Result: {state.outcome}</p>}
+      <div className="actions">
+        <button
+          className="btn"
+          onClick={() => connectSocket().emit('blackjack_deal', { lobbyId, amount: 100 })}
+        >
+          Deal 100
+        </button>
+        <button
+          className="btn"
+          disabled={state.status !== 'playing'}
+          onClick={() => connectSocket().emit('blackjack_hit', { lobbyId })}
+        >
+          Hit
+        </button>
+        <button
+          className="btn ghost"
+          disabled={state.status !== 'playing'}
+          onClick={() => connectSocket().emit('blackjack_stand', { lobbyId })}
+        >
+          Stand
+        </button>
+      </div>
     </div>
   )
 }

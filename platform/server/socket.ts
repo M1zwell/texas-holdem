@@ -7,6 +7,8 @@ import { rooms } from './rooms/registry'
 import { HoldemRoom } from './rooms/holdemRoom'
 import { BaccaratRoom } from './rooms/baccaratRoom'
 import { TttRoom } from './rooms/tictactoeRoom'
+import { FortyFiveRoom } from './rooms/fortyfiveRoom'
+import { BlackjackRoom } from './rooms/blackjackRoom'
 import type { Bus } from './redisBus'
 import type { ClientAction } from '../shared/types'
 
@@ -73,6 +75,10 @@ export function attachSocket(httpServer: HttpServer, bus: Bus) {
         socket.emit('gameState', room.snapshot())
       } else if (room instanceof BaccaratRoom) {
         socket.emit('gameState', room.snapshot())
+      } else if (room instanceof FortyFiveRoom) {
+        socket.emit('gameState', room.snapshot())
+      } else if (room instanceof BlackjackRoom) {
+        socket.emit('gameState', room.snapshot(user.id))
       }
       io.to(lobby.id).emit('lobby', {
         members: lobby.members,
@@ -92,6 +98,10 @@ export function attachSocket(httpServer: HttpServer, bus: Bus) {
         room.maybeStart()
       } else if (room instanceof TttRoom) {
         room.assign()
+      } else if (room instanceof FortyFiveRoom) {
+        room.start()
+      } else if (room instanceof BlackjackRoom) {
+        room.deal(user.id, 100)
       }
     })
 
@@ -129,6 +139,69 @@ export function attachSocket(httpServer: HttpServer, bus: Bus) {
         room.move(user.id, payload.index)
       } catch (err) {
         socket.emit('error', { message: (err as Error).message })
+      }
+    })
+
+    socket.on('fortyfive_hit', (payload: { lobbyId: string }) => {
+      const lobby = store.requireLobby(payload.lobbyId)
+      const room = rooms.get(lobby)
+      if (room instanceof FortyFiveRoom) {
+        try {
+          room.hit(user.id)
+        } catch (err) {
+          socket.emit('error', { message: (err as Error).message })
+        }
+      }
+    })
+
+    socket.on('fortyfive_stand', (payload: { lobbyId: string }) => {
+      const lobby = store.requireLobby(payload.lobbyId)
+      const room = rooms.get(lobby)
+      if (room instanceof FortyFiveRoom) {
+        try {
+          room.stand(user.id)
+        } catch (err) {
+          socket.emit('error', { message: (err as Error).message })
+        }
+      }
+    })
+
+    socket.on('blackjack_deal', (payload: { lobbyId: string; amount?: number }) => {
+      const lobby = store.requireLobby(payload.lobbyId)
+      const room = rooms.get(lobby)
+      if (room instanceof BlackjackRoom) {
+        try {
+          room.deal(user.id, payload.amount ?? 100)
+          socket.emit('gameState', room.snapshot(user.id))
+        } catch (err) {
+          socket.emit('error', { message: (err as Error).message })
+        }
+      }
+    })
+
+    socket.on('blackjack_hit', (payload: { lobbyId: string }) => {
+      const lobby = store.requireLobby(payload.lobbyId)
+      const room = rooms.get(lobby)
+      if (room instanceof BlackjackRoom) {
+        try {
+          room.hit(user.id)
+          socket.emit('gameState', room.snapshot(user.id))
+        } catch (err) {
+          socket.emit('error', { message: (err as Error).message })
+        }
+      }
+    })
+
+    socket.on('blackjack_stand', (payload: { lobbyId: string }) => {
+      const lobby = store.requireLobby(payload.lobbyId)
+      const room = rooms.get(lobby)
+      if (room instanceof BlackjackRoom) {
+        try {
+          room.stand(user.id)
+          socket.emit('gameState', room.snapshot(user.id))
+        } catch (err) {
+          socket.emit('error', { message: (err as Error).message })
+        }
       }
     })
 

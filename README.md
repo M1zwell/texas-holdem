@@ -1,6 +1,6 @@
 # Jub Poker · 聚牌
 
-Online multiplayer **Texas Hold'em**, **Baccarat**, and **Tic-Tac-Toe** built on this repo’s `texas-holdem-house` engine and industry poker-platform patterns (private lobbies, JWT invites, Socket.IO, optional Redis pub/sub).
+Online multiplayer **Texas Hold'em**, **Baccarat**, **Blackjack**, **45-Bust**, and **Tic-Tac-Toe** on this house engine. Hybrid: Fly.io stateful Socket.IO + Supabase Realtime lobby cards.
 
 Play-chip social tables only — no real-money wagering.
 
@@ -18,8 +18,9 @@ Play-chip social tables only — no real-money wagering.
 | Engine   | Pure TypeScript: 64-bit card masks, side pots, baccarat tableau, minimax TTT |
 | AI       | Monte Carlo equity; 10-d / 80-param genetic policy (CPU); TTT minimax        |
 | API      | Express + JWT session + signed invite tokens + rate limits                   |
-| Realtime | Socket.IO after HTTP preview/join — server is the authority                  |
-| Sync     | Dual Redis pub/sub clients when `REDIS_URL` is set; in-process bus otherwise |
+| Realtime | Socket.IO for hands; Supabase Realtime for lobby list (`jub_game_lobbies`)   |
+| Data     | Supabase Postgres + RLS (`supabase/schema-migration.sql`)                    |
+| Sync     | Dual Redis pub/sub when `REDIS_URL` is set; in-process bus otherwise         |
 | UI       | Vite + React (felt table, streamer blur, host approval waitlist)             |
 
 ## Private lobby security
