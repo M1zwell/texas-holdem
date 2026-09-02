@@ -13,6 +13,10 @@ type Supa = {
 
 let client: Supa | null | undefined
 
+export function resetSupabaseClient(): void {
+  client = undefined
+}
+
 function supabaseKey(): string | undefined {
   return (
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
@@ -47,8 +51,13 @@ export async function persistLobby(lobby: Lobby): Promise<void> {
 
 /** Persist lobby metadata + room snapshot so serverless instances can resume. */
 export async function persistRuntime(lobby: Lobby): Promise<void> {
-  const db = await getSupabase()
-  if (!db) return
+  if (!process.env.SUPABASE_URL && process.env.VITE_SUPABASE_URL) {
+    process.env.SUPABASE_URL = process.env.VITE_SUPABASE_URL
+  }
+  if (!process.env.SUPABASE_ANON_KEY && process.env.VITE_SUPABASE_ANON_KEY) {
+    process.env.SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY
+  }
+  if (!supabaseEnabled()) return
   const balances: Record<string, number> = {}
   for (const member of lobby.members) {
     balances[member.id] = store.balances.get(member.id) ?? 0
@@ -68,8 +77,10 @@ export async function persistRuntime(lobby: Lobby): Promise<void> {
     payload: { lobby, balances },
     room_state: rooms.serialize(lobby),
   }
-  const rpc = await db.rpc('jub_upsert_lobby', { lobby_row: row })
-  if (rpc?.error) {
+  const db = await getSupabase()
+  if (db) {
+    const rpc = await db.rpc('jub_upsert_lobby', { lobby_row: row })
+    if (!rpc?.error) return
     const { error } = await db.from('jub_game_lobbies').upsert({
       id: row.id,
       name: row.name,
@@ -86,7 +97,32 @@ export async function persistRuntime(lobby: Lobby): Promise<void> {
       room_state: row.room_state,
       updated_at: new Date().toISOString(),
     })
-    if (error) console.warn('supabase persist lobby', error.message)
+    if (!error) return
+    console.warn('supabase persist lobby', error.message)
+  }
+  if (!(await persistViaRest(row))) {
+    console.warn('supabase persist lobby failed')
+  }
+}
+
+async function persistViaRest(row: Record<string, unknown>): Promise<boolean> {
+  const url = process.env.SUPABASE_URL
+  const key = supabaseKey()
+  if (!url || !key) return false
+  try {
+    const res = await fetch(`${url.replace(/\/$/, '')}/rest/v1/rpc/jub_upsert_lobby`, {
+      method: 'POST',
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ lobby_row: row }),
+    })
+    return res.ok || res.status === 204
+  } catch (err) {
+    console.warn('supabase persist rest', err instanceof Error ? err.message : err)
+    return false
   }
 }
 

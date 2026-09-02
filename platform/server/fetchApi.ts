@@ -6,7 +6,7 @@ import { ensureLobby, ensureLobbyByCode } from './hydrate'
 import { applyPlay } from './play'
 import { rooms } from './rooms/registry'
 import { store } from './store'
-import { persistRuntime, listRemoteLobbies } from './supabase'
+import { persistRuntime, listRemoteLobbies, supabaseEnabled } from './supabase'
 import { publicLobby } from './view'
 
 function json(data: unknown, status = 200): Response {
@@ -76,7 +76,13 @@ export async function handlePokerApi(request: Request): Promise<Response> {
 
   try {
     if (method === 'GET' && path === '/health') {
-      return json({ ok: true, service: 'jub-poker', runtime: 'worker', time: Date.now() })
+      return json({
+        ok: true,
+        service: 'jub-poker',
+        runtime: 'worker',
+        time: Date.now(),
+        supabase: supabaseEnabled(),
+      })
     }
 
     if (method === 'POST' && path === '/session') {
@@ -120,6 +126,7 @@ export async function handlePokerApi(request: Request): Promise<Response> {
         },
         config.inviteTtlMs,
       )
+      rooms.get(lobby)
       await persistRuntime(lobby)
       return json(
         {

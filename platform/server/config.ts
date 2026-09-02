@@ -33,7 +33,8 @@ export const config = {
       process.env.VERCEL ||
         process.env.AWS_LAMBDA_FUNCTION_NAME ||
         process.env.CLOUDFLARE_WORKER ||
-        process.env.CF_PAGES,
+        process.env.CF_PAGES ||
+        process.env.NETLIFY,
     )
   },
 }

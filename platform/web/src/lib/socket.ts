@@ -34,7 +34,13 @@ export async function play(lobbyId: string, body: Record<string, unknown>) {
     else if (type === 'chat') sock.emit('chat', { lobbyId, text: body.text })
     return
   }
-  const result = await api.play(lobbyId, body)
-  window.dispatchEvent(new CustomEvent('jub-play', { detail: result }))
-  return result
+  try {
+    const result = await api.play(lobbyId, body)
+    window.dispatchEvent(new CustomEvent('jub-play', { detail: result }))
+    return result
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Play failed'
+    window.dispatchEvent(new CustomEvent('jub-play-error', { detail: message }))
+    throw err
+  }
 }

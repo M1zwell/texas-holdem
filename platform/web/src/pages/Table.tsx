@@ -48,10 +48,16 @@ export function TablePage() {
         | { lobby?: any; state?: PublicGameState }
         | undefined
       if (!live || !result) return
+      setError('')
       if (result.lobby) setLobby(result.lobby)
       if (result.state) setState(result.state)
     }
+    const onPlayError = (event: Event) => {
+      if (!live) return
+      setError(String((event as CustomEvent).detail ?? 'Play failed'))
+    }
     window.addEventListener('jub-play', onPlay)
+    window.addEventListener('jub-play-error', onPlayError)
     const poll = window.setInterval(() => {
       if (socket.connected) return
       api
@@ -72,6 +78,7 @@ export function TablePage() {
       live = false
       window.clearInterval(poll)
       window.removeEventListener('jub-play', onPlay)
+      window.removeEventListener('jub-play-error', onPlayError)
       socket.off('gameState')
       socket.off('lobby')
       socket.off('chat')

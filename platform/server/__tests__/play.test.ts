@@ -36,6 +36,30 @@ describe('REST play', () => {
     }
   })
 
+  it('deals a blackjack hand over REST play', async () => {
+    const host = store.upsertUser({
+      id: '44444444-4444-4444-8444-444444444444',
+      name: 'BJHost',
+      guest: true,
+    })
+    const lobby = store.createLobby({
+      host,
+      name: 'BJ deal',
+      game: 'blackjack',
+      maxPlayers: 6,
+      approvalRequired: false,
+      singleUseInvites: false,
+      streamerMode: false,
+      fillBots: false,
+    })
+    const dealt = await applyPlay(lobby.id, host, { type: 'blackjack_deal', amount: 100 })
+    expect(dealt.state.kind).toBe('blackjack')
+    if (dealt.state.kind === 'blackjack') {
+      expect(dealt.state.player.cards.length).toBeGreaterThanOrEqual(2)
+      expect(dealt.state.bet).toBe(100)
+    }
+  })
+
   it('rejects unknown play types', async () => {
     const host = store.upsertUser({
       id: '33333333-3333-4333-8333-333333333333',
