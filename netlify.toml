@@ -12,12 +12,9 @@
   SUPABASE_URL = "https://kiztaihzanqnrcrqaxsv.supabase.co"
   SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpenRhaWh6YW5xbnJjcnFheHN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2MjgxNzcsImV4cCI6MjA2NzIwNDE3N30.a9ZXqVSmFOH2fBbrMeELPainodMGTAkbyiUVwjmFTK8"
 
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200
-  force = true
-
+# Do not rewrite /api/* to /.netlify/functions/api/:splat — that turns
+# /api/health into /.netlify/functions/api/health (404). The function's
+# config.path already binds /api/* and /poker/api/* to handlePokerApi.
 [[redirects]]
   from = "/*"
   to = "/index.html"

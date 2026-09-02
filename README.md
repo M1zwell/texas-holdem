@@ -6,8 +6,9 @@ Play-chip social tables only — no real-money wagering.
 
 目标部署 / intended hosts:
 
-- https://jubuddy.com/poker
-- https://m1z.gg
+- https://jubuddy.com/poker (Cloudflare Worker route; apex stays Vercel)
+- http://miz.gg/ — live Netlify site `jub-poker` (`https://jub-poker.netlify.app`)
+- https://m1z.gg (DNS not pointed yet)
 
 `https://github.com/M1zwell/poker.git` is the intended sibling product repo. It is **not reachable** (GitHub 404, including authenticated clone). This repository (`M1zwell/texas-holdem`, fork of `themez/texas-holdem-house`) is therefore the implementation home until that remote exists.
 

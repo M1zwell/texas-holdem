@@ -26,9 +26,9 @@ This agent cannot log into Cloudflare or GoDaddy. After Fly/Netlify gives you a 
 
 **jubuddy.com/poker** — Cloudflare Worker + static assets (`cloudflare/src/worker.ts`, `cloudflare/wrangler.jsonc`). Same-origin on the existing jubuddy.com zone: route `jubuddy.com/poker*` only. Apex `jubuddy.com/` stays the Vercel jubuddy-game app. Lobby/hand state hydrates from Supabase (Workers are isolate-scoped; no Fly VM).
 
-Fly.io is **optional** and already Pay As You Go ($0 plan fee). Unused demo/sandbox apps were removed (markitdown, jubitmind-demo, pi-sandbox, browser-harness). Left running: `zaydenclips-api`, `jubit-litellm-db`, `jubit-litellm-proxy`. miz.gg / m1z.gg wait until GoDaddy login works.
+Fly.io is **optional** and already Pay As You Go ($0 plan fee). Unused demo/sandbox apps were removed (markitdown, jubitmind-demo, pi-sandbox, browser-harness). `jubit-litellm-proxy` is scaled to 0. Left running: `zaydenclips-api`, `jubit-litellm-db`. Fly cannot create `jub-poker` while invoices are overdue.
 
-**http://miz.gg/** — DNS already points at **Netlify** (`75.2.60.5`). The hostname is attached to the `zaydenclips` football-academy site. Poker is configured for apex (`VITE_BASE_PATH=/`, `/api/*` function). To go live: create a Netlify site from this repo and **move** the `miz.gg` domain off `zaydenclips` onto the poker site (do not delete the zaydenclips project). Fly cannot create `jub-poker` while invoices are overdue.
+**http://miz.gg/** — live on Netlify site `jub-poker` (`https://jub-poker.netlify.app`). Apex DNS (`75.2.60.5`) was already at Netlify; `miz.gg` was moved off `zaydenclips` (kept, primary `gozayden.com`) onto this poker site. `www.miz.gg` CNAMEs to `miz.gg`. HTTPS cert may still be provisioning after the domain move. Function `netlify/functions/api.ts` serves `/api/*` via `config.path` (do not rewrite to `/.netlify/functions/api/:splat`).
 
 **m1z.gg** — in Cloudflare or GoDaddy add:
 
