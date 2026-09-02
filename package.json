@@ -25,7 +25,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "deploy:cf": "bash scripts/cf-deploy.sh",
-    "deploy:miz": "npx netlify deploy --prod --build"
+    "deploy:miz": "npx netlify deploy --prod --build",
+    "deploy:fly": "bash scripts/fly-deploy.sh"
   },
   "author": "themez",
   "dependencies": {

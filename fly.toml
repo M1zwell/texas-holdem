@@ -7,7 +7,10 @@
 #   fly deploy
 #
 # Hands hydrate from Supabase, so this optional VM may scale to zero.
-# Creating the app is still blocked while Fly invoices are overdue.
+# Target org: Elliot (elliot1985@hotmail.com). Deploy: bash scripts/fly-deploy.sh
+# App create is blocked until a card is on
+# https://fly.io/dashboard/elliot-562/billing
+# Do not use the yying2010@gmail.com FLY_API_TOKEN (overdue invoices).
 
 app = "jub-poker"
 primary_region = "sin"

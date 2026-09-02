@@ -26,7 +26,9 @@ This agent cannot log into Cloudflare or GoDaddy. After Fly/Netlify gives you a 
 
 **jubuddy.com/poker** — live Cloudflare Worker `jubuddy-poker` (`jubuddy-poker.yying2010.workers.dev`) with zone routes `jubuddy.com/poker*` and `www.jubuddy.com/poker*` only. Apex `jubuddy.com/` stays the Vercel jubuddy-game app. Assets `html_handling` is `none` so `/poker` is not 307'd onto the Vercel `/`. Lobby/hand state hydrates from Supabase.
 
-Fly.io is **optional** and Pay As You Go ($0 plan fee). Idle cut: destroyed `jubit-litellm-proxy` (empty/suspended) and `jubit-litellm-db` (always-on 256MB + **1GB volume** billed while stopped). Left running, already minimum `shared-cpu-1x` 256MB **no volume**: `zaydenclips-api`. Do not create `jub-poker` until overdue invoices are paid; when you do, `fly.toml` now scales to zero (`auto_stop_machines=stop`, `min_machines_running=0`) because tables persist in Supabase.
+Fly.io is **optional** and Pay As You Go ($0 plan fee). New CLI login: **elliot1985@hotmail.com** / org **Elliot** (`https://fly.io/dashboard/elliot-562`). Creating `jub-poker` is blocked until a payment method is added. After a card is on file, `npm run deploy:fly` creates one 256MB machine with no volume and `auto_stop_machines=stop`. Then set Worker secret `FLY_SOCKET_ORIGIN=https://jub-poker.fly.dev`.
+
+Do **not** deploy poker on the old `yying2010@gmail.com` org (overdue invoices). That org still has only `zaydenclips-api`. A leftover `FLY_API_TOKEN` from the old org overrides `flyctl auth login` — `scripts/fly-deploy.sh` unsets it.
 
 **http://miz.gg/** — live on Netlify site `jub-poker` (`https://jub-poker.netlify.app`). Apex DNS (`75.2.60.5`) was already at Netlify; `miz.gg` was moved off `zaydenclips` (kept, primary `gozayden.com`) onto this poker site. `www.miz.gg` CNAMEs to `miz.gg`. HTTPS cert may still be provisioning after the domain move. Function `netlify/functions/api.ts` serves `/api/*` via `config.path` (do not rewrite to `/.netlify/functions/api/:splat`).
 

@@ -77,6 +77,16 @@ Use the `m1z.gg` server block in `nginx/poker.conf`.
 
 Set `JWT_SECRET` in production. Redis is optional but required for multi-node WebSocket consistency.
 
+Optional Socket.IO VM (elliot1985@hotmail.com / org Elliot):
+
+```bash
+unset FLY_API_TOKEN
+npm run deploy:fly   # needs a card on https://fly.io/dashboard/elliot-562/billing
+npx wrangler secret put FLY_SOCKET_ORIGIN --config cloudflare/wrangler.jsonc
+# paste https://jub-poker.fly.dev
+npm run deploy:cf
+```
+
 ## Library (original bot engine)
 
 ```ts
