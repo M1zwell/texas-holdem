@@ -191,6 +191,75 @@ select {
   width: 160px;
   text-align: center;
 }
+
+/* A folded seat is out of the hand — it should read that way at a glance
+   instead of only saying so in small print. */
+.seat.is-folded {
+  opacity: 0.42;
+  filter: grayscale(0.7);
+}
+.seat.is-winner .name {
+  color: var(--gold-soft);
+}
+.seat.is-winner .pcard {
+  box-shadow: 0 0 0 2px var(--gold), 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* Dealer / small blind / big blind as badges. "(D)" in the middle of a name is
+   easy to miss and easy to misread as part of the name. */
+.role-chip {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  color: #1a1206;
+  background: var(--gold-soft);
+}
+.role-chip.is-SB,
+.role-chip.is-BB {
+  color: var(--cream);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* The board is dealt in three beats; showing five loose cards hides that.
+   Each group is labelled, and a gap separates the streets. */
+.board-streets {
+  align-items: flex-end;
+  gap: 18px;
+}
+.street-group {
+  display: inline-flex;
+  gap: 8px;
+  position: relative;
+  padding-top: 14px;
+}
+.street-group::before {
+  content: attr(data-street);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pot-split {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  font-size: 11px;
+}
+.winners {
+  margin-top: 6px;
+  color: var(--gold-soft);
+  font-weight: 700;
+}
 .seat .name {
   font-weight: 700;
 }

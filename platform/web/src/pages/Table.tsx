@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { api, getToken } from '../lib/api'
+import {
+  actionLabel,
+  boardStreets,
+  chips,
+  livePot,
+  potOddsPct,
+  sidePots,
+  streetLabel,
+  toCall,
+  winnerLines,
+} from '../lib/holdemView'
 import { subscribeTable } from '../lib/realtime'
 import { connectSocket, play } from '../lib/socket'
 import { PlayingCard } from '../components/PlayingCard'
@@ -225,22 +236,55 @@ function HoldemView({
   const secondsLeft =
     state.turnEndsAt != null ? Math.max(0, Math.ceil((state.turnEndsAt - now) / 1000)) : null
   const toActName = state.players.find((p) => p.id === state.toAct)?.name
+  const pot = livePot(state)
+  const side = sidePots(state)
+  const streetsOnBoard = boardStreets(state.board)
+  const lines = winnerLines(state)
+  const winnerIds = new Set((state.winners ?? []).map((w) => w.id))
+  // A hand is only `handOver` for 3.5 s server-side, and this page pulls every
+  // 8 s — so the result of the hand you just played was usually gone before it
+  // was ever painted. You lost chips and never learned to whom, or to what.
+  // Latch the result and keep it up for a few seconds into the next hand.
+  const winnersKey = (state.winners ?? []).map((w) => `${w.id}:${w.amount}`).join('|')
+  const [heldResult, setHeldResult] = useState<string[]>([])
+  useEffect(() => {
+    if (!winnersKey) return
+    setHeldResult(lines)
+    const t = window.setTimeout(() => setHeldResult([]), 7000)
+    return () => window.clearTimeout(t)
+    // `lines` is derived from the same winners as `winnersKey`; keying on the
+    // key alone stops every poll from restarting the timer.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [winnersKey])
+  const shownResult = lines.length > 0 ? lines : heldResult
+  const mySeat = state.players.find((p) => p.id === me)
+  const owed = toCall(state, mySeat)
+  const odds = potOddsPct(state, mySeat)
   return (
     <div>
       <div className="felt">
         {state.players.map((p, i) => (
           <div
             key={p.id}
-            className={`seat ${state.toAct === p.id ? 'to-act' : ''}`}
+            className={[
+              'seat',
+              state.toAct === p.id ? 'to-act' : '',
+              p.folded ? 'is-folded' : '',
+              winnerIds.has(p.id) ? 'is-winner' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
             style={seats[i]}
           >
             <div className="name">
-              {p.name} {p.role ? `(${p.role})` : ''}
+              {p.name}
+              {p.role ? <span className={`role-chip is-${p.role}`}>{p.role}</span> : null}
             </div>
             <div className="muted">
-              {p.chips} · bet {p.bet}
-              {p.folded ? ' · fold' : ''}
-              {p.allIn ? ' · all-in' : ''}
+              {chips(p.chips)}
+              {p.bet > 0 ? ` · bet ${chips(p.bet)}` : ''}
+              {p.folded ? ' · folded' : ''}
+              {p.allIn ? ' · ALL-IN' : ''}
             </div>
             <div className="board">
               {(p.hole ?? [null, null]).map((c, idx) => (
@@ -251,33 +295,69 @@ function HoldemView({
         ))}
         <div className="pot">
           <div className="gold display" style={{ fontSize: 28 }}>
-            Pot {state.pot}
+            Pot {chips(pot)}
           </div>
+          {side.length > 0 ? (
+            <div className="muted pot-split">
+              {side.map((s2) => (
+                <span key={s2.n}>
+                  {s2.n === 0 ? 'Main' : `Side ${s2.n}`} {chips(s2.amount)}
+                </span>
+              ))}
+            </div>
+          ) : null}
           <div className="muted">
-            {state.street ?? 'waiting'} · hand #{state.handId}
+            {streetLabel(state)} · hand #{state.handId}
           </div>
-          <div className="board">
-            {state.board.map((c) => (
-              <PlayingCard key={c} card={c} />
+          <div className="board board-streets">
+            {streetsOnBoard.flop.length > 0 ? (
+              <span className="street-group" data-street="Flop">
+                {streetsOnBoard.flop.map((c) => (
+                  <PlayingCard key={c} card={c} />
+                ))}
+              </span>
+            ) : null}
+            {streetsOnBoard.turn.map((c) => (
+              <span className="street-group" data-street="Turn" key={c}>
+                <PlayingCard card={c} />
+              </span>
+            ))}
+            {streetsOnBoard.river.map((c) => (
+              <span className="street-group" data-street="River" key={c}>
+                <PlayingCard card={c} />
+              </span>
+            ))}
+            {streetsOnBoard.extra.map((c) => (
+              <span className="street-group" data-street="?" key={c}>
+                <PlayingCard card={c} />
+              </span>
             ))}
           </div>
           {state.you?.equity && (
-            <div className="muted">Equity {(state.you.equity.win * 100).toFixed(1)}% win</div>
+            <div className="muted">
+              You win {(state.you.equity.win * 100).toFixed(0)}%
+              {state.you.equity.tie > 0.005
+                ? ` · tie ${(state.you.equity.tie * 100).toFixed(0)}%`
+                : ''}
+            </div>
           )}
-          {state.winners?.length ? (
-            <div>
-              Winners:{' '}
-              {state.winners
-                .map((w) => `${w.id.slice(0, 4)} +${w.amount} ${w.handName ?? ''}`)
-                .join(', ')}
+          {shownResult.length > 0 ? (
+            <div className="winners" aria-live="polite">
+              {shownResult.map((l) => (
+                <div key={l}>{l}</div>
+              ))}
             </div>
           ) : null}
         </div>
       </div>
       <div className="actions">
         {(state.legal ?? []).map((a) => (
-          <button key={a.type} className="btn" onClick={() => act(lobbyId, a)}>
-            {label(a)}
+          <button
+            key={a.type}
+            className={`btn${a.type === 'fold' ? ' ghost' : ''}`}
+            onClick={() => act(lobbyId, a)}
+          >
+            {actionLabel(a, state)}
           </button>
         ))}
       </div>
@@ -285,6 +365,8 @@ function HoldemView({
         <p className="gold" aria-live="polite">
           Your turn · 到你行动
           {secondsLeft != null ? ` · ${secondsLeft}s` : ''}
+          {owed > 0 ? ` · ${chips(owed)} to call` : ' · free to check'}
+          {odds != null ? ` · ${odds.toFixed(0)}% pot odds` : ''}
         </p>
       ) : state.status === 'playing' && toActName ? (
         <p className="muted" aria-live="polite">
@@ -467,10 +549,6 @@ function BlackjackView({ state, lobbyId }: { state: PublicBlackjackState; lobbyI
 
 function act(lobbyId: string, action: ClientAction) {
   void play(lobbyId, { type: 'holdem', action })
-}
-
-function label(a: ClientAction): string {
-  return a.amount != null ? `${a.type} ${a.amount}` : a.type
 }
 
 function layoutSeats(n: number): Array<{ top: string; left: string }> {
