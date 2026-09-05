@@ -41,6 +41,12 @@ button,
 input,
 select {
   font: inherit;
+  /* The UA stylesheet paints form controls with `color: buttontext` — BLACK —
+     and `font: inherit` does not carry colour. Every game tile on the landing
+     page is a <button class="card">, so its <h2> and description inherited
+     black onto a #0b1020 field: the five game names were rendering at roughly
+     1.3:1 against their own card. Buttons must inherit the page's ink. */
+  color: inherit;
 }
 
 .shell {
@@ -237,5 +243,16 @@ select {
   .pcard {
     width: 48px;
     height: 70px;
+  }
+  /* The topbar is a space-between row. On a phone the bilingual brand and the
+     "Social chips only · 仅社交筹码" tag were fighting for ~375px, so the title
+     wrapped mid-phrase and collided with the logo. Stack them instead. */
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .brand {
+    align-items: flex-start;
   }
 }
