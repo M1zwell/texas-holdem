@@ -147,9 +147,14 @@ export async function persistHandAction(args: {
   if (error) console.warn('supabase persist action', error.message)
 }
 
-export async function loadRuntime(
-  id: string,
-): Promise<{ lobby: Lobby; roomState: RoomSnapshot | null } | null> {
+export interface LoadedRuntime {
+  lobby: Lobby
+  roomState: RoomSnapshot | null
+  /** The row's `updated_at`, verbatim — the version stamp `ensureLobby` compares. */
+  updatedAt: string | null
+}
+
+export async function loadRuntime(id: string): Promise<LoadedRuntime | null> {
   const db = await getSupabase()
   if (!db) return null
   const { data, error } = await db.from('jub_game_lobbies').select('*').eq('id', id).maybeSingle()
@@ -157,9 +162,7 @@ export async function loadRuntime(
   return rowToRuntime(data)
 }
 
-export async function loadRuntimeByCode(
-  code: string,
-): Promise<{ lobby: Lobby; roomState: RoomSnapshot | null } | null> {
+export async function loadRuntimeByCode(code: string): Promise<LoadedRuntime | null> {
   const db = await getSupabase()
   if (!db) return null
   const { data, error } = await db
@@ -200,7 +203,7 @@ export async function listRemoteLobbies(): Promise<
   }))
 }
 
-function rowToRuntime(row: any): { lobby: Lobby; roomState: RoomSnapshot | null } | null {
+function rowToRuntime(row: any): LoadedRuntime | null {
   const payload = row.payload as { lobby?: Lobby; balances?: Record<string, number> } | null
   const lobby = payload?.lobby
   if (!lobby?.id || !lobby.invite) return null
@@ -210,5 +213,9 @@ function rowToRuntime(row: any): { lobby: Lobby; roomState: RoomSnapshot | null 
       store.balances.set(id, bal)
     }
   }
-  return { lobby, roomState: (row.room_state as RoomSnapshot | null) ?? null }
+  return {
+    lobby,
+    roomState: (row.room_state as RoomSnapshot | null) ?? null,
+    updatedAt: typeof row.updated_at === 'string' ? row.updated_at : null,
+  }
 }

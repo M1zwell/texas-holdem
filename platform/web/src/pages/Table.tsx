@@ -208,6 +208,19 @@ function HoldemView({
   lobbyId: string
 }) {
   const seats = useMemo(() => layoutSeats(state.players.length), [state.players.length])
+  // The server auto-checks or auto-folds a seat 30 s after its turn starts
+  // (TURN_MS), whether or not the player knows a clock is running. Nothing on
+  // this screen said so, and players were being folded out of hands they were
+  // still reading. Show the clock.
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    if (state.turnEndsAt == null) return
+    const t = window.setInterval(() => setNow(Date.now()), 500)
+    return () => window.clearInterval(t)
+  }, [state.turnEndsAt])
+  const secondsLeft =
+    state.turnEndsAt != null ? Math.max(0, Math.ceil((state.turnEndsAt - now) / 1000)) : null
+  const toActName = state.players.find((p) => p.id === state.toAct)?.name
   return (
     <div>
       <div className="felt">
@@ -264,7 +277,17 @@ function HoldemView({
           </button>
         ))}
       </div>
-      {state.toAct === me && <p className="gold">Your turn · 到你行动</p>}
+      {state.toAct === me ? (
+        <p className="gold" aria-live="polite">
+          Your turn · 到你行动
+          {secondsLeft != null ? ` · ${secondsLeft}s` : ''}
+        </p>
+      ) : state.status === 'playing' && toActName ? (
+        <p className="muted" aria-live="polite">
+          Waiting for {toActName}
+          {secondsLeft != null ? ` · ${secondsLeft}s` : ''}
+        </p>
+      ) : null}
     </div>
   )
 }

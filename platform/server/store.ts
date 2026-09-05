@@ -39,6 +39,8 @@ export class MemoryStore {
   codes = new Map<string, string>()
   states = new Map<string, PublicGameState>()
   balances = new Map<string, number>()
+  /** `updated_at` of the persisted row each lobby was last hydrated from. */
+  loadedAt = new Map<string, string>()
 
   upsertUser(user: SessionUser): SessionUser {
     this.users.set(user.id, user)

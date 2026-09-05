@@ -50,6 +50,12 @@ export class HoldemTable {
   dealerIndex = -1
   winners: WinnerShare[] = []
   private deck: CardCode[] = []
+  /**
+   * Optional deck supplier keyed by handId. Not part of the snapshot — a room
+   * re-attaches it after `loadSnapshot()`. When absent, `startHand()` falls
+   * back to the crypto shuffle, which is right for a single long-lived process.
+   */
+  shuffler: ((handId: number) => CardCode[]) | null = null
 
   constructor(config: Partial<HoldemConfig> = {}) {
     this.config = {
@@ -97,7 +103,7 @@ export class HoldemTable {
       throw new Error('Need at least 2 players with chips')
     }
     this.handId += 1
-    this.deck = freshShoe(1)
+    this.deck = this.shuffler ? this.shuffler(this.handId) : freshShoe(1)
     this.board = []
     this.pot = 0
     this.pots = []
