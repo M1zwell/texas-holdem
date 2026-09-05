@@ -1,4 +1,4 @@
-import { randomInt } from 'node:crypto'
+import { createHash, randomInt } from 'node:crypto'
 import type { CardCode, RankChar, SuitChar } from '../shared/types'
 
 export const RANKS: RankChar[] = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
@@ -62,6 +62,59 @@ export function freshShoe(decks = 1): CardCode[] {
     shoe.push(...fullDeck())
   }
   return shuffle(shoe)
+}
+
+/**
+ * Deterministic Fisher–Yates driven by SHA-256(seed ‖ counter). Same seed, same
+ * order — on every machine, in every Worker isolate.
+ *
+ * WHY THIS EXISTS. On a serverless host the room is re-created per request and
+ * the next hand is dealt by whichever isolate happens to answer the poll that
+ * notices the hand is over. With `freshShoe()` two isolates dealt two DIFFERENT
+ * hands for the same handId and both persisted them, so a player's polls
+ * alternated between two forks of the table — the "cards flashing" bug. Seeding
+ * the shuffle from a per-room secret makes the deal a pure function of the
+ * persisted state, so every isolate deals the same cards.
+ *
+ * The seed is HMAC(roomSecret, handId), never the handId alone: the secret is
+ * 256 bits, server-side only, and never leaves the snapshot, so a deck stays as
+ * unpredictable to a player as the crypto shuffle was. Rejection sampling keeps
+ * the draw unbiased; a 32-bit modulo would not be.
+ */
+export function seededShuffle<T>(items: T[], seed: string): T[] {
+  const copy = items.slice()
+  let counter = 0
+  let pool: Buffer = Buffer.alloc(0)
+  let offset = 0
+  const next32 = (): number => {
+    if (offset + 4 > pool.length) {
+      pool = createHash('sha256').update(seed).update(':').update(String(counter++)).digest()
+      offset = 0
+    }
+    const v = pool.readUInt32BE(offset)
+    offset += 4
+    return v
+  }
+  for (let i = copy.length - 1; i > 0; i--) {
+    const n = i + 1
+    const limit = Math.floor(0x1_0000_0000 / n) * n
+    let r = next32()
+    while (r >= limit) r = next32()
+    const j = r % n
+    const tmp = copy[i]
+    copy[i] = copy[j]!
+    copy[j] = tmp!
+  }
+  return copy
+}
+
+/** A shoe whose order is fixed by `seed` — see `seededShuffle`. */
+export function seededShoe(seed: string, decks = 1): CardCode[] {
+  const shoe: CardCode[] = []
+  for (let i = 0; i < decks; i++) {
+    shoe.push(...fullDeck())
+  }
+  return seededShuffle(shoe, seed)
 }
 
 export function unicodeCard(card: CardCode): string {

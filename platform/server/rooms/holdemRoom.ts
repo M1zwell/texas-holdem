@@ -1,4 +1,6 @@
+import { createHmac, randomBytes } from 'node:crypto'
 import { HoldemTable, type HoldemSnapshot } from '../../engine/holdem'
+import { seededShoe } from '../../engine/cards'
 import { botAction, DEFAULT_THETA } from '../../engine/genetic'
 import { estimateEquity } from '../../engine/montecarlo'
 import type { ClientAction, PublicHoldemState, PublicPlayer } from '../../shared/types'
@@ -10,6 +12,12 @@ export interface HoldemRoomSnap {
   table: HoldemSnapshot
   turnEndsAt: number | null
   handOverAt: number | null
+  /**
+   * Server-only secret that fixes the deck for every hand of this room. Optional
+   * because snapshots written before it existed have none; `hydrate()` mints one
+   * and the next persist carries it forward.
+   */
+  dealSecret?: string
 }
 
 export class HoldemRoom {
@@ -17,6 +25,7 @@ export class HoldemRoom {
   turnTimer: ReturnType<typeof setTimeout> | null = null
   turnEndsAt: number | null = null
   handOverAt: number | null = null
+  dealSecret: string = randomBytes(32).toString('hex')
   onChange: (state: PublicHoldemState) => void = () => undefined
 
   constructor(private lobby: Lobby) {
@@ -27,6 +36,17 @@ export class HoldemRoom {
         startingChips: 2000,
       })
     }
+    this.attachShuffler()
+  }
+
+  /**
+   * Every isolate that holds this room deals hand N from the same deck:
+   * seed = HMAC(dealSecret, N). See `seededShuffle` for why that matters on a
+   * serverless host, and why the secret keeps the deck unpredictable.
+   */
+  private attachShuffler(): void {
+    this.table.shuffler = (handId) =>
+      seededShoe(createHmac('sha256', this.dealSecret).update(String(handId)).digest('hex'))
   }
 
   syncSeats(): void {
@@ -77,6 +97,7 @@ export class HoldemRoom {
       table: this.table.toSnapshot(),
       turnEndsAt: this.turnEndsAt,
       handOverAt: this.handOverAt,
+      dealSecret: this.dealSecret,
     }
   }
 
@@ -84,6 +105,10 @@ export class HoldemRoom {
     this.table.loadSnapshot(snap.table)
     this.turnEndsAt = snap.turnEndsAt
     this.handOverAt = snap.handOverAt
+    // Adopt the persisted secret; a snapshot from before secrets existed keeps
+    // the one this room minted, which the next persist writes back.
+    if (snap.dealSecret) this.dealSecret = snap.dealSecret
+    this.attachShuffler()
     this.flush()
   }
 
