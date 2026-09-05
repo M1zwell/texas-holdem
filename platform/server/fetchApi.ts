@@ -5,7 +5,7 @@ import { isMizHost } from './hosts'
 import { ensureLobby, ensureLobbyByCode } from './hydrate'
 import { applyPlay } from './play'
 import { rooms } from './rooms/registry'
-import { store } from './store'
+import { store, type Lobby } from './store'
 import { persistRuntime, listRemoteLobbies, supabaseEnabled } from './supabase'
 import { publicLobby } from './view'
 
@@ -65,6 +65,11 @@ function apiPath(pathname: string): string {
 }
 
 /** Fetch-native poker API for Cloudflare Workers (and tests). No Express. */
+/** What `persistRuntime` would write for this lobby, as a comparable string. */
+export function runtimeFingerprint(lobby: Lobby): string {
+  return JSON.stringify({ lobby, room: rooms.serialize(lobby) })
+}
+
 export async function handlePokerApi(request: Request): Promise<Response> {
   const url = new URL(request.url)
   const path = apiPath(url.pathname)
@@ -190,8 +195,14 @@ export async function handlePokerApi(request: Request): Promise<Response> {
         const lobby = await ensureLobby(lobbyId)
         const member = lobby.members.some((m) => m.id === user.id) || lobby.hostId === user.id
         if (!member) return json({ error: 'Join the lobby first' }, 403)
+        // A read may advance the table (expired turn, bots, the next deal) —
+        // and only then may it write. Persisting every GET bumped `updated_at`
+        // on every poll, and since table clients subscribe to that row over
+        // Supabase Realtime, each poll's write woke every client, whose pull
+        // wrote again: a self-sustaining loop across everyone at the table.
+        const before = runtimeFingerprint(lobby)
         const state = rooms.snapshot(lobby, user.id)
-        await persistRuntime(lobby)
+        if (runtimeFingerprint(lobby) !== before) await persistRuntime(lobby)
         return json({ lobby: publicLobby(lobby, lobby.hostId === user.id), state })
       }
       if (method === 'POST' && action === 'join') {
