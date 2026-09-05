@@ -18,7 +18,7 @@ Play-chip social tables. Not real-money gambling.
 | Long-lived Socket.IO + fold timers | Fly.io VM, only if `FLY_SOCKET_ORIGIN` is set |
 | Multi-node fanout                  | Redis pub/sub when `REDIS_URL` is set on Fly  |
 
-REST play works without Fly. Set `FLY_SOCKET_ORIGIN=https://<app>.fly.dev` on the Worker when you want the hybrid socket path. Use one `shared-cpu-1x` 256MB machine — do not leave extra always-on VMs running.
+REST play works without Fly. Table sync uses **Supabase Realtime** (`postgres_changes` on `jub_game_lobbies`) so guests see Start/Deal/fold without Socket.IO. Set `FLY_SOCKET_ORIGIN=https://<app>.fly.dev` on the Worker only if you want the optional Fly Socket.IO path. Use one `shared-cpu-1x` 256MB machine — do not leave extra always-on VMs running.
 
 ## Domain DNS
 

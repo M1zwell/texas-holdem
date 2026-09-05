@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { api, getToken } from '../lib/api'
+import { subscribeTable } from '../lib/realtime'
 import { connectSocket, play } from '../lib/socket'
 import { PlayingCard } from '../components/PlayingCard'
 import type {
@@ -62,7 +63,7 @@ export function TablePage() {
     }
     window.addEventListener('jub-play', onPlay)
     window.addEventListener('jub-play-error', onPlayError)
-    const poll = window.setInterval(() => {
+    const pull = () => {
       if (socket?.connected) return
       api
         .getLobby(id)
@@ -77,10 +78,13 @@ export function TablePage() {
           }
         })
         .catch(() => undefined)
-    }, 1600)
+    }
+    const unsubTable = subscribeTable(id, pull)
+    const poll = window.setInterval(pull, 8000)
     return () => {
       live = false
       window.clearInterval(poll)
+      unsubTable()
       window.removeEventListener('jub-play', onPlay)
       window.removeEventListener('jub-play-error', onPlayError)
       socket?.off('gameState')
