@@ -87,6 +87,7 @@ export async function handlePokerApi(request: Request): Promise<Response> {
         runtime: 'worker',
         time: Date.now(),
         supabase: supabaseEnabled(),
+        realtime: supabaseEnabled(),
         socket: Boolean(process.env.FLY_SOCKET_ORIGIN) || !config.serverless,
       })
     }

@@ -48,3 +48,20 @@ export function subscribeLobbies(onRows: (rows: LiveLobby[]) => void): () => voi
     if (channel) void sb.removeChannel(channel)
   }
 }
+
+/** Push table updates when jub_game_lobbies rows change (no Fly Socket.IO). */
+export function subscribeTable(lobbyId: string, onChange: () => void): () => void {
+  const sb = supabaseBrowser()
+  if (!sb || !lobbyId) return () => undefined
+  const channel = sb
+    .channel(`jub-table-${lobbyId}`)
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'jub_game_lobbies', filter: `id=eq.${lobbyId}` },
+      () => onChange(),
+    )
+    .subscribe()
+  return () => {
+    void sb.removeChannel(channel)
+  }
+}
