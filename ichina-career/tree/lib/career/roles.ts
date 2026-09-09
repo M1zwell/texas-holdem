@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T18:15:00Z",
+  updatedAt: "2026-09-09T18:25:00Z",
   thesis:
     "Licensed Hong Kong operator habits plus live AI products. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -583,6 +583,29 @@ export const roles: CareerRole[] = [
       apply: "HSBC Apply Now. Phenom 1367968757. After B4 then B154 then this if valuation oversight is the want.",
       draft: "r-7019214125721853508",
       caution: "Do not invent CFA/CAIA or valuation-specialist years. Skip HKEX SVP IT Project Management R004449 vs AI-native.",
+    },
+  },
+  {
+    id: "B158",
+    rank: 21,
+    title: "AVP, Channel Management & Experience, Digital",
+    org: "DBS",
+    location: "One Island East, Hong Kong",
+    href: "https://dbs.wd3.myworkdayjobs.com/DBS_Careers/job/One-Island-East/Assistant-Vice-President--Channel-Management---Experience--Digital_WD85621",
+    closeNote: "Workday WD85621 · posted 5 days ago · 6–8 year digital banking",
+    tier: "B",
+    bands: ["capital"],
+    status: "live",
+    pay: 4,
+    security: 5,
+    reputation: 4,
+    balance: 3,
+    fit: 4,
+    rhyme: "Bank digital channels with AI on the roadmap. After HSBC B4. AVP, not a director seat.",
+    rhymeZh: "银行数字渠道，路线图上有 AI。先汇丰 B4。副总裁，不是总监席。",
+    desk: {
+      apply: "dbs.wd3 DBS_Careers WD85621. One Island East. After B4 if the digital-channel seat is the want.",
+      draft: "r-6768283435307523797",
     },
   },
   {
