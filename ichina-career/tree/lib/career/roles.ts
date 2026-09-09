@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T21:15:00Z",
+  updatedAt: "2026-09-09T21:20:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -606,7 +606,7 @@ export const roles: CareerRole[] = [
       apply: "HSBC Apply Now. Rechecked live 9 Sep 19:50 UTC. Prior isolation: validThrough Wed 30 Sep 16:00 UTC.",
       draft: "r-5150334973348395509",
       caution:
-        "First HSBC gravity well. Then B159 (27 Sep) then B146 (19 Sep). Do not spray all HSBC seats the same week. Do not invent a numbered ML decade.",
+        "First HSBC gravity well. Then B159 (27 Sep) then B146 (19 Sep). Do not spray all HSBC seats the same week. Do not invent a numbered ML decade. Skip Head of HK AI Phenom 1369156757 — official: position filled. Skip Guangzhou Head of AI Software Development 1356439457 and Singapore HSBC Life Head of Data, AI & Intelligence 1369596457 vs this HK seat.",
     },
   },
   {
@@ -1970,6 +1970,76 @@ export const roles: CareerRole[] = [
     rhymeZh: "内地科研发展席已经关了。守住知识转移经理。",
     skipWhy:
       "Official close 13 July 2026. 15 years higher-education stretch. Keep A33 SM Knowledge Transfer 26001XV (closes 14 Sep). Do not email hrowww@hkmu.edu.hk.",
+  },
+  {
+    id: "B183",
+    rank: 99,
+    title: "Head of HK AI",
+    org: "HSBC",
+    location: "Kowloon City, Hong Kong",
+    href: "https://apply.careers.hsbc.com/job/Kowloon-City-Head-of-HK-AI-Kowl/1369156757/",
+    closeNote: "Phenom 1369156757 · official filled 9 Sep 21:05 UTC",
+    tier: "B",
+    bands: ["capital"],
+    status: "skip",
+    pay: 5,
+    security: 5,
+    reputation: 5,
+    balance: 3,
+    fit: 4,
+    rhyme: "The Hong Kong AI head seat filled. Keep the solution lead.",
+    rhymeZh: "香港 AI 主管席满了。守住方案负责人。",
+    skipWhy:
+      "Official apply.careers.hsbc.com 1369156757: Sorry, this position has been filled. Keep B4 Senior AI Solution Lead 1330173757. Skip Guangzhou Head of AI Software Development 1356439457 and Singapore HSBC Life Head of Data, AI & Intelligence vs the HK gravity well.",
+  },
+  {
+    id: "B184",
+    rank: 25,
+    title: "Head of Product",
+    titleZh: "产品负责人",
+    org: "Sentient Foundation",
+    location: "Hong Kong / remote",
+    href: "https://jobs.ashbyhq.com/sentient-foundation/d95ac1b9-8a1a-4a7a-9997-ff9a3b957e0e",
+    closeNote: "Official Ashby d95ac1b9 · isListed true · HK applicant location · posted 26 Jul 2026 · no deadline",
+    tier: "cvc",
+    bands: ["cvc", "capital"],
+    status: "live",
+    pay: 4,
+    security: 2,
+    reputation: 3,
+    balance: 3,
+    fit: 5,
+    rhyme: "Open AGI product that has to ship. After the exchange product seat if this is the builder desk.",
+    rhymeZh: "开源 AGI 产品，必须做出来。先交易所产品席，若这才是建造台。",
+    confirmSeat: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official Ashby d95ac1b9. Confirm Hong Kong on the form. After OKX B73; pick this or B177, not both the same week.",
+      draft: "r-1128762593538257550",
+      caution:
+        "4+ years AI/ML or developer-platform product, including leading a product function. Do not invent a research-lab decade. Skip sibling Head of Open Source Ecosystem f1f59760 — no Hong Kong location. Skip Sentient APAC Director of Operations until official Ashby with HK. Skip CSC Holdings AI Fund Investment Director until an official cscholdings.com careers URL exists — do not email info@cscholdings.com. Skip HKU School of Innovation Lecturer 536821 vs A31/A4.",
+    },
+  },
+  {
+    id: "B185",
+    rank: 99,
+    title: "AI Fund — Investment Manager / Investment Director",
+    org: "CSC Holdings Limited",
+    location: "Wan Chai, Hong Kong",
+    href: "https://hk.joblum.com/job/ai-fund-investment-manager-investment-director/4186784",
+    closeNote: "Joblum aggregator 29 Jul 2026 · no official careers URL this pass",
+    tier: "cvc",
+    bands: ["cvc", "stretch"],
+    status: "skip",
+    pay: 4,
+    security: 2,
+    reputation: 2,
+    balance: 3,
+    fit: 4,
+    rhyme: "An AI cheque on an aggregator. Wait for the company's own door.",
+    rhymeZh: "AI 基金还在聚合站上。等公司自己的门。",
+    skipWhy:
+      "HKEX 235 exists, but this vacancy is Joblum-only. No official cscholdings.com Apply URL isolated. Do not email info@cscholdings.com as apply. Keep Meitu B71 / Tencent B72 / HashKey 611.",
   },
 ];
 
