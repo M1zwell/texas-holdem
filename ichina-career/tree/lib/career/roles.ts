@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T22:05:00Z",
+  updatedAt: "2026-09-09T22:10:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks + OKX Fiat/Citi IA/Bjak TPL skips: r1342859368576394891",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO + Fidelity CXS recovered: r-1325396012783240225",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -303,7 +303,7 @@ export const roles: CareerRole[] = [
     location: "Hung Hom, Hong Kong",
     href: "https://jobs.polyu.edu.hk/job_detail.php?job=260827012",
     closeAt: "2026-09-15T00:00:00+08:00",
-    closeNote: "Consideration from 15 Sep 2026 until filled · job_detail Apply Now 9 Sep 21:50 UTC · off management.php index this pass, keep the direct URL",
+    closeNote: "Consideration from 15 Sep 2026 until filled · back on deans_heads.php · job_detail Apply Now rechecked 9 Sep 22:10 UTC",
     tier: "A",
     bands: ["institutions", "stretch"],
     status: "live",
@@ -455,7 +455,35 @@ export const roles: CareerRole[] = [
       apply: "jobs1.cityu.edu.hk NACAD Apply Now button on Chief Digital and Technology Officer. Official JD uad-r30526. LinkedIn 4463824877 is a mirror.",
       draft: "r981486238148765924",
       caution:
-        "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk. Skip CityU Post-Investment Manager — still absent from the 102-row NACAD dump 9 Sep 21:00 UTC. Skip HKU CIO & University Librarian 533668 (A50) — Flora Ng is in seat; jobs.hku.hk listing is stale. Skip CUHK EO II Project Manager (Technology Transfer) 2600017B / 2600011K — already closed July 2026.",
+        "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk. Skip CityU Post-Investment Manager — still absent from the 102-row NACAD dump 9 Sep 21:00 UTC. Skip HKU CIO & University Librarian 533668 (A50) — Flora Ng is in seat; jobs.hku.hk listing is stale. Skip CUHK EO II Project Manager (Technology Transfer) 2600017B / 2600011K — already closed July 2026. HKBU CINO 25260577 is A52 — pick alma-mater CDTO or the Baptist innovation-officer chair, not both the same week.",
+    },
+  },
+  {
+    id: "A52",
+    rank: 13,
+    title: "Chief Innovation Officer",
+    titleZh: "首席创新官",
+    org: "Hong Kong Baptist University",
+    location: "Kowloon Tong, Hong Kong",
+    href: "https://fa-ewqq-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/25260577",
+    closeNote: "Oracle CX_1 25260577 · ExternalPostedEndDate null · until filled · Terence Lau is Interim CINO · isolated 9 Sep 22:10 UTC",
+    tier: "A",
+    bands: ["institutions", "stretch", "cvc"],
+    status: "live",
+    pay: 4,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 3,
+    rhyme: "A university officer over incubation and knowledge transfer. Interim already sits; the permanent search is still on the board.",
+    rhymeZh: "大学里管孵化与知识转移的官员席。署理已在座；常任搜寻仍在板上。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "HKBU e-Recruitment only. Oracle job 25260577. Review ongoing until filled. 3-year fixed term.",
+      draft: "r-6366449913323879278",
+      caution:
+        "Do not email hro@hkbu.edu.hk. Postgraduate preferably doctoral in science; HE-sector commercialisation track. Do not invent a science doctorate or a university-incubator GM decade. Fluent English and Chinese (written and spoken); Putonghua strongly preferred — do not claim Cantonese. After A31 if alma-mater digital; after A4/A21 if the innovation-officer chair is the want. Do not spray A34 SM Entrepreneurship 25260765 the same week.",
     },
   },
   {
@@ -565,7 +593,7 @@ export const roles: CareerRole[] = [
     org: "Hong Kong Baptist University",
     location: "Kowloon Tong, Hong Kong",
     href: "https://fa-ewqq-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/25260765",
-    closeNote: "Oracle 25260765 · until filled · posted 3 Jun 2026 · official ExternalPostedEndDate null rechecked 9 Sep 21:40 UTC · aggregator 1 Sep is stale",
+    closeNote: "Oracle 25260765 · until filled · posted 3 Jun 2026 · official ExternalPostedEndDate null rechecked 9 Sep 22:10 UTC · aggregator 1 Sep is stale"
     tier: "A",
     bands: ["institutions", "cvc", "stretch"],
     status: "live",
@@ -581,7 +609,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "HKBU e-Recruitment only. Oracle job 25260765. Review ongoing until filled. Written test for shortlist. 2-year fixed term.",
       draft: "r7973575122747931683",
-      caution: "English + Chinese. Do not claim Cantonese. Do not email HRO. Do not invent 10 incubation years. Skip Creative Hub EO and Research Office grants seats vs this KTO desk. Aggregator deadline 1 Sep 2026 is stale — official Oracle ExternalPostedEndDate is null; re-GET 25260765 immediately before paste.",
+      caution: "English + Chinese. Do not claim Cantonese. Do not email HRO. Do not invent 10 incubation years. Skip Creative Hub EO and Research Office grants seats vs this KTO desk. Aggregator deadline 1 Sep 2026 is stale — official Oracle ExternalPostedEndDate is null. Sibling CINO 25260577 is A52 — do not spray both the same week.",
     },
   },
   {
@@ -966,7 +994,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://fil.wd3.myworkdayjobs.com/001/job/Hong-Kong-Office-New/Product-Owner---Multi-Asset_J69405",
     closeAt: "2026-09-30T23:59:00+08:00",
-    closeNote: "Close 30 Sep 2026 · path Hong-Kong-Office-New",
+    closeNote: "Official fil.wd3 /001 CXS J69405 · canApply true · endDate 2026-09-30 · recovered 9 Sep 22:10 UTC"
     tier: "B",
     bands: ["capital"],
     status: "live",
@@ -992,7 +1020,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://fil.wd3.myworkdayjobs.com/001/job/Hong-Kong-Office-New/Product-Owner---Fixed-Income_J70844",
     closeAt: "2026-10-31T23:59:00+08:00",
-    closeNote: "validThrough 31 Oct 2026 · after B19 · do not spray both",
+    closeNote: "Official fil.wd3 /001 CXS J70844 · canApply true · endDate 2026-10-31 · rechecked 9 Sep 22:10 UTC · after B19"
     tier: "B",
     bands: ["capital"],
     status: "live",
@@ -1707,7 +1735,7 @@ export const roles: CareerRole[] = [
     location: "Kowloon City, Hong Kong",
     href: "https://jobs.standardchartered.com/job/Director%2C-Strategic-Change-Initiative/60809-en_GB/",
     closeAt: "2026-09-30T23:59:00+08:00",
-    closeNote: "Req 60809 · Band 5 · posting end 30 Sep 2026 · WRB Digital",
+    closeNote: "Req 60809 · Kowloon City · posting end 30/09/2026 · Apply now rechecked 9 Sep 22:10 UTC"
     tier: "B",
     bands: ["capital", "stretch"],
     status: "live",
@@ -1724,7 +1752,7 @@ export const roles: CareerRole[] = [
       apply: "Official jobs.standardchartered.com 60809. Kowloon City. Band 5.",
       draft: "r7566136181211083618",
       caution:
-        "10+ years large-scale change. Do not invent SAFe/PMP/TOGAF. Skip 60894 Client Care Center PM (close 25 Sep). Skip Digital Engagement 48866 (ended 14 Jun). Skip Head of CBDC and DA China 57782 until that page is live.",
+        "10+ years large-scale change. Do not invent SAFe/PMP/TOGAF. Skip 60894 Client Care Center PM (close 25 Sep). Skip Digital Engagement 48866 (ended 14 Jun). Skip Head of CBDC and DA China 57782 until that page is live. Skip Product Owner Digital Banking 61997 and Digital Wealth and Fund Journey 58588 — official location Tianjin (B218). Skip AI Chapter Lead WRB 57368 — Guangzhou.",
     },
   },
   {
@@ -2911,6 +2939,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "AI 投资竖切产品负责人，坐在 CEO 席下面。若要那把椅子，守住 B186。",
     skipWhy:
       "Official Ashby df17eee3 is listed, Hong Kong / remote, but it is a product-vertical lead sibling of CEO, AI Investing B186. Keep B186. Do not spray Product Manager AI Investing 1caa7a0f, Head of Strategy and Product 37ebfc14 (B205), or PO Technical AI Investing 2ee74aa2 the same week.",
+  },
+  {
+    id: "B218",
+    rank: 99,
+    title: "Product Owner, Digital Banking / Digital Wealth and Fund Journey",
+    org: "Standard Chartered",
+    location: "Tianjin",
+    href: "https://jobs.standardchartered.com/job/Product-Owner%2C-Digital-Banking/61997-en_GB/",
+    closeNote: "Official 61997 and sibling 58588 · Job Location Tianjin · isolated 9 Sep 22:10 UTC",
+    tier: "B",
+    bands: ["capital"],
+    status: "skip",
+    pay: 4,
+    security: 3,
+    reputation: 4,
+    balance: 3,
+    fit: 2,
+    rhyme: "Digital product, but the chair is in Tianjin. Keep the Kowloon change seat.",
+    rhymeZh: "数字产品，椅子在天津。守住九龙的变革席。",
+    skipWhy:
+      "Official jobs.standardchartered.com 61997 (Digital Banking) and 58588 (Digital Wealth and Fund Journey) are live Apply now, but Job Location is Tianjin. AI Chapter Lead WRB 57368 is Guangzhou. Keep B172 60809 Kowloon City (posting end 30/09/2026) and HSBC B4. ByteDance BytePlus HK sales specialist 7165738508861458718 stays skip — enterprise sales, not director-class AI product.",
   },
 ];
 
