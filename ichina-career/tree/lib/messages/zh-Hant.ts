@@ -174,6 +174,13 @@ export const zhHant: Messages = {
     notifyAsk: "用這只瀏覽器提醒",
     publicNote: "園地給看作品。檯面才是求職。現職僱主不出現在這一頁。",
     portalOnly: "只走門戶 —— 招聘啟事沒要求發信，就不要發。",
+    gateKicker: "私人檯面",
+    gateTitle: "這一場不是公開的",
+    gateLead: "用 Jubit 登入。只有 yying2010@gmail.com 能打開這張檯面。",
+    gateSignIn: "用 Jubit 登入",
+    gateDenied: "這個帳號打不開這張檯面。",
+    gateDeniedHint: "先退出，再用 yying2010@gmail.com 登入。",
+    gateWorking: "在看這扇門…",
   },
   writingPage: {
     title: "寫作",

@@ -17,7 +17,7 @@ The improved dseek mark lives on this garden only — it is not deployed to dsee
 - `/blog` redirects to `/writing` (old links)
 - `/tools` workspace (tacit — universe launcher, HK district jump, live frames)
 - `/products` live product directory; city-planet / worlds first
-- `/career` tacit career field — live products as CV, roles that rhyme, Hong Kong clock, hunt desk
+- `/career` private tacit career field — Jubit OAuth, only `yying2010@gmail.com`
 - `/share` omni-channel publish desk (YouTube / TikTok / Xiaohongshu / X copy kits)
 - `/auth/callback` family SSO return from jubit.ai — exchanges `sso_token`, keeps the session on ichina
 - `/tools` and Writing: Studio outputs via jubit.ai/terminal (NotebookLM-class)
@@ -36,7 +36,9 @@ Locale is stored in a `locale` cookie and reflected in the URL. Default English 
 
 4. Production: run the build script. Static files land in `out/` (output export is on).
 
-Sign in / Register send you through `www.jubit.ai/auth/sso` with `redirect_uri=https://ichina.co/…`. After Google, the hub returns to `/auth/callback?sso_token=…`. The garden exchanges that token with the public hub function (same contract as dseek) and stores the session in `localStorage`. No extra env secrets.
+Sign in / Register send you through `www.jubit.ai/auth/sso` with `redirect_uri=https://ichina.co/…`. After Google, the hub returns to `/auth/callback?sso_token=…` (or the page in `redirect_uri`). The garden exchanges that token with the public hub function (same contract as dseek) and stores the session in `localStorage`. No extra env secrets.
+
+`/career` is not a public garden page. It stays off the public nav. The lock asks for Jubit sign-in. After exchange, the garden checks the hub user and only `yying2010@gmail.com` sees the field. Other signed-in accounts are refused. Static export still emits a JS chunk; the door is the session, not a server ACL.
 
 Family check-in on `/hometown` is optional. Apply `supabase/hometown_checkins.sql` in Supabase, then set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` on the deploy. Without them the tree still ships; the 报到 form stays quiet.
 

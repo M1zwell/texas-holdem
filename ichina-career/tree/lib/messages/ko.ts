@@ -177,6 +177,13 @@ export const ko: Messages = {
     notifyAsk: "이 브라우저에서 알림",
     publicNote: "정원은 작업을 보여 준다. 데스크가 구직. 현 고용주는 이 페이지에 없다.",
     portalOnly: "포털만 — 공고가 이메일을 요구하지 않으면 보내지 말 것.",
+    gateKicker: "비공개 책상",
+    gateTitle: "이 장은 공개되지 않는다",
+    gateLead: "Jubit으로 로그인. yying2010@gmail.com 만 이 책상을 열 수 있다.",
+    gateSignIn: "Jubit으로 로그인",
+    gateDenied: "이 계정으로는 책상을 열 수 없다.",
+    gateDeniedHint: "로그아웃한 뒤 yying2010@gmail.com 으로 다시 로그인.",
+    gateWorking: "문을 확인하는 중…",
   },
   writingPage: {
     title: "글",

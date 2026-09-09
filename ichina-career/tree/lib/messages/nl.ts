@@ -178,6 +178,13 @@ export const nl: Messages = {
     notifyAsk: "Herinner mij in deze browser",
     publicNote: "De tuin toont het werk. Het bureau is de jacht. De huidige werkgever blijft van deze pagina.",
     portalOnly: "Alleen portaal — stuur geen mail tenzij de vacature het vraagt.",
+    gateKicker: "Privébureau",
+    gateTitle: "Dit veld is niet openbaar",
+    gateLead: "Meld aan met Jubit. Alleen yying2010@gmail.com kan dit bureau openen.",
+    gateSignIn: "Aanmelden met Jubit",
+    gateDenied: "Dit bureau is niet open voor dit account.",
+    gateDeniedHint: "Meld af, en meld aan met yying2010@gmail.com.",
+    gateWorking: "De deur wordt gecontroleerd…",
   },
   writingPage: {
     title: "Schrijven",

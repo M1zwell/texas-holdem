@@ -177,6 +177,13 @@ export const en = {
     notifyAsk: "Remind me in this browser",
     publicNote: "The garden shows the work. The desk is the hunt. Current employer stays off this page.",
     portalOnly: "Portal only — do not send email unless the listing asks.",
+    gateKicker: "Private desk",
+    gateTitle: "This field is not public",
+    gateLead: "Sign in with Jubit. Only yying2010@gmail.com can open this desk.",
+    gateSignIn: "Sign in with Jubit",
+    gateDenied: "This desk is not open for this account.",
+    gateDeniedHint: "Sign out, then sign in with yying2010@gmail.com.",
+    gateWorking: "Checking the door…",
   },
   writingPage: {
     title: "Writing",

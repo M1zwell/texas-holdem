@@ -177,6 +177,13 @@ export const ja: Messages = {
     notifyAsk: "このブラウザで知らせる",
     publicNote: "庭は作品を見せる。デスクが求職。いまの雇用主はこのページに出ない。",
     portalOnly: "ポータルのみ — 求人がメールを求めないなら送らない。",
+    gateKicker: "私室",
+    gateTitle: "この場は公開しない",
+    gateLead: "Jubit でサインイン。開けるのは yying2010@gmail.com だけ。",
+    gateSignIn: "Jubit でサインイン",
+    gateDenied: "このアカウントではデスクを開けない。",
+    gateDeniedHint: "サインアウトして yying2010@gmail.com で入り直す。",
+    gateWorking: "扉を確認している…",
   },
   writingPage: {
     title: "文章",

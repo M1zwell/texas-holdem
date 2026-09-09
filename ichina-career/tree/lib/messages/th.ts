@@ -176,6 +176,13 @@ export const th: Messages = {
     notifyAsk: "เตือนในเบราว์เซอร์นี้",
     publicNote: "สวนโชว์งาน โต๊ะคือการหางาน นายจ้างปัจจุบันไม่อยู่ในหน้านี้",
     portalOnly: "พอร์ทัลเท่านั้น — อย่าส่งอีเมลถ้าประกาศไม่ได้ขอ",
+    gateKicker: "โต๊ะส่วนตัว",
+    gateTitle: "สนามนี้ไม่เปิดสาธารณะ",
+    gateLead: "เข้าสู่ระบบด้วย Jubit เฉพาะ yying2010@gmail.com เท่านั้นที่เปิดโต๊ะนี้ได้",
+    gateSignIn: "เข้าสู่ระบบด้วย Jubit",
+    gateDenied: "บัญชีนี้เปิดโต๊ะไม่ได้",
+    gateDeniedHint: "ออกจากระบบ แล้วเข้าด้วย yying2010@gmail.com",
+    gateWorking: "กำลังตรวจประตู…",
   },
   writingPage: {
     title: "งานเขียน",

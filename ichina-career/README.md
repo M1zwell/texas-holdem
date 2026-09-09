@@ -12,12 +12,14 @@ From a yok-zhang checkout:
 git am path/to/ichina-career/0001-Add-career-as-a-Polanyi-tacit-field-on-the-garden.patch
 ```
 
-Or copy `tree/` over the garden root (messages, header, footer, home, site.ts, and the new `/career` routes).
+Or copy `tree/` over the garden root (messages, header, footer, home, site.ts, AuthCta, family-session, and the new `/career` routes).
 
-Then `npm run build`. Static export includes `/career` and `/{locale}/career`.
+Then `npm run build` and `node --experimental-strip-types scripts/verify-career-gate.ts`. Static export includes `/career` and `/{locale}/career`. The HTML is a Jubit lock; the field loads only after `yying2010@gmail.com` is verified with the hub.
 
 ## What it is
 
-Polanyi: *we know more than we can tell*. Live products are the CV. Ranked Hong Kong roles are gravity. A Hong Kong clock and a local **Desk** (`?desk=1`) hold apply notes and Gmail draft ids. Current employer stays off the public page. No email is sent from this page.
+Polanyi: *we know more than we can tell*. Live products are the CV. Ranked Hong Kong roles are gravity. A Hong Kong clock and a local **Desk** (`?desk=1`) hold apply notes and Gmail draft ids. Current employer stays off the page. No email is sent from this page.
 
-Desk is device-local (`localStorage`). Do not treat draft ids as secret; they are in the client bundle.
+**Access:** `https://ichina.co/career` is only for `yying2010@gmail.com` after Jubit OAuth (Google via `www.jubit.ai/auth/sso`). Public nav / footer / home do not link it. Other Jubit accounts see a locked desk. The page is `noindex`.
+
+Desk is device-local (`localStorage`). Draft ids live in a client chunk after the owner is in. Do not treat them as a server secret on a static export.

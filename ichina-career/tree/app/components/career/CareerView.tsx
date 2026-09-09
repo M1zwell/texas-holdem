@@ -1,5 +1,7 @@
 "use client";
 
+/** Owner-only field. Mount only behind CareerGate. */
+
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Reveal } from "@/app/components/Reveal";

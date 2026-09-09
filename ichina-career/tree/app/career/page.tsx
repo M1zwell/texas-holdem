@@ -1,13 +1,15 @@
-import { CareerView } from "@/app/components/career/CareerView";
+import { CareerGate } from "@/app/components/career/CareerGate";
 import { seo } from "@/lib/seo";
 
-export const metadata = seo({
-  title: "Career",
-  description:
-    "What the work already knows. Live AI products as the CV. Roles that rhyme — Hong Kong, AI-native, workable life.",
-  path: "/career",
-});
+export const metadata = {
+  ...seo({
+    title: "Career",
+    description: "Private desk. Sign in with Jubit.",
+    path: "/career",
+  }),
+  robots: { index: false, follow: false },
+};
 
 export default function CareerPage() {
-  return <CareerView locale="en" />;
+  return <CareerGate locale="en" />;
 }
