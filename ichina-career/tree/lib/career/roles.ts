@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T19:40:00Z",
+  updatedAt: "2026-09-09T19:45:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -254,7 +254,7 @@ export const roles: CareerRole[] = [
     org: "PolyU",
     location: "Hung Hom, Hong Kong",
     href: "https://jobs.polyu.edu.hk/job_detail.php?job=260827002",
-    closeNote: "Apply Now live 9 Sep · 8 years entrepreneurship / incubation / VC",
+    closeNote: "Consideration from 3 Sep 2026 until filled · written test · Rechecked Apply Now 9 Sep 19:35 UTC",
     tier: "A",
     bands: ["institutions"],
     status: "live",
@@ -267,7 +267,9 @@ export const roles: CareerRole[] = [
     rhymeZh: "大学创业台。贴近天使，工时能过，城大出身走进另一座校园。",
     portalOnly: true,
     desk: {
-      apply: "https://jobs.polyu.edu.hk/job_detail.php?job=260827002 — English + Chinese + Putonghua.",
+      apply: "PolyU Apply Now 260827002-IE. English + Chinese + fluency in Putonghua. After this, optional A21 Director from 15 Sep.",
+      draft: "r3271210062041871589",
+      caution: "Do not email hrstaff@polyu.edu.hk for this SM seat. That mailbox is A21 nominations after portal. Do not claim Cantonese. Do not invent a university incubator GM decade.",
     },
   },
   {
@@ -496,7 +498,11 @@ export const roles: CareerRole[] = [
     rhyme: "Applied-science ecosystem. Channel, not a lab coat. Title on the page is Senior Manager.",
     rhymeZh: "应用科学生态。渠道，不是实验袍。页面职称是高级经理。",
     portalOnly: true,
-    desk: { apply: "ASTRI Apply Now. URL still says Deputy-Director. Official Apply live 10 Sep. Chief Director AI Platform is A32 after this." },
+    desk: {
+      apply: "ASTRI Apply Now Phenom 56190244. URL still says Deputy-Director. Official Apply live. Chief Director AI Platform is A32 after this.",
+      draft: "r70476510155848527",
+      caution: "Do not email a guessed ASTRI HR address. Do not email Manpower aston.yeung@manpowergrc.hk as this apply channel. Do not spray A32 (15-year / PhD stretch) with this SM seat.",
+    },
   },
   {
     id: "A27",
@@ -1249,7 +1255,7 @@ export const roles: CareerRole[] = [
     rhymeZh: "交易所上的传统金融财富产品。交易与资管习惯碰上产品席。确认香港。不要群发币安产品克隆。",
     confirmSeat: true,
     desk: {
-      apply: "jobs.lever.co/binance/1c3e9e01-82b8-4840-85b1-82cabd86bcfd. Then optional AI Agent & Harness. Skip Stock Trading AM vs this wealth seat. Skip accelerator/junior.",
+      apply: "jobs.lever.co/binance/1c3e9e01-82b8-4840-85b1-82cabd86bcfd. Then optional AI Agent & Harness B151. Skip Stock Trading AM vs this wealth seat. Skip accelerator/junior. Skip Product Manager - AI growth bc1302e3 (5-year growth/fission PM, Remote Asia/HK/Taiwan) vs this wealth seat.",
       draft: "r2859635877950117754",
     },
   },
@@ -1515,6 +1521,27 @@ export const roles: CareerRole[] = [
     rhyme: "Settlement director filled. Do not chase the LinkedIn post.",
     rhymeZh: "结算总监已满。不要追领英帖。",
     skipWhy: "Official Phenom: position filled. Keep B76. Do not email Lewis Lei Sun as if it were an apply channel.",
+  },
+  {
+    id: "B169",
+    rank: 99,
+    title: "Product Manager - AI (Growth)",
+    org: "Binance",
+    location: "Hong Kong / Asia / Taiwan · Remote",
+    href: "https://jobs.lever.co/binance/bc1302e3-f280-4550-ad1d-d51b7610e240",
+    closeNote: "Official Lever · 5-year growth/fission PM",
+    tier: "cvc",
+    bands: ["cvc"],
+    status: "skip",
+    pay: 4,
+    security: 2,
+    reputation: 3,
+    balance: 2,
+    fit: 2,
+    rhyme: "Growth hacking with an AI label. Keep the TradFi wealth seat.",
+    rhymeZh: "增长黑客，贴着 AI 标签。守住传统金融财富席。",
+    skipWhy:
+      "Official Lever: 5 years user growth / growth hacking / PM; fission loops; Remote. Not a director desk. Keep B150 then optional B151. Skip Hang Seng Head of AI Adoption until an official apply.careers.hsbc.com / Hang Seng Phenom URL exists (eFinancialCareers aggregator only; CTgoodjobs already expired). Skip BlackRock Head of AI and Data Transformation GPS R263870 — San Francisco / New York, not Hong Kong. Skip AIA JR-67573-1 Data Analytics and AI vs B153/B117 (DS delivery, validThrough 30 Sep, still live). Skip HKU Research Officer AI and Industry Collaboration 537093 — closed 31 Aug 2026. Skip MTR Senior Manager AI & Digitalisation 250000Z1 — closed 9 Jul 2026.",
   },
 ];
 
