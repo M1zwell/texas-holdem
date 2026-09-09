@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T17:50:00Z",
+  updatedAt: "2026-09-09T17:55:00Z",
   thesis:
     "Licensed Hong Kong operator habits plus live AI products. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -418,22 +418,27 @@ export const roles: CareerRole[] = [
   {
     id: "A27",
     rank: 13,
-    title: "Assistant Director, InnoHK",
+    title: "Assistant Director, InnoHK and University Collaborations",
     org: "HKSTP",
-    location: "Hong Kong",
-    href: "https://careers.hkstp.org/",
+    location: "Island East, Hong Kong",
+    href: "https://careers.hkstp.org/job/Island-East-Assistant-Director%2C-InnoHK-and-University-Collaborations-HK-H/1366195766/",
+    closeNote: "Official Apply live 10 Sep · 10-year startup ecosystem",
     tier: "A",
-    bands: ["institutions"],
+    bands: ["institutions", "cvc"],
     status: "live",
     pay: 4,
     security: 4,
     reputation: 4,
     balance: 4,
     fit: 4,
-    rhyme: "InnoHK cluster. After investor engagement, if the university-collaboration gravity is real.",
-    rhymeZh: "InnoHK 集群。投资人对接之后，若大学协作的引力是真的。",
+    rhyme: "InnoHK cluster plus university venture-building. After investor engagement. Then the Manager Uni Collab seat if this director-class desk is not the want.",
+    rhymeZh: "InnoHK 集群，加上大学造企业。投资人对接之后。若这层主任席不是想要的，再经理席。",
     portalOnly: true,
-    desk: { apply: "HKSTP portal. Cover r4210614044772251210 then Manager Uni Collab r-2037962444762767677." },
+    desk: {
+      apply: "HKSTP Apply Now. Phenom 1366195766. After A1 then this. Then Manager University Collaborations 1366215966.",
+      draft: "r-1603957299526558471",
+      caution: "English + Putonghua. Do not claim Cantonese. Skip Senior Manager, New Ventures Programmes 1367071866 — JD is 10-year marketing/events, not ventures investing.",
+    },
   },
   {
     id: "B4",
@@ -818,6 +823,32 @@ export const roles: CareerRole[] = [
       draft: "r2852953938224944669",
       caution:
         "LinkedIn Product Director 4463321930 is not on official getJobList (ids 694, 692, 613, 612, 611, 593, 454, 445). Do not apply via LinkedIn-only. Skip Risk Director 612 vs AI-native builder. Skip BD Manager 454 vs this product seat.",
+    },
+  },
+  {
+    id: "B156",
+    rank: 31,
+    title: "Director, Technology Investment",
+    org: "CLSA Capital Partners",
+    location: "Hong Kong (Singapore listed as additional)",
+    href: "https://citicclsa.wd3.myworkdayjobs.com/External/job/Hong-Kong/Director--Technology-Investment--CLSA-Capital-Partners_JR001362-1",
+    closeNote: "Workday JR001362 · posted 30+ days · HK required · 15-year PE stretch",
+    tier: "cvc",
+    bands: ["cvc", "stretch"],
+    status: "live",
+    pay: 5,
+    security: 3,
+    reputation: 4,
+    balance: 2,
+    fit: 2,
+    rhyme: "Official PE seat at last. Fifteen years and ten in USD growth funds is not the edge. After Meitu, only if classic PE is the want.",
+    rhymeZh: "终于有官网 PE 席。十五年、十年美元成长基金，不是这条长处。美图之后，只若要的是经典 PE。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "citicclsa.wd3 External JR001362-1. Hiring org: CITIC CLSA Capital Partners HK Limited. English + Mandarin. Experienced candidate considered as ED.",
+      draft: "r-8224629745074945869",
+      caution: "Do not invent 15 PE years or a Master’s. Cantonese is a bonus — do not claim. Do not apply via LinkedIn-only 4439130089.",
     },
   },
   {
