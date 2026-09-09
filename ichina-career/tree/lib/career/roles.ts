@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T17:10:00Z",
+  updatedAt: "2026-09-09T17:20:00Z",
   thesis:
     "Licensed Hong Kong operator habits plus live AI products. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -603,6 +603,33 @@ export const roles: CareerRole[] = [
     desk: { apply: "Invesco Workday R-14368." },
   },
   {
+    id: "B153",
+    rank: 20,
+    title: "Associate Director, Distribution Digital",
+    org: "AIA",
+    location: "Hong Kong, AIA Group Office",
+    href: "https://aia.wd3.myworkdayjobs.com/en-US/External/job/Hong-Kong-HK-AIA-Group-Office/Associate-Director--Digital-Agency-Platforms_JR-68436-1",
+    closeAt: "2026-09-30T23:59:00+08:00",
+    closeNote: "CXS canApply true · endDate 2026-09-30 · slug JR-68436-1",
+    tier: "B",
+    bands: ["capital", "stretch"],
+    status: "live",
+    pay: 4,
+    security: 4,
+    reputation: 4,
+    balance: 3,
+    fit: 3,
+    rhyme: "Agency platforms with AI inside. Group Office, not Macau path. Twelve to fifteen years is a stretch. Then Customer AI.",
+    rhymeZh: "代理平台，里面有 AI。集团办公室，不是澳门那条路径。十二到十五年是拉伸。然后才是客户 AI。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "Workday External JR-68436-1. Path Hong-Kong-HK-AIA-Group-Office. AFTER B9b, before B117.",
+      draft: "r-1064563125725395723",
+      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering.",
+    },
+  },
+  {
     id: "B117",
     rank: 21,
     title: "Associate Director, Customer AI & Analytics Product Management",
@@ -617,7 +644,7 @@ export const roles: CareerRole[] = [
     reputation: 4,
     balance: 3,
     fit: 4,
-    rhyme: "Customer AI product. After distribution digital. Skip the engineering-strategy clone.",
+    rhyme: "Customer AI product. After Distribution Digital B153. Skip the engineering-strategy clone.",
     rhymeZh: "客户 AI 产品。分销数字之后。跳过工程策略那条克隆。",
     desk: {
       apply: "AIA Workday JR-68056. Path Hong-Kong-HK-AIA-Hong-Kong--Macau.",
