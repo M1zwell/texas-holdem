@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T20:22:00Z",
+  updatedAt: "2026-09-09T20:08:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -1141,7 +1141,7 @@ export const roles: CareerRole[] = [
     rhyme: "Agentic product at an exchange. High cash, thinner security and hours. HK right-to-work first.",
     rhymeZh: "交易所的代理产品。现金高，安全与工时更薄。香港工作权优先。",
     desk: {
-      apply: "Greenhouse 7531920003. Then optional B174 VP AI Strategy 7684888003 if strategy not PM. Wallet AI is B152. Do not spray PM clones. Skip Singapore VP clone 7684887003. Skip AI Agent Product Expert (Middleware) 7731745003 vs this PM seat.",
+      apply: "Greenhouse 7531920003. Then optional B174 VP AI Strategy or B177 VP Product AI & Agent — pick one. Wallet AI is B152. Do not spray PM clones. Skip Singapore VP clone 7684887003. Skip AI Agent Product Expert (Middleware) 7731745003 vs this PM seat.",
     },
   },
   {
@@ -1166,10 +1166,38 @@ export const roles: CareerRole[] = [
     stretch: true,
     portalOnly: true,
     desk: {
-      apply: "Official Greenhouse 7684888003 Hong Kong. After B73. Do not spray with B152 the same week.",
+      apply: "Official Greenhouse 7684888003 Hong Kong. After B73. Do not spray with B177 VP Product or B152 the same week.",
       draft: "r-1746679636804214893",
       caution:
-        "10+ years AI/deep learning, 5 years Director+, MS/PhD, publication/open-source on JD — do not invent. Skip Singapore clone 7684887003. HK right-to-work first. High cash, thinner security and hours versus bank/university.",
+        "10+ years AI/deep learning, 5 years Director+, MS/PhD, publication/open-source on JD — do not invent. Skip Singapore clone 7684887003. Sibling VP Product is B177 7691999003. HK right-to-work first.",
+    },
+  },
+  {
+    id: "B177",
+    rank: 24,
+    title: "Vice President of Product, AI and Agent",
+    titleZh: "产品副总裁 · AI 与智能体",
+    org: "OKX",
+    location: "Hong Kong",
+    href: "https://job-boards.greenhouse.io/okx/jobs/7691999003",
+    closeNote: "Greenhouse 7691999003 · official HK Apply live 9 Sep 20:05 UTC · sibling 7691998003 is Singapore",
+    tier: "cvc",
+    bands: ["cvc", "capital", "stretch"],
+    status: "live",
+    pay: 5,
+    security: 2,
+    reputation: 3,
+    balance: 2,
+    fit: 4,
+    rhyme: "The product VP of the agent. After the PM if this is the seat that owns the assistant. Twelve years is a stretch.",
+    rhymeZh: "智能体这一层的产品副总裁。先产品经理，若这才是要守的助手。十二年是拉伸。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official Greenhouse 7691999003 Hong Kong. After B73. Pick this OR B174, not both the same week.",
+      draft: "r-449291215686061085",
+      caution:
+        "12+ years product & tech, 5+ years senior leadership owning complex products, conversational/agentic AI as owner not contributor. English and Mandarin on JD — do not claim Cantonese. Skip Singapore clone 7691998003. Trading asked on the form — honest about the hedge book since Sep 2025.",
     },
   },
   {
@@ -1793,7 +1821,81 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "Watch only. Re-GET Workday CXS JR-67284 before ranking live. After B9b → B153 → B117 if it returns canApply true.",
       caution:
-        "8 years insurance/FS. Official External search did not return JR-67284 this pass. HTML job URL 200 but CXS 404. Do not paste until canApply is proven. Skip AXA Head of Data Science & AI until an official SuccessFactors/recruitment job URL is isolated — do not email axa-talent-hub@axa.com.hk as a speculative apply.",
+        "8 years insurance/FS. Official External search did not return JR-67284 this pass. HTML job URL 200 but CXS 404. Do not paste until canApply is proven. AXA Head of Data Science & AI is still LinkedIn-only — official careers.axa.com has DSM 9681 / Assistant 8701, not the Head. Do not email axa-talent-hub@axa.com.hk.",
+    },
+  },
+  {
+    id: "B178",
+    rank: 27,
+    title: "Director, Institutional Distribution & Partnerships",
+    org: "Animoca Brands",
+    location: "Hong Kong",
+    href: "https://jobs.lever.co/animocabrands/dc6409fc-944d-4331-8019-dbd643ae1d90",
+    closeNote: "Official Lever dc6409fc · NUVA · Hong Kong on-site · Apply live 9 Sep 20:05 UTC",
+    tier: "cvc",
+    bands: ["cvc", "capital", "stretch"],
+    status: "live",
+    pay: 4,
+    security: 2,
+    reputation: 3,
+    balance: 2,
+    fit: 3,
+    rhyme: "Institutional distribution next to a 540-company book. Not a CVC cheque. After HashKey if FO coverage is the want.",
+    rhymeZh: "机构分销，贴着五百四十家投资簿。不是 CVC 支票。先 HashKey，若家族办公室覆盖才是想要的。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official Lever dc6409fc-944d-4331-8019-dbd643ae1d90. After HashKey 611 / OKX product if distribution not product is the want.",
+      draft: "r1254277633540875993",
+      caution:
+        "8–10 years institutional sales/closed tickets at PB/tokenization/AM/trading. Do not invent closed LP tickets. Mandarin a plus; English essential; do not claim Cantonese. Skip China Merchants Capital MD PE LinkedIn — people already in seat. Skip Magic Compass / MC Group Head of AI Productivity LinkedIn 4457415399 — no longer accepting.",
+    },
+  },
+  {
+    id: "B179",
+    rank: 99,
+    title: "Head of AI Productivity & Governance",
+    org: "Magic Compass / MC Group",
+    location: "Hong Kong",
+    href: "https://hk.linkedin.com/jobs/view/head-of-ai-productivity-governance-at-mc-group-4457415399",
+    closeNote: "LinkedIn 4457415399 · no longer accepting 9 Sep 20:05 UTC",
+    tier: "cvc",
+    bands: ["cvc", "stretch"],
+    status: "skip",
+    pay: 4,
+    security: 2,
+    reputation: 2,
+    balance: 3,
+    fit: 4,
+    rhyme: "The unnamed-firm pack closed on LinkedIn. Keep the licensed desks.",
+    rhymeZh: "未具名公司那一包在领英关了。守住持牌台。",
+    skipWhy:
+      "LinkedIn no longer accepting. Recruiter is Magic Compass. King Deux / RH unnamed packs stay after APPROVE only. Keep HSBC B4 / OKX B177 / Meitu B71.",
+  },
+  {
+    id: "B180",
+    rank: 26,
+    title: "Executive Director, Digital Product Solutions",
+    org: "RGA",
+    location: "Hong Kong",
+    href: "https://hk.linkedin.com/jobs/view/executive-director-digital-product-solutions-at-reinsurance-group-of-america-incorporated-4407576665",
+    closeNote: "LinkedIn 4407576665 still listed · no official rgare.com URL this pass · watch",
+    tier: "B",
+    bands: ["capital", "stretch"],
+    status: "watch",
+    pay: 4,
+    security: 4,
+    reputation: 4,
+    balance: 3,
+    fit: 2,
+    rhyme: "Reinsurance digital product. LinkedIn talks. Official Apply is not proven.",
+    rhymeZh: "再保险数字产品。领英在说。官网申请还没被证明。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "Watch only. Re-GET official RGA careers before ranking live. 15-year consulting/transformation stretch.",
+      caution:
+        "Do not apply LinkedIn-only. Skip Cathay Head of Digital Transformation until careers.cathaypacific.com job URL is isolated. Skip HSBC AI Architect until an official HK Phenom exists (Group AI Platform Engineering is Guangzhou).",
     },
   },
 ];
