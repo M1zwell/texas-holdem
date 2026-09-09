@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T17:20:00Z",
+  updatedAt: "2026-09-09T17:50:00Z",
   thesis:
     "Licensed Hong Kong operator habits plus live AI products. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -165,6 +165,34 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "https://erecruit.hkma.gov.hk/",
       caution: "Skip OmniClear Director (IT & System Development) vs this product seat.",
+    },
+  },
+  {
+    id: "A33",
+    rank: 17,
+    title: "Senior Manager (Knowledge Transfer) (ORA)",
+    titleZh: "高级经理（知识转移）",
+    org: "Hong Kong Metropolitan University",
+    location: "Hong Kong",
+    href: "https://hkmu.taleo.net/careersection/ex_full_time/jobdetail.ftl?job=26001XV&lang=en",
+    closeAt: "2026-09-14T23:59:00+08:00",
+    closeNote: "Sun 14 Sep 2026, 11:59 p.m. · Taleo 26001XV",
+    tier: "A",
+    bands: ["today", "institutions", "stretch"],
+    status: "live",
+    pay: 3,
+    security: 5,
+    reputation: 4,
+    balance: 5,
+    fit: 4,
+    rhyme: "University knowledge-transfer desk next to angels and incubators. Fifteen years on the JD is a stretch. After PolyU A4.",
+    rhymeZh: "大学知识转移台，贴着天使与孵化器。招聘启事上的十五年是拉伸。先 PolyU A4。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "HKMU Taleo eRecruitment only. Job 26001XV. Office of Research Affairs and Knowledge Transfer.",
+      draft: "r-4774827538237651559",
+      caution: "Do not email hrowww@hkmu.edu.hk. English + Chinese including Putonghua. Do not claim Cantonese. Do not invent 15 years.",
     },
   },
   {
@@ -449,6 +477,31 @@ export const roles: CareerRole[] = [
     rhymeZh: "财富 AI 商业化。方案负责人之后。动手分析门槛是拉伸。",
     stretch: true,
     desk: { apply: "After B4 then this then B138.", draft: "r-4207723545408746455" },
+  },
+  {
+    id: "B154",
+    rank: 14,
+    title: "Head of Alts Investment Solutions, Data and Automation",
+    org: "HSBC Global Asset Management",
+    location: "Central, Hong Kong",
+    href: "https://apply.careers.hsbc.com/job/Central-Head-of-Alts-Investment-Solutions%2C-Data-and-Automation-HSBC-Global-Asset-Management-Hong/1369577357/",
+    closeAt: "2026-09-30T16:00:00Z",
+    closeNote: "validThrough Wed 30 Sep 16:00 UTC · GCB 4",
+    tier: "B",
+    bands: ["capital", "stretch"],
+    status: "live",
+    pay: 5,
+    security: 5,
+    reputation: 5,
+    balance: 3,
+    fit: 4,
+    rhyme: "Asset-management operations with a data-and-AI mandate. After the AI solution lead. Named alts platforms are a stretch — do not invent eFront.",
+    rhymeZh: "资管运营，带着数据与 AI 的任务。先 AI 方案负责人。点名的另类平台是拉伸 —— 不要编造 eFront。",
+    stretch: true,
+    desk: {
+      apply: "HSBC Apply Now. Phenom 1369577357. After B4. Skip Director, Investment Strategy 1371461457 — House View economist, not this ops/AI seat.",
+      draft: "r3331028330889342623",
+    },
   },
   {
     id: "B138",
@@ -740,6 +793,31 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "careers.reap.global 8342685. After OKX B73 if the HK-HQ agentic platform is the want. Skip Reap Engineering Manager AI Agentic vs this PM seat.",
       draft: "r-7528244399176004260",
+    },
+  },
+  {
+    id: "B155",
+    rank: 26,
+    title: "Product Manager",
+    org: "HashKey Capital",
+    location: "Hong Kong",
+    href: "https://hashkey.capital/careers/details44_611.html",
+    closeNote: "Official getJobList id 611 · Apply Now to sgrecruitment@hashkey.com",
+    tier: "cvc",
+    bands: ["cvc", "capital"],
+    status: "live",
+    pay: 3,
+    security: 2,
+    reputation: 3,
+    balance: 2,
+    fit: 4,
+    rhyme: "TradFi-and-Web3 fund product. SFC product lifecycle plus AI tools on the JD. PM, not the LinkedIn Product Director.",
+    rhymeZh: "传统金融与 Web3 基金产品。持牌产品生命周期，招聘启事上还有 AI 工具。产品经理，不是 LinkedIn 上的产品总监。",
+    desk: {
+      apply: "Official JD Apply Now: sgrecruitment@hashkey.com. details44_611.html. After bank/university. Do not also spray Product Manager/Specialist 593.",
+      draft: "r2852953938224944669",
+      caution:
+        "LinkedIn Product Director 4463321930 is not on official getJobList (ids 694, 692, 613, 612, 611, 593, 454, 445). Do not apply via LinkedIn-only. Skip Risk Director 612 vs AI-native builder. Skip BD Manager 454 vs this product seat.",
     },
   },
   {
