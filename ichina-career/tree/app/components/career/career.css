@@ -41,6 +41,25 @@
   min-height: 8.5rem;
 }
 
+.career-select {
+  min-height: 36px;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-hair);
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  color: var(--color-fg);
+  font-size: 12px;
+}
+
+.career-table th,
+.career-table td {
+  vertical-align: top;
+}
+
+.career-day {
+  min-height: 8.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .career-chip,
   .career-proof {

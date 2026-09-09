@@ -4,7 +4,7 @@ import { seo } from "@/lib/seo";
 export const metadata = {
   ...seo({
     title: "Career",
-    description: "Private desk. Sign in with Jubit.",
+    description: "Private desk. Continue with Google.",
     path: "/career",
   }),
   robots: { index: false, follow: false },

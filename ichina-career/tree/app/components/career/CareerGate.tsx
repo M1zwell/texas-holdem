@@ -113,7 +113,7 @@ export function CareerLock({ locale, phase }: { locale: Locale; phase: Phase }) 
           {phase === "out" ? (
             <>
               <p className="mt-5 text-sm leading-relaxed text-muted">{c.gateLead}</p>
-              <p className="mt-3 font-mono text-[12px] text-accent">{CAREER_OWNER_EMAIL}</p>
+              <p className="mt-3 font-mono text-[12px] text-accent">Google · {CAREER_OWNER_EMAIL}</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href={signInHref} className="btn btn-primary cta-pop">
                   {c.gateSignIn}

@@ -50,3 +50,5 @@ export type CareerSnapshot = {
   thesis: string;
   thesisZh: string;
 };
+
+export type HuntLens = "dash" | "schedule" | "match" | "pools" | "progress" | "desk";
