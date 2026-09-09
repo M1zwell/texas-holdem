@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T23:35:00Z",
+  updatedAt: "2026-09-09T23:38:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -74,7 +74,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
     closeAt: "2026-09-10T17:00:00+08:00",
-    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 9 Sep 23:32 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
+    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 9 Sep 23:36 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -100,7 +100,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Digital-Currencies-Hong/1369854357/",
     closeAt: "2026-09-10T16:00:00Z",
-    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 23:32 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
+    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 23:36 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
     tier: "B",
     bands: ["today", "capital"],
     status: "live",
@@ -125,7 +125,7 @@ export const roles: CareerRole[] = [
     location: "Hung Hom, Hong Kong",
     href: "https://sunlife.wd3.myworkdayjobs.com/Experienced-Jobs/job/Hunghom-Kowloon-Hong-Kong/AVP--Agency-Digital-Lead_JR00126149-3",
     closeAt: "2026-09-10T23:59:00+08:00",
-    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS listed Hunghom-Kowloon-Hong-Kong / AVP--Agency-Digital-Lead_JR00126149-3 rechecked 9 Sep 23:32 UTC · canApply true · endDate 11 Sep 2026 · title AVP, Agency Digital Strategy & Development",
+    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS listed Hunghom-Kowloon-Hong-Kong / AVP--Agency-Digital-Lead_JR00126149-3 rechecked 9 Sep 23:36 UTC · canApply true · endDate 11 Sep 2026 · title AVP, Agency Digital Strategy & Development",
     tier: "B",
     bands: ["today", "capital", "stretch"],
     status: "live",
@@ -3477,6 +3477,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "研发工程师，主任已经有人。守住园区和母校席。",
     skipWhy:
       "Official hkustcareers HKGAI openings this pass are Post-doctoral Fellow HKGAI0003, Research Assistant 0004, and Research Engineers 0005–0008 (system / data / AI development / software). Apply path on those JDs is hr@hkgai.org — do not send. Center Director Prof. Yike Guo is in seat; Chief Product Strategy Officer Chan Tik-yuen is in seat. Keep A30 / A32 / A31. HKUST CXS remaining staff this pass (Librarian Digital Strategies JR100493, Program Manager EP JR100644, IT specialists) are not KT/innovation-officer — keep A52 / A4 / A21. Macquarie official job 22221 AI Product Development and Program Management is Director-class but Additional office location is London, not Hong Kong; HK keyword search did not isolate a Hong Kong AI product chair. Keep B4. SenseTime Head of Overseas CV Platform Product and GenAI: Ting Wu in seat. SC 60809 job-detail URL returned Exception from this desk this pass — keep B172 from earlier isolation (posting end 30/09/2026) until official filled/gone. CityU NACAD is Incapsula this pass — keep A31 CDTO.",
+  },
+  {
+    id: "B238",
+    rank: 99,
+    title: "Customer Engineering Director · BOCHK AI IC",
+    org: "UiPath / Bank of China (Hong Kong)",
+    location: "Hong Kong",
+    href: "https://jobs.ashbyhq.com/uipath/26d701c2-3532-4b39-bb17-26d85caf0996",
+    closeNote: "Official Ashby uipath 26d701c2 isListed true Hong Kong · BOCHK PageUp 798 AI rows are IC · isolated 9 Sep 23:36 UTC",
+    tier: "B",
+    bands: ["capital"],
+    status: "skip",
+    pay: 4,
+    security: 3,
+    reputation: 4,
+    balance: 3,
+    fit: 2,
+    rhyme: "A services GTM chair next to agentic automation sales. Keep the bank AI lead.",
+    rhymeZh: "客户工程总监，贴着代理自动化销售。守住银行 AI 负责人。",
+    skipWhy:
+      "Official Ashby uipath 26d701c2 isListed true in Hong Kong, but the JD is Greater China Customer Engineering Director (pre-sales, platform adoption, professional-services delivery), not an LLM-era product or CVC chair. Sibling HK rows are Senior Enterprise Account Executive / Senior Partner Sales Manager / Senior Strategic Account Executive (Agentic AI Automation). Keep B4. BOCHK official PageUp 798 has no director-class AI product chair this pass; remaining AI rows are IC (AI and Digital Solutions Specialist Risk; Data & AI Specialist Corporate Banking; Senior Generative AI architectural Engineer; Senior Data Analyst AI Data Management). LinkedIn AI Innovation Manager is no longer accepting applications. CDO Personal Banking & Wealth Daniel Li is in seat. Value Partners Head of AIT Zhang Lei is in seat (Jun 2026). ChinaAMC (HK) Product Development ETF & Digital Assets Lead Hawl Shi and Head of Strategic Business Katie He are in seat, not JDs. Keep B4 / B6 / B76.",
   },
 ];
 
