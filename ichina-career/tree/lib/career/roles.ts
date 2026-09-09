@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T18:55:00Z",
+  updatedAt: "2026-09-09T18:57:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -36,7 +36,33 @@ export const roles: CareerRole[] = [
       apply: "Portal first. Job ID 5166696c-9849-4733-aba5-5c144514d716. Confirm Hong Kong seat.",
       draft: "r-4680797737198275177",
       addendum: "LinkedIn note to LIN Lin after portal: r6795721307197991422",
-      caution: "Do not email guessed hr@meitu.com.",
+      caution: "Do not email guessed hr@meitu.com. Official Visa Senior Director Innovation & Partnerships REF083278W is B162 after this if partnerships is the want.",
+    },
+  },
+  {
+    id: "B162",
+    rank: 4,
+    title: "Senior Director, Innovation and Strategic Partnerships",
+    org: "Visa",
+    location: "Hong Kong",
+    href: "https://visa.wd5.myworkdayjobs.com/Visa/job/HK---Hong-Kong-China/Senior-Director--Innovation-and-Strategic-Partnerships--Hong-Kong_REF083278W",
+    closeNote: "Workday Visa tenant · canApply true · posted 30+ days · no endDate",
+    tier: "B",
+    bands: ["cvc", "capital", "stretch"],
+    status: "live",
+    pay: 5,
+    security: 4,
+    reputation: 5,
+    balance: 3,
+    fit: 3,
+    rhyme: "Hong Kong innovation partnerships next to live products. After Meitu. Fifteen years and fluent Cantonese are stretches — do not invent either.",
+    rhymeZh: "香港创新与生态合作。美图之后。十五年与粤语都是拉伸 —— 不要编。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official Workday visa.wd5 /Visa REF083278W. HK - Hong Kong, China. canApply true.",
+      draft: "r-2983781475055829866",
+      caution: "15+ years. Fluent English, Cantonese and Mandarin on JD — do not claim Cantonese. Skip Director Client Consulting CMS/Stablecoin/AI REF083051W (consulting origination). Skip Director FP&A REF085112W.",
     },
   },
   {
@@ -847,7 +873,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "Workday External JR-68436-1. Path Hong-Kong-HK-AIA-Group-Office. AFTER B9b, before B117.",
       draft: "r-1064563125725395723",
-      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering.",
+      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering. Skip JR-68841 People Digital (Digital HR). Skip JR-67573-1 Data Analytics and AI (DS delivery). Skip JR-68248 Agency Digital Principal (Cantonese). Skip JR-69776-1 Customer Digital BD (wellness, Cantonese).",
     },
   },
   {
