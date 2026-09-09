@@ -1,7 +1,7 @@
 From 781681a053b356f7b8886edacf47c82ea6edfe01 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Wed, 9 Sep 2026 18:26:58 +0000
-Subject: [PATCH 1/4] Add private /career hunt desk gated to
+Subject: [PATCH 1/5] Add private /career hunt desk gated to
  yying2010@gmail.com.
 
 Ship ichina.co/career as a Google (Jubit SSO) lock. Only the owner email
@@ -3922,7 +3922,7 @@ index 0000000..4e9004f
 From 2b6f3ebf93c25d37b021e95c17b14c6d8fb6a60b Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Wed, 9 Sep 2026 19:11:23 +0000
-Subject: [PATCH 2/4] Refresh the hunt field: FWD venture scouting and HKPC AI
+Subject: [PATCH 2/5] Refresh the hunt field: FWD venture scouting and HKPC AI
  governance.
 
 Official Workday JR-0027501 and HKPC Phenom 1366848966. Skip OmniClear IT director and ED after isolated JDs.
@@ -4198,7 +4198,7 @@ index f99fe82..866122e 100644
 From a668635fe8ab3bff670a9f85ec7083873b6754a0 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Wed, 9 Sep 2026 19:14:34 +0000
-Subject: [PATCH 3/4] Rank FWD Group Digital Platforms after venture scouting.
+Subject: [PATCH 3/5] Rank FWD Group Digital Platforms after venture scouting.
 
 Official Workday JR-0023912. Do not spray both FWD seats. Skip Head of IM.
 ---
@@ -4261,7 +4261,7 @@ index 866122e..60e0bef 100644
 From 6cf2f35e5a4e0864f3f8887171a24ae4131c5054 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Wed, 9 Sep 2026 19:17:46 +0000
-Subject: [PATCH 4/4] Rank Manulife digitization director and AI adoption
+Subject: [PATCH 4/5] Rank Manulife digitization director and AI adoption
  manager after official Workday.
 
 B100 after B36. Optional B35. Skip BOCHK 500080 (four-year manager).
@@ -4357,6 +4357,62 @@ index 60e0bef..83d53b0 100644
    },
    {
      id: "B40b",
+-- 
+2.43.0
+
+
+From 61b4374ab068e16071a618314ead6aef4fa592ee Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Wed, 9 Sep 2026 19:20:30 +0000
+Subject: [PATCH 5/5] Skip Blackstone BXMA Asia VP after official Workday
+ isolation.
+
+Seven to ten years Asia hedge-fund manager selection. Not an AI-native seat.
+---
+ lib/career/roles.ts | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/lib/career/roles.ts b/lib/career/roles.ts
+index 83d53b0..b28180f 100644
+--- a/lib/career/roles.ts
++++ b/lib/career/roles.ts
+@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
+ import { isOpen, msUntil, urgency } from "./clock";
+ 
+ export const snapshot: CareerSnapshot = {
+-  updatedAt: "2026-09-09T19:20:00Z",
++  updatedAt: "2026-09-09T19:22:00Z",
+   thesis:
+     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
+   thesisZh:
+@@ -1312,6 +1312,27 @@ export const roles: CareerRole[] = [
+       caution: "Do not guess HR.",
+     },
+   },
++  {
++    id: "B165",
++    rank: 99,
++    title: "Vice President, Blackstone Multi-Asset Investing (BXMA) Asia",
++    org: "Blackstone",
++    location: "Hong Kong",
++    href: "https://blackstone.wd1.myworkdayjobs.com/en-US/Blackstone_Careers/job/Hong-Kong/Blackstone-Multi-Asset-Investing--BXMA----Asia--Vice-President_45356",
++    closeNote: "Workday 45356 · canApply true · posted 2 days · Absolute Return FoF",
++    tier: "cvc",
++    bands: ["capital", "stretch"],
++    status: "skip",
++    pay: 5,
++    security: 3,
++    reputation: 5,
++    balance: 2,
++    fit: 2,
++    rhyme: "Hedge-fund allocator, not an AI product or CVC seat.",
++    rhymeZh: "对冲基金配置，不是 AI 产品或 CVC 席。",
++    skipWhy:
++      "Official JD: 7–10+ years hedge fund industry, preferably Asia manager selection. Absolute Return LP investments. Fluent English and Mandarin. Not AI-native building. Skip vs Meitu B71 and Fidelity B19. Skip Talent Acquisition 45015. Skip Singapore PE IR Product 45127 vs HK seat.",
++  },
+   {
+     id: "A0c",
+     rank: 99,
 -- 
 2.43.0
 

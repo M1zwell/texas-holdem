@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T19:20:00Z",
+  updatedAt: "2026-09-09T19:22:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -1311,6 +1311,27 @@ export const roles: CareerRole[] = [
       apply: "Listing only. contact@themillsfabrica.com is general contact, not a job-apply instruction.",
       caution: "Do not guess HR.",
     },
+  },
+  {
+    id: "B165",
+    rank: 99,
+    title: "Vice President, Blackstone Multi-Asset Investing (BXMA) Asia",
+    org: "Blackstone",
+    location: "Hong Kong",
+    href: "https://blackstone.wd1.myworkdayjobs.com/en-US/Blackstone_Careers/job/Hong-Kong/Blackstone-Multi-Asset-Investing--BXMA----Asia--Vice-President_45356",
+    closeNote: "Workday 45356 · canApply true · posted 2 days · Absolute Return FoF",
+    tier: "cvc",
+    bands: ["capital", "stretch"],
+    status: "skip",
+    pay: 5,
+    security: 3,
+    reputation: 5,
+    balance: 2,
+    fit: 2,
+    rhyme: "Hedge-fund allocator, not an AI product or CVC seat.",
+    rhymeZh: "对冲基金配置，不是 AI 产品或 CVC 席。",
+    skipWhy:
+      "Official JD: 7–10+ years hedge fund industry, preferably Asia manager selection. Absolute Return LP investments. Fluent English and Mandarin. Not AI-native building. Skip vs Meitu B71 and Fidelity B19. Skip Talent Acquisition 45015. Skip Singapore PE IR Product 45127 vs HK seat.",
   },
   {
     id: "A0c",
