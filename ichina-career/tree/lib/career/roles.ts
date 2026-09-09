@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T19:45:00Z",
+  updatedAt: "2026-09-09T19:55:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -599,7 +599,13 @@ export const roles: CareerRole[] = [
     fit: 4,
     rhyme: "Bank AI that has to run. First HSBC gravity well — then digital platforms, then IWPB commercialization.",
     rhymeZh: "银行里必须能跑的 AI。汇丰第一口井 —— 再商业化，再货币。",
-    desk: { apply: "HSBC Apply Now. Rechecked live 9 Sep 19:30 UTC · validThrough 30 Sep 16:00 UTC." },
+    portalOnly: true,
+    desk: {
+      apply: "HSBC Apply Now. Rechecked live 9 Sep 19:50 UTC. Prior isolation: validThrough Wed 30 Sep 16:00 UTC.",
+      draft: "r-5150334973348395509",
+      caution:
+        "First HSBC gravity well. Then B159 (27 Sep) then B146 (19 Sep). Do not spray all HSBC seats the same week. Do not invent a numbered ML decade.",
+    },
   },
   {
     id: "B159",
@@ -1333,8 +1339,8 @@ export const roles: CareerRole[] = [
     title: "AVP, ETP Product",
     org: "HKEX",
     location: "Hong Kong",
-    href: "https://hkex.wd3.myworkdayjobs.com/HKEXCareerPage",
-    closeNote: "R004400 canApply true 9 Sep · Group Strategy R004123 slug 404",
+    href: "https://hkex.wd3.myworkdayjobs.com/HKEXCareerPage/job/HK-ONE-ES-49F/Assistant-Vice-President_R004400",
+    closeNote: "R004400 canApply true 9 Sep 19:50 UTC · official title Assistant Vice President · Equity Product Development",
     tier: "B",
     bands: ["capital", "institutions"],
     status: "live",
@@ -1345,8 +1351,11 @@ export const roles: CareerRole[] = [
     fit: 3,
     rhyme: "Exchange-traded product. Market infrastructure with a product name.",
     rhymeZh: "交易所买卖产品。市场基建，带着产品的名字。",
+    portalOnly: true,
     desk: {
-      apply: "HKEXCareerPage R004400. Do not apply Group Strategy R004123 slug — 404.",
+      apply: "HKEXCareerPage R004400. Official slug HK-ONE-ES-49F / Assistant-Vice-President_R004400.",
+      caution:
+        "Sibling Group Strategy VP is B170 R004139-1 — do not spray both the same week. Old Group Strategy R004123 slug stays 404.",
     },
   },
   {
@@ -1541,7 +1550,81 @@ export const roles: CareerRole[] = [
     rhyme: "Growth hacking with an AI label. Keep the TradFi wealth seat.",
     rhymeZh: "增长黑客，贴着 AI 标签。守住传统金融财富席。",
     skipWhy:
-      "Official Lever: 5 years user growth / growth hacking / PM; fission loops; Remote. Not a director desk. Keep B150 then optional B151. Skip Hang Seng Head of AI Adoption until an official apply.careers.hsbc.com / Hang Seng Phenom URL exists (eFinancialCareers aggregator only; CTgoodjobs already expired). Skip BlackRock Head of AI and Data Transformation GPS R263870 — San Francisco / New York, not Hong Kong. Skip AIA JR-67573-1 Data Analytics and AI vs B153/B117 (DS delivery, validThrough 30 Sep, still live). Skip HKU Research Officer AI and Industry Collaboration 537093 — closed 31 Aug 2026. Skip MTR Senior Manager AI & Digitalisation 250000Z1 — closed 9 Jul 2026.",
+      "Official Lever: 5 years user growth / growth hacking / PM; fission loops; Remote. Not a director desk. Keep B150 then optional B151. Skip Hang Seng Head of AI Adoption until an official Hang Seng Phenom URL exists (eFinancialCareers aggregator only; CTgoodjobs already expired). Skip Hang Seng Senior Manager Innovation & Ventures LinkedIn 4214290862 — LinkedIn no longer accepting; CTgoodjobs expired. Skip BlackRock Head of AI and Data Transformation GPS R263870 — San Francisco / New York, not Hong Kong. Skip AIA JR-67573-1 Data Analytics and AI vs B153/B117 (DS delivery, validThrough 30 Sep, still live). Skip HKU Research Officer AI and Industry Collaboration 537093 — closed 31 Aug 2026. Skip MTR Senior Manager AI & Digitalisation 250000Z1 — closed 9 Jul 2026. Skip Goldman PWM Talent Strategy VP 177373 — talent/HR, not AI-native. Skip Value Partners speculative career@vp.com.hk until an isolated JD exists. Skip Eastspring Director AI Research — filled Singapore 24 Aug 2026.",
+  },
+  {
+    id: "B170",
+    rank: 18,
+    title: "Group Strategy, Vice President",
+    titleZh: "集团策略副总裁",
+    org: "HKEX",
+    location: "Exchange Square, Hong Kong",
+    href: "https://hkex.wd3.myworkdayjobs.com/HKEXCareerPage/job/HK-ONE-ES-50F/Group-Strategy--Vice-President_R004139-1",
+    closeNote: "Workday R004139-1 · canApply true · posted 25 Jun 2026 · no endDate · 40-hour week",
+    tier: "B",
+    bands: ["institutions", "cvc", "stretch"],
+    status: "live",
+    pay: 4,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 3,
+    rhyme: "Exchange strategy that also weighs investments and partnerships. Forty hours named. After Meitu if the market-infra CVC is the want.",
+    rhymeZh: "交易所策略，也在称投资与合作。工时写了四十。美图之后，若市场基建 CVC 是想要的。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official Workday hkex.wd3 HKEXCareerPage R004139-1. HK-ONE ES 50/F. canApply true.",
+      draft: "r2545377456963307119",
+      caution:
+        "TA post prefers MBB — do not invent it. Official JD prefers strategy / corporate finance / exchanges, no numbered years. Sibling ETP is B40b. Do not spray both. Old R004123 slug 404.",
+    },
+  },
+  {
+    id: "B171",
+    rank: 80,
+    title: "APAC Payments - Strategy - Executive Director",
+    org: "JPMorganChase",
+    location: "Kwun Tong, Hong Kong",
+    href: "https://hk.linkedin.com/jobs/view/apac-payments-strategy-executive-director-at-jpmorganchase-4405870571",
+    closeNote: "LinkedIn Apply 6 days ago · Evenbreak aggregator close 21 Sep 2026 · official Oracle CX JS-empty",
+    tier: "B",
+    bands: ["capital", "stretch"],
+    status: "watch",
+    pay: 5,
+    security: 4,
+    reputation: 5,
+    balance: 2,
+    fit: 3,
+    rhyme: "Wholesale payments strategy next to digital rails. Official careers page still not proven this pass.",
+    rhymeZh: "批发支付策略，贴着数字轨道。官方招聘页这一轮还没证实。",
+    stretch: true,
+    desk: {
+      apply: "WATCH. Do not apply LinkedIn-only. Re-GET jpmc.fa.oraclecloud.com CX_1001 / 210763531 until postingAvailable is proven.",
+      caution:
+        "JD: 10+ years payments/banking/treasury + top-tier consulting or internal strategy. Do not invent MBB or a payments decade. Skip sibling FIG Sales ED/MD. Skip Payments Industry Solutions VP until official CX.",
+    },
+  },
+  {
+    id: "A39",
+    rank: 99,
+    title: "Senior Manager, Partnerships",
+    org: "HKSTP",
+    location: "Island East, Hong Kong",
+    href: "https://careers.hkstp.org/job/Island-East-Senior-Manager%2C-Partnerships-HK-H/1366226266/",
+    closeNote: "Phenom 1366226266 · Job Code P893 · until filled · construction / Cantonese",
+    tier: "A",
+    bands: ["institutions", "stretch"],
+    status: "skip",
+    pay: 3,
+    security: 5,
+    reputation: 4,
+    balance: 4,
+    fit: 2,
+    rhyme: "Construction partnerships with an I&T label. Keep the AI director.",
+    rhymeZh: "建造业合作，贴着创科标签。守住 AI 总监席。",
+    skipWhy:
+      "Official JD: construction and built-environment executives; government works departments; 10 years preferably construction/entrepreneurship; English + Chinese including Cantonese and Putonghua. Keep A30 Director AI and Data 1366190466 and A1 Investor Engagement.",
   },
 ];
 
