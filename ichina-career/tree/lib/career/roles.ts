@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T17:55:00Z",
+  updatedAt: "2026-09-09T18:05:00Z",
   thesis:
     "Licensed Hong Kong operator habits plus live AI products. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -441,6 +441,30 @@ export const roles: CareerRole[] = [
     },
   },
   {
+    id: "A27b",
+    rank: 18,
+    title: "Manager, University Collaborations",
+    org: "HKSTP",
+    location: "Island East, Hong Kong",
+    href: "https://careers.hkstp.org/job/Island-East-Manager%2C-University-Collaborations-HK-H/1366215966/",
+    closeNote: "Official Apply live 10 Sep · 8-year deeptech / incubation",
+    tier: "A",
+    bands: ["institutions", "cvc"],
+    status: "live",
+    pay: 3,
+    security: 4,
+    reputation: 4,
+    balance: 5,
+    fit: 4,
+    rhyme: "Eight-year university venture-building. Five-day week. After the InnoHK assistant director if that desk is too high.",
+    rhymeZh: "八年大学造企业。五天工作周。InnoHK 助理总监之后，若那层太高。",
+    portalOnly: true,
+    desk: {
+      apply: "HKSTP Apply Now. Phenom 1366215966. AFTER A27. English + Putonghua. Do not claim Cantonese.",
+      draft: "r-7994383117556414559",
+    },
+  },
+  {
     id: "B4",
     rank: 5,
     title: "Senior AI Solution Lead",
@@ -506,6 +530,32 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "HSBC Apply Now. Phenom 1369577357. After B4. Skip Director, Investment Strategy 1371461457 — House View economist, not this ops/AI seat.",
       draft: "r3331028330889342623",
+    },
+  },
+  {
+    id: "B157",
+    rank: 22,
+    title: "Head of Alts Ops Valuation Oversight",
+    org: "HSBC Global Asset Management",
+    location: "Central, Hong Kong",
+    href: "https://apply.careers.hsbc.com/job/Central-Head-of-Alts-Ops-Valuation-Oversight-HSBC-Global-Asset-Management-Hong/1367968757/",
+    closeAt: "2026-09-14T16:00:00Z",
+    closeNote: "validThrough Mon 14 Sep 16:00 UTC · GCB 4",
+    tier: "B",
+    bands: ["today", "capital", "stretch"],
+    status: "live",
+    pay: 5,
+    security: 5,
+    reputation: 5,
+    balance: 3,
+    fit: 3,
+    rhyme: "AM ops that has to hold independence. AI is on the JD as tooling, not the product. After B154. Closes 14 Sep UTC.",
+    rhymeZh: "资管运营，要守住独立性。AI 在招聘启事上是工具，不是产品。B154 之后。14 Sep UTC 截止。",
+    stretch: true,
+    desk: {
+      apply: "HSBC Apply Now. Phenom 1367968757. After B4 then B154 then this if valuation oversight is the want.",
+      draft: "r-7019214125721853508",
+      caution: "Do not invent CFA/CAIA or valuation-specialist years. Skip HKEX SVP IT Project Management R004449 vs AI-native.",
     },
   },
   {
