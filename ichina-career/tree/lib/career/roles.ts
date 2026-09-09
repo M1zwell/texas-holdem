@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T18:10:00Z",
+  updatedAt: "2026-09-09T18:20:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -513,6 +513,32 @@ export const roles: CareerRole[] = [
     desk: { apply: "HSBC Apply Now. Still live 9 Sep." },
   },
   {
+    id: "B159",
+    rank: 14,
+    title: "Business Capability and Solution Lead - Digital Platforms",
+    org: "HSBC",
+    location: "Kowloon City, Hong Kong",
+    href: "https://apply.careers.hsbc.com/job/Kowloon-City-Business-Capability-and-Solution-Lead-Digital-Platforms-Kowl/1367725557/",
+    closeAt: "2026-09-27T16:00:00Z",
+    closeNote: "validThrough Sun 27 Sep 16:00 UTC · GCB 4",
+    tier: "B",
+    bands: ["capital", "stretch"],
+    status: "live",
+    pay: 4,
+    security: 5,
+    reputation: 5,
+    balance: 3,
+    fit: 3,
+    rhyme: "AI-native and agentic banking on a digital-platform desk. After the AI solution lead. Eight-to-twelve-year consulting stretch.",
+    rhymeZh: "数字平台上的原生 AI 与智能体银行。先 AI 方案负责人。八到十二年咨询拉伸。",
+    stretch: true,
+    desk: {
+      apply: "HSBC Apply. After B4. GCB 4. 8–12 years management consulting / enterprise strategy / business architecture — do not invent.",
+      draft: "r1038150271801325589",
+      caution: "Skip Senior Strategic Planner 1367731657 (cost/FTE). Skip Sr AD 1370245557 (GPS architecture). Skip Treasury BM 1370434357. Skip Alts Business Architect 1369577157 vs B154.",
+    },
+  },
+  {
     id: "B146",
     rank: 15,
     title: "AI/ML Design Commercialization Manager, IWPB",
@@ -658,7 +684,7 @@ export const roles: CareerRole[] = [
     title: "Applied AI Lead, Executive Director",
     org: "Morgan Stanley",
     location: "Hong Kong",
-    href: "https://ms.wd5.myworkdayjobs.com/External",
+    href: "https://ms.wd5.myworkdayjobs.com/External/job/Hong-Kong-Hong-Kong/Applied-AI-Lead--Executive-Director--Enterprise-Technology-Services_PT-JR037195",
     tier: "B",
     bands: ["capital"],
     status: "live",
@@ -667,9 +693,15 @@ export const roles: CareerRole[] = [
     reputation: 5,
     balance: 3,
     fit: 4,
-    rhyme: "Applied AI at a markets house. Reputation ceiling, bank hours.",
-    rhymeZh: "市场机构里的应用 AI。名声天花板，银行工时。",
-    desk: { apply: "Workday. Cover r2694556748870183470.", draft: "r2694556748870183470" },
+    rhyme: "Applied AI at a markets house. Reputation ceiling, bank hours. Twelve-year / five-year VP stretch — do not invent ETS years.",
+    rhymeZh: "市场机构里的应用 AI。名声天花板，银行工时。十二年 / 五年 VP 拉伸 —— 不要编造 ETS 年资。",
+    stretch: true,
+    desk: {
+      apply: "Official Workday External PT-JR037195. canApply true. Hong Kong. Posted 30+ days.",
+      draft: "r2694556748870183470",
+      addendum: "r3980890194948961269",
+      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years.",
+    },
   },
   {
     id: "B72",
