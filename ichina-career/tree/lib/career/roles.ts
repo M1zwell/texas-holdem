@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T21:20:00Z",
+  updatedAt: "2026-09-09T21:40:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -74,7 +74,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
     closeAt: "2026-09-10T17:00:00+08:00",
-    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page live 9 Sep 21:00 UTC",
+    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page live 9 Sep 21:40 UTC"
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -99,7 +99,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Digital-Currencies-Hong/1369854357/",
     closeAt: "2026-09-10T16:00:00Z",
-    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 21:00 UTC",
+    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 21:40 UTC"
     tier: "B",
     bands: ["today", "capital"],
     status: "live",
@@ -124,7 +124,7 @@ export const roles: CareerRole[] = [
     location: "Hung Hom, Hong Kong",
     href: "https://sunlife.wd3.myworkdayjobs.com/Experienced-Jobs/job/Hunghom-Kowloon-Hong-Kong/AVP--Agency-Digital-Lead_JR00126149-3",
     closeAt: "2026-09-10T23:59:00+08:00",
-    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS canApply true rechecked 9 Sep 21:00 UTC · endDate 11 Sep 2026",
+    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS canApply true rechecked 9 Sep 21:40 UTC · endDate 11 Sep 2026"
     tier: "B",
     bands: ["today", "capital", "stretch"],
     status: "live",
@@ -563,7 +563,7 @@ export const roles: CareerRole[] = [
     org: "Hong Kong Baptist University",
     location: "Kowloon Tong, Hong Kong",
     href: "https://fa-ewqq-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/25260765",
-    closeNote: "Oracle 25260765 · until filled · posted 3 Jun 2026",
+    closeNote: "Oracle 25260765 · until filled · posted 3 Jun 2026 · official ExternalPostedEndDate null rechecked 9 Sep 21:40 UTC · aggregator 1 Sep is stale"
     tier: "A",
     bands: ["institutions", "cvc", "stretch"],
     status: "live",
@@ -579,7 +579,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "HKBU e-Recruitment only. Oracle job 25260765. Review ongoing until filled. Written test for shortlist. 2-year fixed term.",
       draft: "r7973575122747931683",
-      caution: "English + Chinese. Do not claim Cantonese. Do not email HRO. Do not invent 10 incubation years. Skip Creative Hub EO and Research Office grants seats vs this KTO desk.",
+      caution: "English + Chinese. Do not claim Cantonese. Do not email HRO. Do not invent 10 incubation years. Skip Creative Hub EO and Research Office grants seats vs this KTO desk. Aggregator deadline 1 Sep 2026 is stale — official Oracle ExternalPostedEndDate is null; re-GET 25260765 immediately before paste.",
     },
   },
   {
@@ -2014,10 +2014,10 @@ export const roles: CareerRole[] = [
     confirmSeat: true,
     portalOnly: true,
     desk: {
-      apply: "Official Ashby d95ac1b9. Confirm Hong Kong on the form. After OKX B73; pick this or B177, not both the same week.",
+      apply: "Official Ashby d95ac1b9. Confirm Hong Kong on the form. After OKX B73; pick this or B177 or Bjak B186, not all the same week.",
       draft: "r-1128762593538257550",
       caution:
-        "4+ years AI/ML or developer-platform product, including leading a product function. Do not invent a research-lab decade. Skip sibling Head of Open Source Ecosystem f1f59760 — no Hong Kong location. Skip Sentient APAC Director of Operations until official Ashby with HK. Skip CSC Holdings AI Fund Investment Director until an official cscholdings.com careers URL exists — do not email info@cscholdings.com. Skip HKU School of Innovation Lecturer 536821 vs A31/A4.",
+        "4+ years AI/ML or developer-platform product, including leading a product function. Do not invent a research-lab decade. Skip sibling Head of Open Source Ecosystem f1f59760 — no Hong Kong location. Skip Sentient APAC Director of Operations until official Ashby with HK. Skip CSC Holdings AI Fund Investment Director until an official cscholdings.com careers URL exists — do not email info@cscholdings.com. Skip HKU School of Innovation Lecturer 536821 vs A31/A4. Skip Binance AI Chatbot PM 4e1e4873 and PM AI Agent Harness 0a03c5e3 — IC, not director-class; keep OKX B73.",
     },
   },
   {
@@ -2040,6 +2040,76 @@ export const roles: CareerRole[] = [
     rhymeZh: "AI 基金还在聚合站上。等公司自己的门。",
     skipWhy:
       "HKEX 235 exists, but this vacancy is Joblum-only. No official cscholdings.com Apply URL isolated. Do not email info@cscholdings.com as apply. Keep Meitu B71 / Tencent B72 / HashKey 611.",
+  },
+  {
+    id: "B186",
+    rank: 26,
+    title: "CEO, AI Investing",
+    titleZh: "人工智能投资首席执行官",
+    org: "Bjak / ActAI",
+    location: "Hong Kong / remote",
+    href: "https://jobs.ashbyhq.com/bjakcareer/66aedc1a-753c-43e7-806a-3b21f64ce9fd",
+    closeNote: "Official Ashby 66aedc1a · isListed true · HK · published 1 Sep 2026 · no deadline",
+    tier: "cvc",
+    bands: ["cvc", "capital"],
+    status: "live",
+    pay: 4,
+    security: 2,
+    reputation: 2,
+    balance: 2,
+    fit: 5,
+    rhyme: "A consumer investing line that has to ship. After the exchange product seat if founding the book is the want.",
+    rhymeZh: "消费投资产品线，必须做出来。先交易所产品席，若要自己开这一本账。",
+    confirmSeat: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official Ashby 66aedc1a. Confirm Hong Kong on the form. After OKX B73; pick this or Sentient B184 or OKX B177, not all the same week.",
+      draft: "r-4142603404519534271",
+      caution:
+        "SEA insurtech building ActAI. CEO-of-a-line, not a listed-bank C-suite. Do not invent a consumer-wealth P&L decade. Do not email a guessed Bjak HR inbox. Do not spray sibling CEO AI Finance / Neobank / Stockbroking, Business Unit Head, COO, or IC PM the same week. Skip HKSTP Head of Investment 1358259866 — application link no longer valid. Skip PolyU Manager IP 260908015-IE (life-science IP + Cantonese) vs A4/A21.",
+    },
+  },
+  {
+    id: "A43",
+    rank: 99,
+    title: "Head of Investment",
+    org: "Hong Kong Science and Technology Parks Corporation",
+    location: "Island East, Hong Kong",
+    href: "https://careers.hkstp.org/job/Island-East-Head-of-Investment-HK-H/1358259866/",
+    closeNote: "Phenom 1358259866 · application link no longer valid 9 Sep 21:40 UTC",
+    tier: "A",
+    bands: ["institutions", "cvc", "stretch"],
+    status: "skip",
+    pay: 4,
+    security: 5,
+    reputation: 4,
+    balance: 3,
+    fit: 3,
+    rhyme: "The park's CVC head seat left the door. Keep the AI director.",
+    rhymeZh: "园区 CVC 负责人那扇门关了。守住人工智能总监。",
+    skipWhy:
+      "Official careers.hkstp.org 1358259866: The job application link is no longer valid. Twenty-year VC / early-stage stretch anyway. Keep A30 Director AI and Data / A1 Manager Investor Engagement / Meitu B71.",
+  },
+  {
+    id: "A44",
+    rank: 99,
+    title: "Manager (Intellectual Property Management), KTEO",
+    org: "PolyU",
+    location: "Hung Hom, Hong Kong",
+    href: "https://jobs.polyu.edu.hk/job_detail.php?job=260908015",
+    closeNote: "Official 260908015-IE · consideration from 22 Sep 2026 until filled · posted 8 Sep 2026",
+    tier: "A",
+    bands: ["institutions", "stretch"],
+    status: "skip",
+    pay: 3,
+    security: 5,
+    reputation: 5,
+    balance: 5,
+    fit: 1,
+    rhyme: "A life-science IP desk that asks for Cantonese. Keep the entrepreneurship seat.",
+    rhymeZh: "知识产权经理要生命科学与粤语。守住创业席。",
+    skipWhy:
+      "Official PolyU 260908015-IE is live, but the JD requires a Life Science / Biomedical / Applied Biology degree, six years biotech/pharma IP, and fluency in Cantonese and Putonghua. Do not claim Cantonese. Skip vs A4 SM Entrepreneurship 260827002 and A21 Director KTEO 260827012-IE.",
   },
 ];
 
