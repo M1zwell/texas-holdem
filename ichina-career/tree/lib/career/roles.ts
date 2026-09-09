@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T18:50:00Z",
+  updatedAt: "2026-09-09T18:55:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -366,7 +366,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "jobs1.cityu.edu.hk NACAD Apply Now. Ref R/305/26. LinkedIn 4463824877 is a mirror.",
       draft: "r981486238148765924",
-      caution: "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk.",
+      caution: "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk. Skip HKU CIO & University Librarian 533668 (Korn Ferry HKU-CIO@kornferry.com, dual librarian desk) vs this alumni CDTO.",
     },
   },
   {
@@ -748,7 +748,7 @@ export const roles: CareerRole[] = [
     rhyme: "Asia AI strategy in a life-company. Then digitization (B100), then optional manager (B35).",
     rhymeZh: "寿险公司的亚洲 AI 策略。然后数字化（B100），再可选经理（B35）。",
     desk: {
-      apply: "Tenant manulife.wd3.myworkdayjobs.com/MFCJH_Jobs. Cover r5801903241139313616.",
+      apply: "Tenant manulife.wd3.myworkdayjobs.com/MFCJH_Jobs. Cover r5801903241139313616. Rechecked canApply true, endDate 2026-09-30.",
       draft: "r5801903241139313616",
       addendum: "r4654668089183427838",
     },
