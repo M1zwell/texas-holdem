@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T23:10:00Z",
+  updatedAt: "2026-09-09T23:13:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -19,7 +19,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong / Shenzhen / Xiamen",
     href: "https://hr.meitu.com/en/jobSocial/5166696c-9849-4733-aba5-5c144514d716",
     closeAt: undefined,
-    closeNote: "Official hr.meitu.com jobSocial 5166696c · posted 24 Aug 2026 · Shenzhen / Hong Kong / Xiamen · HTTP 200 rechecked 9 Sep 23:04 UTC with a browser UA (418 without) · www.meitu.com/en/jobs/ is 404 · confirm HK seat",
+    closeNote: "Official hr.meitu.com jobSocial 5166696c · posted 24 Aug 2026 · Shenzhen / Hong Kong / Xiamen · HTTP 200 rechecked 9 Sep 23:12 UTC with a browser UA · www.meitu.com/en/jobs/ is 404 · confirm HK seat",
     tier: "ideal",
     bands: ["cvc", "capital"],
     status: "live",
@@ -74,7 +74,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
     closeAt: "2026-09-10T17:00:00+08:00",
-    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 9 Sep 23:07 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
+    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 9 Sep 23:11 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -100,7 +100,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Digital-Currencies-Hong/1369854357/",
     closeAt: "2026-09-10T16:00:00Z",
-    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 23:07 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
+    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 23:11 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
     tier: "B",
     bands: ["today", "capital"],
     status: "live",
@@ -3393,6 +3393,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "经典基金产品和营销数字。守住应用 AI 董事总经理和客户 AI 席。",
     skipWhy:
       "Official ms.wd5 External CXS JR039202 canApply true in Hong Kong, but the JD is International Investment Management product development (UCITS/AIF vehicles, $300bn, legal structure / post-launch product management), not Applied AI. Keep B34 PT-JR037195. Skip Asia WM Advisory Portfolio Management VP JR042176 — classic advisory PM. Asia WM GenAI Product Owner VP remains aggregator-only this pass. Prudential Director, Digital 26050566-1 is official canApply true at Hong Kong Group Head Office, but it is an individual-contributor digital marketing / search / website / lead-nurture director with AI as on-site search performance — keep B4 / B36 / B163. Prudential Associate Director Operations and Health Data Analytics 26060106 is health-ops analytics / fraud. Official AI Enablement Lead 26030572-1 is Singapore Group Head Office; LinkedIn HK is not the official Apply. CITO Alex Wong, Group CDAO Puneet Bhardwaj, and Director IT Strategy Data & AI Billy Yeung are in seat. AIA TDA Transformation AI Product Principal JR-67284 still returns 0 on External CXS; keep B117 JR-68056. Skip AIA Solution Architect Principal JR-66021 vs B117. Recruiter PE/VC (NexusSearch, CSC AI Fund, Robert Half ED Growth, Captar) unnamed — after APPROVE only. ByteDance HK this pass remains BytePlus sales/CS.",
+  },
+  {
+    id: "B235",
+    rank: 99,
+    title: "ETF Product Manager VP · remaining non-HK Goldman AI",
+    org: "Citi / Goldman Sachs",
+    location: "Hong Kong / New York / Singapore",
+    href: "https://jobs.citi.com/job/hong-kong/etf-product-manager-vp-hong-kong/287/97882400640",
+    closeNote: "Official jobs.citi.com 97882400640 · Workday 26978373 canApply true · Goldman Applied AI VPs NY/SG this pass · isolated 9 Sep 23:12 UTC",
+    tier: "B",
+    bands: ["capital"],
+    status: "skip",
+    pay: 4,
+    security: 4,
+    reputation: 5,
+    balance: 3,
+    fit: 2,
+    rhyme: "ETF servicing with an AI line. Keep the AI adoption chair in the same house.",
+    rhymeZh: "ETF 托管带着一行 AI。守住同一家里的 AI 采用席。",
+    skipWhy:
+      "Official jobs.citi.com 97882400640 / citi.wd5 26978373 canApply true in Hong Kong, but the JD is Investor Services APAC ETF servicing build-out (6–10 years ETF platforms) with AI as market-insight and operating-model language. Keep B6 SVP AI Adoption. Do not spray both Citi seats. Goldman higher.gs.com Applied AI / GenAI product VPs this pass are New York WM Ops 177843, Singapore Foundation Engineering 162208 / 151951, and NY/NJ/Toronto AI Engineering 162213 — not Hong Kong. Keep MS B34. OKX Greenhouse has no Head of Product AI & Agent title this pass; LinkedIn Head of Product is not an extra official Id — keep B73 then ONE VP. CUHK senior appointments this pass are Dean of Education / Neuroscience / CUHK(SZ) Medicine — academic; KTO Director still in seat. Schroders / Eastspring CXS 422 from this IP. BlackRock wd1 404. UBS Head of AI Orchestration Aidan Bonel is in seat. Eastspring Head of Data & AI Ritchie Ng is in seat in Singapore. AIRDI remains A54 watch.",
   },
 ];
 
