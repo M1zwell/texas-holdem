@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T19:12:00Z",
+  updatedAt: "2026-09-09T19:16:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -807,7 +807,34 @@ export const roles: CareerRole[] = [
       apply: "Official Workday fwd.wd3 FWDcareersite JR-0027501. Hong Kong - Taikoo Shing (Group Office). canApply true.",
       draft: "r-5576916900423828272",
       caution:
-        "Minimum 8 years health technology / insurtech / digital health / innovation or venture partnerships — do not invent a health-tech decade. LinkedIn 4451617224 is a mirror. Skip Director, GenAI Digital Delivery R-0022016 (15+ years SWE/architecture, CS degree) vs B4/B34. Skip OCBC VP Head of Digital Wealth & Payments until an official careers URL exists (LinkedIn-only 4460947342). Skip RGA Executive Director Digital Product Solutions J27314 — official careers: no longer posted.",
+        "Minimum 8 years health technology / insurtech / digital health / innovation or venture partnerships — do not invent a health-tech decade. LinkedIn 4451617224 is a mirror. Sibling Group Digital Platforms is B164 — do not spray both. Skip Director, GenAI Digital Delivery R-0022016 (15+ years SWE/architecture, CS degree) vs B4/B34. Skip Head of Investment Management JR-0027167 (15-year insurance AM / CFA). Skip OCBC VP Head of Digital Wealth & Payments until an official careers URL exists (LinkedIn-only 4460947342). Skip RGA Executive Director Digital Product Solutions J27314 — official careers: no longer posted.",
+    },
+  },
+  {
+    id: "B164",
+    rank: 18,
+    title: "Director, Group Digital Platforms",
+    org: "FWD Group",
+    location: "Taikoo Shing (Group Office), Hong Kong",
+    href: "https://fwd.wd3.myworkdayjobs.com/FWDcareersite/job/Hong-Kong---Taikoo-Shing-Group-Office/Director--Product-Management_JR-0023912",
+    closeNote: "Workday FWDcareersite JR-0023912 · canApply true · posted 30+ days · slug Director--Product-Management",
+    tier: "B",
+    bands: ["capital", "stretch"],
+    status: "live",
+    pay: 4,
+    security: 3,
+    reputation: 4,
+    balance: 3,
+    fit: 3,
+    rhyme: "Regional digital product platform for distribution. After venture scouting. Ten-year insurtech and seven-year mobile are stretches.",
+    rhymeZh: "区域数字产品平台，给分销用。先风投扫描。十年保险科技与七年移动是拉伸。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official Workday JR-0023912. Title Director, Group Digital Platforms. Path Director--Product-Management. AFTER B163. Do not spray both FWD seats.",
+      draft: "r4900752038167597996",
+      caution:
+        "10+ years e-commerce/InsurTech-Fintech and 7+ years mobile + Agile product. Do not invent those years. Skip Head of Investment Management JR-0027167 vs this product seat.",
     },
   },
   {
