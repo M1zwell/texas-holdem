@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T23:40:00Z",
+  updatedAt: "2026-09-09T23:50:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -74,7 +74,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
     closeAt: "2026-09-10T17:00:00+08:00",
-    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 9 Sep 23:38 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
+    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 9 Sep 23:42 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -355,7 +355,7 @@ export const roles: CareerRole[] = [
     location: "Island East, Hong Kong",
     href: "https://careers.hkstp.org/job/Island-East-Director%2C-AI-and-Data-HK-H/1366190466/",
     closeAt: "2026-09-13T16:00:00Z",
-    closeNote: "validThrough Sun 13 Sep 16:00 UTC · Apply now rechecked 9 Sep 23:04 UTC · page says remain open until filled · 15-year stretch · Head of Investment 1358259866 filled (B233)",
+    closeNote: "validThrough Sun 13 Sep 16:00 UTC · Apply now rechecked 9 Sep 23:04 UTC · page says remain open until filled · 15-year stretch · Head of Investment 1358259866 filled (B233) · HSITP land/HPC BD is A58 skip",
     tier: "A",
     bands: ["today", "institutions", "stretch"],
     status: "live",
@@ -371,7 +371,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "HKSTP Apply Now. Phenom 1366190466. After A1 if the director seat is the want.",
       draft: "r4261511564452071214",
-      caution: "Do not email hr@hkstp.org. Cantonese on JD — do not claim. Do not invent 15 AI/DS years. Cyberport Director of Strategic Business Planning is A36 after this if public-mission strategy is the want.",
+      caution: "Do not email hr@hkstp.org. Cantonese on JD — do not claim. Do not invent 15 AI/DS years. Cyberport Director of Strategic Business Planning is A36 after this if public-mission strategy is the want. Skip HSITP Director BD / AD Supercomputing / SM Ecosystem Partnership (A58). Do not email recruit@hsitp.org.",
     },
   },
   {
@@ -3520,6 +3520,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "CINO 观察席下面的 IT 经理。守住创业经理或母校 CDTO。",
     skipWhy:
       "Official HKBU CX_1 search still lists Information Technology Manager (Workflow / Cloud / AI) 26270154, Digital Experience Specialist 26270044 / Senior 26270060, and Assistant Director of Finance 25260813 — IC / finance vs A31 CityU CDTO and A34 SM Entrepreneurship. Keep A34 25260765 which is still in search. A52 CINO 25260577 ById remains but public search TotalJobsCount 0 — watch, do not paste. AIA JR-67284 still 0 on External CXS; keep B176 watch. MS External still has no Asia WM GenAI Product Owner VP Id; keep B34. Cyberport DAI260819W remains A37 skip. HKSTP Head of Investment 1358259866 remains filled. HSBC B4 1330173757 still Apply now through Wed 30 Sep 16:00 UTC. Citi B6 still Apply.",
+  },
+  {
+    id: "A58",
+    rank: 99,
+    title: "Director, Business Development · remaining HSITP land / HPC",
+    org: "Hong Kong-Shenzhen Innovation and Technology Park",
+    location: "Hong Kong / Shenzhen",
+    href: "https://careers.hsitp.org/job/Hong-Kong-Director,-Business-Development-Hong-Kong-SAR/1365593466/",
+    closeNote: "Official Phenom 1365593466 Apply now · validThrough Fri 27 Nov 16:00 UTC · land/lease BD · isolated 9 Sep 23:50 UTC",
+    tier: "A",
+    bands: ["institutions"],
+    status: "skip",
+    pay: 4,
+    security: 4,
+    reputation: 4,
+    balance: 3,
+    fit: 1,
+    rhyme: "A land-lease chair on the park. Keep the AI-and-data director.",
+    rhymeZh: "园区卖地席。守住人工智能与数据总监。",
+    skipWhy:
+      "Official careers.hsitp.org search returned 14 jobs this pass. Director, Business Development 1365593466 Apply now through Fri 27 Nov 16:00 UTC, but the JD is sales/leasing for Batch 2/3 land (EOIs, land-lease tenders, lobby market players) — 15 years property development / land administration, not AI product or CVC. Associate Director, Supercomputing Center 1364417766 Apply now through Sat 31 Oct 16:00 UTC is HPC/GPU data-centre P&L vs A37. Senior Manager, Ecosystem Development (Strategic Partnership) 1366912566 Apply now through Fri 27 Nov is internal process / budget / counterparty research, not partnership CVC — keep A1 / A27. Sean Chen is Associate Director, AI & Data Science in seat; do not invent an HSITP Director AI vacancy. Do not email recruit@hsitp.org. Keep A30 / A36 / Meitu B71. HKU jobs.hku.hk recovered HTTP 200 this pass; CIO 533668 still has no Apply now and Flora Ng is in seat (A50); remaining board is academic / IT IC vs A31. ByteDance official HK search API total 0. AIRDI official DPO page still board-only — keep A54 watch. InvestHK / B76 / B69 TODAY clocks still open at 9 Sep 23:42 UTC.",
   },
 ];
 
