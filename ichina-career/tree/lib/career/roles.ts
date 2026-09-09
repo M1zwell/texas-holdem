@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T22:50:00Z",
+  updatedAt: "2026-09-09T22:55:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -74,7 +74,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
     closeAt: "2026-09-10T17:00:00+08:00",
-    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 9 Sep 22:41 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s",
+    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 9 Sep 22:50 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -100,7 +100,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Digital-Currencies-Hong/1369854357/",
     closeAt: "2026-09-10T16:00:00Z",
-    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 22:41 UTC · use apply.careers.hsbc.com slug URL",
+    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 22:50 UTC · use apply.careers.hsbc.com slug URL",
     tier: "B",
     bands: ["today", "capital"],
     status: "live",
@@ -125,7 +125,7 @@ export const roles: CareerRole[] = [
     location: "Hung Hom, Hong Kong",
     href: "https://sunlife.wd3.myworkdayjobs.com/Experienced-Jobs/job/Hunghom-Kowloon-Hong-Kong/AVP--Agency-Digital-Lead_JR00126149-3",
     closeAt: "2026-09-10T23:59:00+08:00",
-    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS canApply true rechecked 9 Sep 22:41 UTC · endDate 11 Sep 2026 · title AVP, Agency Digital Strategy & Development",
+    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS canApply true rechecked 9 Sep 22:50 UTC · endDate 11 Sep 2026 · title AVP, Agency Digital Strategy & Development",
     tier: "B",
     bands: ["today", "capital", "stretch"],
     status: "live",
@@ -205,7 +205,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://hkmu.taleo.net/careersection/ex_full_time/jobdetail.ftl?job=26001XV&lang=en",
     closeAt: "2026-09-14T23:59:00+08:00",
-    closeNote: "Sun 14 Sep 2026, 11:59 p.m. · Taleo hkmu.taleo.net 26001XV still contains posting 9 Sep 22:40 UTC",
+    closeNote: "Sun 14 Sep 2026, 11:59 p.m. · Taleo career section unavailable from this desk 9 Sep 22:51 UTC · keep 26001XV until 14 Sep unless the posting is confirmed gone",
     tier: "A",
     bands: ["today", "institutions", "stretch"],
     status: "live",
@@ -919,7 +919,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://manulife.wd3.myworkdayjobs.com/MFCJH_Jobs/job/Hong-Kong/Senior-Director---Director-AI---Data-Strategy---Transformation-Lead_JR26071432",
     closeAt: "2026-09-30T23:59:00+08:00",
-    closeNote: "Official MFCJH_Jobs CXS JR26071432 · canApply true · endDate 2026-09-30 · title Senior Director / Director AI & Data Strategy & Transformation Lead · rechecked 9 Sep 22:40 UTC",
+    closeNote: "Official MFCJH_Jobs CXS JR26071432 · canApply true · endDate 2026-09-30 · title Senior Director / Director AI & Data Strategy & Transformation Lead · rechecked 9 Sep 22:52 UTC",
     tier: "B",
     bands: ["capital"],
     status: "live",
@@ -996,7 +996,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://fil.wd3.myworkdayjobs.com/001/job/Hong-Kong-Office-New/Product-Owner---Multi-Asset_J69405",
     closeAt: "2026-09-30T23:59:00+08:00",
-    closeNote: "Official fil.wd3 /001 CXS J69405 · canApply true · endDate 2026-09-30 · recovered 9 Sep 22:10 UTC · rechecked 9 Sep 22:40 UTC",
+    closeNote: "Official fil.wd3 /001 CXS J69405 · canApply true · endDate 2026-09-30 · recovered 9 Sep 22:10 UTC · rechecked 9 Sep 22:52 UTC · slug Hong-Kong-Office-New",
     tier: "B",
     bands: ["capital"],
     status: "live",
@@ -2112,7 +2112,7 @@ export const roles: CareerRole[] = [
     org: "Bjak / ActAI",
     location: "Hong Kong / remote",
     href: "https://jobs.ashbyhq.com/bjakcareer/66aedc1a-753c-43e7-806a-3b21f64ce9fd",
-    closeNote: "Official Ashby 66aedc1a · isListed true · HK · published 1 Sep 2026 · no deadline",
+    closeNote: "Official Ashby 66aedc1a · isListed true · HK · published 1 Sep 2026 · no deadline · rechecked 9 Sep 22:51 UTC",
     tier: "cvc",
     bands: ["cvc", "capital"],
     status: "live",
@@ -2129,7 +2129,7 @@ export const roles: CareerRole[] = [
       apply: "Official Ashby 66aedc1a. Confirm Hong Kong on the form. After OKX B73; pick this or Sentient B184 or OKX B177, not all the same week.",
       draft: "r-4142603404519534271",
       caution:
-        "SEA insurtech building ActAI. CEO-of-a-line, not a listed-bank C-suite. Do not invent a consumer-wealth P&L decade. Do not email a guessed Bjak HR inbox. Do not spray sibling CEO AI Finance / Neobank / Stockbroking, Business Unit Head, COO, Head of Strategy and Product 37ebfc14 (B205) or clone 639c1f04, CTO 8abc814e, Founder's Office Lead 1111c947, PM AI Finance 6a711a8f, or IC PM / PO Technical 2ee74aa2 the same week. Noah Nexus careers@ is B219 watch — after APPROVE only.",
+        "SEA insurtech building ActAI. CEO-of-a-line, not a listed-bank C-suite. Do not invent a consumer-wealth P&L decade. Do not email a guessed Bjak HR inbox. Do not spray sibling CEO AI Finance 57d5dcf7 / Neobank 3e5e7d17 / Stockbroking 25ee08d2, Business Unit Head cluster, Director Business Operations e0d75e26, Technical Product Manager AI Investing 8671b8b7 (B231), Head of Strategy and Product 37ebfc14 (B205) or clone 639c1f04, CTO 8abc814e, Founder's Office Lead 1111c947, PM AI Finance 6a711a8f, or IC PM / PO Technical 2ee74aa2 the same week. Noah Nexus careers@ is B219 watch — after APPROVE only.",
     },
   },
   {
@@ -3008,7 +3008,7 @@ export const roles: CareerRole[] = [
     rhyme: "Alumni fundraising, not knowledge transfer. Keep the innovation-officer chairs.",
     rhymeZh: "校友筹款，不是知识转移。守住创新官席。",
     skipWhy:
-      "Official HKUST Workday CXS JR100007-1 canApply true, but it is Development & Alumni Office fundraising. Keep A31 CityU CDTO, A52 HKBU CINO, A4 PolyU entrepreneurship, A21 Director KTEO. Full HKUST staff board still has no remaining KT/entrepreneurship director-class seat this pass.",
+      "Official HKUST Workday CXS JR100007-1 canApply true, but it is Development & Alumni Office fundraising. Keep A31 CityU CDTO, A52 HKBU CINO, A4 PolyU entrepreneurship, A21 Director KTEO. Remaining HKUST staff this pass (A56): Assistant Manager Roger King Center family office JR100558 through 30 Sep; Assistant Manager Industry Engagement JR100563. Still no KT/entrepreneurship director-class seat.",
   },
   {
     id: "B220",
@@ -3287,6 +3287,48 @@ export const roles: CareerRole[] = [
     rhymeZh: "经典投资领导席，而且已经有人。守住 AI 方案负责人。",
     skipWhy:
       "Official apply.careers.hsbc.com 1355539357 is Head of Equities and Multi-Assets at Hang Seng Investment — classic 15-year IC / HK-China equity and multi-asset leadership, not LLM-era building. Rechecked 9 Sep 22:42 UTC: Sorry, this position has been filled. Keep B4. SPM Multi-Assets 1356951157 remains B207 skip. ASTRI Director Cyber Security astri.org/career/director-cyber-security-13/ is 404 this pass — keep A22 then optional A32 / A35. OCBC AI Product Builder VP JR00009245 is Singapore. Manulife AVP Global Operations AI JR26060018 and Sun Life VP Enterprise Data and AI Platforms JR00127544 are Toronto.",
+  },
+  {
+    id: "B231",
+    rank: 99,
+    title: "CEO AI Finance / Neobank / Stockbroking · remaining HK BU heads",
+    org: "Bjak / ActAI",
+    location: "Hong Kong / remote",
+    href: "https://jobs.ashbyhq.com/bjakcareer/57d5dcf7-a46c-42b3-8a66-204d52ef4671",
+    closeNote: "Official Ashby isListed true · CEO AI Finance 57d5dcf7 · Neobank 3e5e7d17 · Stockbroking 25ee08d2 · TPM 8671b8b7 · isolated 9 Sep 22:51 UTC",
+    tier: "cvc",
+    bands: ["cvc", "capital"],
+    status: "skip",
+    pay: 4,
+    security: 2,
+    reputation: 2,
+    balance: 2,
+    fit: 3,
+    rhyme: "Sibling CEO lines next to AI Investing. Keep one chair.",
+    rhymeZh: "并列的 CEO 产品线，贴着 AI 投资席。只守一把椅子。",
+    skipWhy:
+      "Official Ashby bjakcareer still lists sibling CEO, AI Finance 57d5dcf7, CEO, AI Neobank 3e5e7d17, and CEO, AI Stockbroking 25ee08d2 in Hong Kong, plus Director Business Operations e0d75e26, Business Unit Head cluster (wealth / payments / stock / travel FX / email / Hong Kong), and Technical Product Manager - AI Investing 8671b8b7. Keep CEO, AI Investing B186. Do not spray the clone CEO lines or BU heads the same week. CSC Holdings AI Fund and Robert Half ED Growth Investment AI & Hardware remain aggregator / unnamed-employer — recruiter packs after APPROVE only. ByteDance HK LinkedIn this pass is BytePlus sales/CS, not a director AI-product JD. Goldman higher.gs.com HK this pass is campus AM analyst 171414 and FICC e-trading engineer 172357 — skip vs B4.",
+  },
+  {
+    id: "A56",
+    rank: 99,
+    title: "Remaining staff — Family Office AM / Industry Engagement",
+    org: "The Hong Kong University of Science and Technology",
+    location: "Clear Water Bay / Kwun Tong, Hong Kong",
+    href: "https://hkust.wd102.myworkdayjobs.com/HKUST/job/Clear-Water-Bay-Campus-Hong-Kong/Assistant-Manager--Roger-King-Center-for-Asian-Family-Business-and-Family-Office----School-of-Business-and-Management_JR100558",
+    closeNote: "Official HKUST CXS JR100558 canApply true · endDate 2026-09-30 · JR100563 industry engagement · isolated 9 Sep 22:52 UTC",
+    tier: "A",
+    bands: ["institutions"],
+    status: "skip",
+    pay: 2,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 1,
+    rhyme: "A family-office centre assistant manager. Keep the innovation-officer chairs.",
+    rhymeZh: "家族办公室中心助理经理。守住创新官席。",
+    skipWhy:
+      "Official HKUST CXS still has no KT/entrepreneurship director. JR100558 Assistant Manager, Roger King Center for Asian Family Business and Family Office canApply true through 30 Sep 2026 — assistant manager, not InvestHK SVP FO. JR100563 Assistant Manager Industry Engagement and Student Development is student/industry engagement, not KT director. Keep A31 / A52 / A4 / A21. Alumni Affairs remains A53. HKMU Taleo career section is unavailable from this desk this pass — keep A33 26001XV until 14 Sep unless confirmed gone. HKU jobs.hku.hk redirected to IDP; remaining HKU this pass is academic (Assistant Professor AI + Social Contexts 537295), not a CIO/KT director. CUHK faculty AI communication 260001AA is academic; KTO Director still in seat.",
   },
 ];
 
