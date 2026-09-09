@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T20:35:00Z",
+  updatedAt: "2026-09-09T21:15:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -74,7 +74,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
     closeAt: "2026-09-10T17:00:00+08:00",
-    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email",
+    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page live 9 Sep 21:00 UTC",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -99,7 +99,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Digital-Currencies-Hong/1369854357/",
     closeAt: "2026-09-10T16:00:00Z",
-    closeNote: "validThrough Thu 10 Sep 16:00 UTC",
+    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 21:00 UTC",
     tier: "B",
     bands: ["today", "capital"],
     status: "live",
@@ -124,7 +124,7 @@ export const roles: CareerRole[] = [
     location: "Hung Hom, Hong Kong",
     href: "https://sunlife.wd3.myworkdayjobs.com/Experienced-Jobs/job/Hunghom-Kowloon-Hong-Kong/AVP--Agency-Digital-Lead_JR00126149-3",
     closeAt: "2026-09-10T23:59:00+08:00",
-    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS canApply true · endDate 11 Sep 2026",
+    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS canApply true rechecked 9 Sep 21:00 UTC · endDate 11 Sep 2026",
     tier: "B",
     bands: ["today", "capital", "stretch"],
     status: "live",
@@ -219,7 +219,8 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "HKMU Taleo eRecruitment only. Job 26001XV. Office of Research Affairs and Knowledge Transfer.",
       draft: "r-4774827538237651559",
-      caution: "Do not email hrowww@hkmu.edu.hk. English + Chinese including Putonghua. Do not claim Cantonese. Do not invent 15 years.",
+      caution:
+        "Do not email hrowww@hkmu.edu.hk. English + Chinese including Putonghua. Do not claim Cantonese. Do not invent 15 years. Skip sibling Assistant Director (Mainland Research Development) OSI 26001FP — Taleo close was 13 Jul 2026.",
     },
   },
   {
@@ -435,7 +436,7 @@ export const roles: CareerRole[] = [
     org: "City University of Hong Kong",
     location: "Kowloon Tong, Hong Kong",
     href: "https://www.cityu.edu.hk/hro/en/job/current/administrative.asp?ref=uad-r30526",
-    closeNote: "Ref R/305/26 · until filled · Rechecked NACAD Apply Now 9 Sep 20:15 UTC · HRO asp Incapsula from this desk",
+    closeNote: "Ref R/305/26 · until filled · Rechecked NACAD Apply Now 9 Sep 21:00 UTC · HRO asp Incapsula from this desk",
     tier: "A",
     bands: ["institutions", "stretch"],
     status: "live",
@@ -451,7 +452,8 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "jobs1.cityu.edu.hk NACAD Apply Now button on Chief Digital and Technology Officer. Official JD uad-r30526. LinkedIn 4463824877 is a mirror.",
       draft: "r981486238148765924",
-      caution: "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk. Skip CityU Post-Investment Manager — not on the current 102-row NACAD listing. Skip HKU CIO & University Librarian 533668 vs this alumni CDTO.",
+      caution:
+        "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk. Skip CityU Post-Investment Manager — still absent from the 102-row NACAD dump 9 Sep 21:00 UTC. Skip HKU CIO & University Librarian 533668 vs this alumni CDTO. Skip CUHK EO II Project Manager (Technology Transfer) 2600017B / 2600011K — already closed July 2026.",
     },
   },
   {
@@ -1775,7 +1777,7 @@ export const roles: CareerRole[] = [
     rhyme: "Alma-mater angel fund that left the listing. Keep the CDTO door.",
     rhymeZh: "母校天使基金已经不在名单上。守住首席数字官那扇门。",
     skipWhy:
-      "Official NACAD HTML dump of 102 administrative posts has no Post-Investment Manager. LinkedIn 4327341077 no longer accepting. Aggregator jobhongkong24h (CFA or LL.M.; Cantonese and Putonghua; 8–10 years VC/PE) is stale. Keep A31 CDTO. Do not email hrojob@cityu.edu.hk.",
+      "Official NACAD HTML dump of 102 administrative posts still has no Post-Investment Manager as of 9 Sep 21:00 UTC. LinkedIn 4327341077 no longer accepting. Aggregator jobhongkong24h (CFA or LL.M.; Cantonese and Putonghua; 8–10 years VC/PE) is stale. Keep A31 CDTO. Do not email hrojob@cityu.edu.hk.",
   },
   {
     id: "B175",
@@ -1821,7 +1823,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "Watch only. Re-GET Workday CXS JR-67284 before ranking live. After B9b → B153 → B117 if it returns canApply true.",
       caution:
-        "8 years insurance/FS. Official External search did not return JR-67284 this pass. HTML job URL 200 but CXS 404. Do not paste until canApply is proven. AXA Head of Data Science & AI is still LinkedIn-only — official careers.axa.com has DSM 9681 / Assistant 8701, not the Head. Do not email axa-talent-hub@axa.com.hk.",
+        "8 years insurance/FS. Official External search did not return JR-67284 this pass. HTML job URL 200 but CXS 404 again 9 Sep 21:00 UTC. Do not paste until canApply is proven. AXA Head of Data Science & AI is still LinkedIn-only — official careers.axa.com has DSM 9681 / Assistant 8701, not the Head. Do not email axa-talent-hub@axa.com.hk.",
     },
   },
   {
@@ -1874,29 +1876,100 @@ export const roles: CareerRole[] = [
   },
   {
     id: "B180",
-    rank: 26,
+    rank: 99,
     title: "Executive Director, Digital Product Solutions",
     org: "RGA",
     location: "Hong Kong",
-    href: "https://hk.linkedin.com/jobs/view/executive-director-digital-product-solutions-at-reinsurance-group-of-america-incorporated-4407576665",
-    closeNote: "LinkedIn 4407576665 still listed · no official rgare.com URL this pass · watch",
+    href: "https://www.rgarecareers.com/us/en/job/J27314/Executive-Director-Digital-Product-Solutions",
+    closeNote: "Official rgarecareers.com J27314 · no longer posted 9 Sep 21:00 UTC",
     tier: "B",
     bands: ["capital", "stretch"],
-    status: "watch",
+    status: "skip",
     pay: 4,
     security: 4,
     reputation: 4,
     balance: 3,
     fit: 2,
-    rhyme: "Reinsurance digital product. LinkedIn talks. Official Apply is not proven.",
-    rhymeZh: "再保险数字产品。领英在说。官网申请还没被证明。",
+    rhyme: "The reinsurance product desk left the official board. LinkedIn was late.",
+    rhymeZh: "再保险产品席已经离开官网。领英来晚了。",
+    stretch: true,
+    skipWhy:
+      "Official https://www.rgarecareers.com/us/en/job/J27314/Executive-Director-Digital-Product-Solutions: This position is no longer posted. LinkedIn 4407576665 is stale. 15-year consulting/transformation was a stretch anyway. Keep B4 / B33 / B163. Do not apply LinkedIn-only. Skip Cathay Head of Digital Transformation until careers.cathaypacific.com job URL is isolated.",
+  },
+  {
+    id: "B181",
+    rank: 22,
+    title: "AI Lead (North Asia)",
+    titleZh: "北亚人工智能负责人",
+    org: "Alvarez & Marsal",
+    location: "Central, Hong Kong",
+    href: "https://careers.alvarezandmarsal.com/en/jobs/18010839-ai-lead-north-asia",
+    closeNote: "Official HK board 18010839 · posted 6 Aug 2026 · isolated live 9 Sep 21:00 UTC",
+    tier: "B",
+    bands: ["capital"],
+    status: "live",
+    pay: 4,
+    security: 3,
+    reputation: 4,
+    balance: 2,
+    fit: 4,
+    rhyme: "Internal Greater China LLM stack because Claude cannot sit there. After the bank AI lead if the builder desk is the want.",
+    rhymeZh: "大中华内部大模型台，因为 Claude 坐不进去。先银行 AI 负责人，若建造席才是想要的。",
+    portalOnly: true,
+    desk: {
+      apply: "Official careers.alvarezandmarsal.com Apply on 18010839. After B4. Confirm Central seat on the form.",
+      draft: "r2304373048251726625",
+      caution:
+        "Hands-on regional LLM platform (Qwen / Kimi / GLM) and AI governance — do not invent an infrastructure-level fine-tuning decade. Do not email talentacquisition@alvarezandmarsal.com (resumes discarded). Skip sibling Director M&A / Cost Transformation. Skip Senior Manager Digital Product Owner until official JD years are isolated. Aggregator deadline 22 Aug is stale vs the official listing still live. Skip DBS Head of Digital Transformation IBG until official WD exists (Ramesh Sankar already Regional Head).",
+    },
+  },
+  {
+    id: "B182",
+    rank: 29,
+    title: "Head of Data Strategy",
+    org: "Coface",
+    location: "Hong Kong",
+    href: "https://jobs.smartrecruiters.com/coface/744000146658409",
+    closeNote: "SmartRecruiters 744000146658409 · published 1 Sep 2026 · Apply live 9 Sep 21:00 UTC",
+    tier: "B",
+    bands: ["capital", "stretch"],
+    status: "live",
+    pay: 4,
+    security: 4,
+    reputation: 3,
+    balance: 4,
+    fit: 2,
+    rhyme: "Trade-credit data governance. Hybrid hours. After the bank AI lead only if the data desk is the want.",
+    rhymeZh: "区域数据治理。混合工时。先银行 AI 负责人，若数据台才是想要的。",
     stretch: true,
     portalOnly: true,
     desk: {
-      apply: "Watch only. Re-GET official RGA careers before ranking live. 15-year consulting/transformation stretch.",
+      apply: "Official SmartRecruiters 744000146658409. After B4 only if regional data strategy is the want.",
+      draft: "r-2925786890591065290",
       caution:
-        "Do not apply LinkedIn-only. Skip Cathay Head of Digital Transformation until careers.cathaypacific.com job URL is isolated. Skip HSBC AI Architect until an official HK Phenom exists (Group AI Platform Engineering is Guangzhou).",
+        "10+ years data strategy / analytics leadership on JD — do not invent a data-science degree or a numbered data-architecture decade. Not AI-native product and not a CVC cheque. Skip HKBU Knowledge Transfer Officer (Events and Marketing) Oracle 25260804 vs A34. Skip HKMU 26001FP (closed 13 Jul).",
     },
+  },
+  {
+    id: "A42",
+    rank: 99,
+    title: "Assistant Director (Mainland Research Development) (OSI)",
+    org: "Hong Kong Metropolitan University",
+    location: "Kowloon City, Hong Kong",
+    href: "https://hkmu.taleo.net/careersection/ex_full_time/jobapply.ftl?lang=en&job=26001FP",
+    closeNote: "Taleo 26001FP · closed 13 Jul 2026, 11:59 p.m.",
+    tier: "A",
+    bands: ["institutions", "stretch"],
+    status: "skip",
+    pay: 3,
+    security: 5,
+    reputation: 4,
+    balance: 4,
+    fit: 2,
+    rhyme: "The mainland-research director seat already closed. Keep the knowledge-transfer manager.",
+    rhymeZh: "内地科研发展席已经关了。守住知识转移经理。",
+    skipWhy:
+      "Official close 13 July 2026. 15 years higher-education stretch. Keep A33 SM Knowledge Transfer 26001XV (closes 14 Sep). Do not email hrowww@hkmu.edu.hk.",
   },
 ];
 
