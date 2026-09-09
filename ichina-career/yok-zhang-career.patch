@@ -1,7 +1,8 @@
 From 781681a053b356f7b8886edacf47c82ea6edfe01 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Wed, 9 Sep 2026 18:26:58 +0000
-Subject: [PATCH] Add private /career hunt desk gated to yying2010@gmail.com.
+Subject: [PATCH 1/2] Add private /career hunt desk gated to
+ yying2010@gmail.com.
 
 Ship ichina.co/career as a Google (Jubit SSO) lock. Only the owner email
 sees the dashboard. Public nav stays empty until that session. Static HTML
@@ -3914,6 +3915,282 @@ index 0000000..4e9004f
 +}
 +
 +main();
+-- 
+2.43.0
+
+
+From 2b6f3ebf93c25d37b021e95c17b14c6d8fb6a60b Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Wed, 9 Sep 2026 19:11:23 +0000
+Subject: [PATCH 2/2] Refresh the hunt field: FWD venture scouting and HKPC AI
+ governance.
+
+Official Workday JR-0027501 and HKPC Phenom 1366848966. Skip OmniClear IT director and ED after isolated JDs.
+---
+ lib/career/roles.ts | 157 ++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 145 insertions(+), 12 deletions(-)
+
+diff --git a/lib/career/roles.ts b/lib/career/roles.ts
+index f99fe82..866122e 100644
+--- a/lib/career/roles.ts
++++ b/lib/career/roles.ts
+@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
+ import { isOpen, msUntil, urgency } from "./clock";
+ 
+ export const snapshot: CareerSnapshot = {
+-  updatedAt: "2026-09-09T18:30:00Z",
++  updatedAt: "2026-09-09T19:12:00Z",
+   thesis:
+     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
+   thesisZh:
+@@ -36,7 +36,33 @@ export const roles: CareerRole[] = [
+       apply: "Portal first. Job ID 5166696c-9849-4733-aba5-5c144514d716. Confirm Hong Kong seat.",
+       draft: "r-4680797737198275177",
+       addendum: "LinkedIn note to LIN Lin after portal: r6795721307197991422",
+-      caution: "Do not email guessed hr@meitu.com.",
++      caution: "Do not email guessed hr@meitu.com. Official Visa Senior Director Innovation & Partnerships REF083278W is B162 after this if partnerships is the want.",
++    },
++  },
++  {
++    id: "B162",
++    rank: 4,
++    title: "Senior Director, Innovation and Strategic Partnerships",
++    org: "Visa",
++    location: "Hong Kong",
++    href: "https://visa.wd5.myworkdayjobs.com/Visa/job/HK---Hong-Kong-China/Senior-Director--Innovation-and-Strategic-Partnerships--Hong-Kong_REF083278W",
++    closeNote: "Workday Visa tenant · canApply true · posted 30+ days · no endDate",
++    tier: "B",
++    bands: ["cvc", "capital", "stretch"],
++    status: "live",
++    pay: 5,
++    security: 4,
++    reputation: 5,
++    balance: 3,
++    fit: 3,
++    rhyme: "Hong Kong innovation partnerships next to live products. After Meitu. Fifteen years and fluent Cantonese are stretches — do not invent either.",
++    rhymeZh: "香港创新与生态合作。美图之后。十五年与粤语都是拉伸 —— 不要编。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "Official Workday visa.wd5 /Visa REF083278W. HK - Hong Kong, China. canApply true.",
++      draft: "r-2983781475055829866",
++      caution: "15+ years. Fluent English, Cantonese and Mandarin on JD — do not claim Cantonese. Skip Director Client Consulting CMS/Stablecoin/AI REF083051W (consulting origination). Skip Director FP&A REF085112W.",
+     },
+   },
+   {
+@@ -164,7 +190,8 @@ export const roles: CareerRole[] = [
+     portalOnly: true,
+     desk: {
+       apply: "https://erecruit.hkma.gov.hk/",
+-      caution: "Skip OmniClear Director (IT & System Development) vs this product seat.",
++      caution:
++        "Skip OmniClear Director (IT & System Development) recruit-20260828-5 (12 Sep): 8 years IT leadership + 3 years custody/fund admin, CS degree, Cantonese, SWIFT/SQL — A0c. Skip Executive Director (IT & System Development) recruit-20260904-3 (19 Sep): 10 years IT architecture, mainframe-to-modular, post-trade, Cantonese — A0d. Product Development stays the OmniClear seat.",
+     },
+   },
+   {
+@@ -342,6 +369,34 @@ export const roles: CareerRole[] = [
+       caution: "Do not email hr@hkstp.org. Cantonese on JD — do not claim. Do not invent 15 AI/DS years.",
+     },
+   },
++  {
++    id: "A35",
++    rank: 19,
++    title: "Head, Cybersecurity and AI Governance",
++    titleZh: "网络安全与人工智能治理主管",
++    org: "Hong Kong Productivity Council",
++    location: "Hong Kong",
++    href: "https://careers.hkpc.org/job/Head%2C-Cybersecurity-and-AI-Governance/1366848966/",
++    closeNote: "Phenom 1366848966 · Ref DTD/11055 · posted 3 Sep 2026 · apply in 2 weeks then until filled · 12–15-year cyber stretch",
++    tier: "A",
++    bands: ["institutions", "stretch"],
++    status: "live",
++    pay: 3,
++    security: 5,
++    reputation: 4,
++    balance: 4,
++    fit: 2,
++    rhyme: "Statutory AI trust next to HKCERT. Flexi-work. Governance, not a live product or CVC seat. After HKSTP AI director only if public AI security is the want.",
++    rhymeZh: "法定机构的 AI 信任，贴着香港电脑保安事故协调中心。弹性工时。治理，不是已上线产品或 CVC。只若公共 AI 安全是想要的，才在科学园 AI 总监之后。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "HKPC e-Recruitment careers.hkpc.org Phenom 1366848966. Digital Trust and AI Transformation Division. Flexi-work hour on JD.",
++      draft: "r7302180608840283025",
++      caution:
++        "12–15 years cybersecurity / digital risk / AI governance including 5 years leadership. Do not invent CISSP/CISM/ISO 42001. Not an AI-native builder desk. Skip HKPC Senior Consultant Cyber Security vs this Head seat. Skip FWD Director GenAI Digital Delivery R-0022016 (15-year SWE architecture) vs HSBC B4 / MS B34.",
++    },
++  },
+   {
+     id: "A31",
+     rank: 15,
+@@ -366,7 +421,7 @@ export const roles: CareerRole[] = [
+     desk: {
+       apply: "jobs1.cityu.edu.hk NACAD Apply Now. Ref R/305/26. LinkedIn 4463824877 is a mirror.",
+       draft: "r981486238148765924",
+-      caution: "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk.",
++      caution: "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk. Skip HKU CIO & University Librarian 533668 (Korn Ferry HKU-CIO@kornferry.com, dual librarian desk) vs this alumni CDTO.",
+     },
+   },
+   {
+@@ -508,7 +563,7 @@ export const roles: CareerRole[] = [
+     reputation: 5,
+     balance: 3,
+     fit: 4,
+-    rhyme: "Bank AI that has to run. First HSBC gravity well — then commercialization, then currencies.",
++    rhyme: "Bank AI that has to run. First HSBC gravity well — then digital platforms, then IWPB commercialization.",
+     rhymeZh: "银行里必须能跑的 AI。汇丰第一口井 —— 再商业化，再货币。",
+     desk: { apply: "HSBC Apply Now. Still live 9 Sep." },
+   },
+@@ -535,7 +590,7 @@ export const roles: CareerRole[] = [
+     desk: {
+       apply: "HSBC Apply. After B4. GCB 4. 8–12 years management consulting / enterprise strategy / business architecture — do not invent.",
+       draft: "r1038150271801325589",
+-      caution: "Skip Senior Strategic Planner 1367731657 (cost/FTE). Skip Sr AD 1370245557 (GPS architecture). Skip Treasury BM 1370434357. Skip Alts Business Architect 1369577157 vs B154.",
++      caution: "Skip Senior Strategic Planner 1367731657 (cost/FTE). Skip Sr AD 1370245557 (GPS architecture). Skip Treasury BM 1370434357. Skip Alts Business Architect 1369577157 vs B154. Sibling IWPB AI/ML commercialization is B146.",
+     },
+   },
+   {
+@@ -558,7 +613,12 @@ export const roles: CareerRole[] = [
+     rhyme: "Wealth AI commercialization. After the solution lead. Hands-on analytics bar is a stretch.",
+     rhymeZh: "财富 AI 商业化。方案负责人之后。动手分析门槛是拉伸。",
+     stretch: true,
+-    desk: { apply: "After B4 then this then B138.", draft: "r-4207723545408746455" },
++    desk: {
++      apply: "HSBC Apply 1359802857. After B4. GCB 4. Rechecked live validThrough Sat 19 Sep 16:00 UTC.",
++      draft: "r-2204173744577221507",
++      addendum: "Earlier pack r-4207723545408746455.",
++      caution: "Minimum 12 years hands-on analytics — do not invent. Same close clock as B146's week-end with B138 Fri 18 Sep. Do not spray B144 (closes Sat 12) unless CE-office growth is also the want.",
++    },
+   },
+   {
+     id: "B154",
+@@ -700,7 +760,7 @@ export const roles: CareerRole[] = [
+       apply: "Official Workday External PT-JR037195. canApply true. Hong Kong. Posted 30+ days.",
+       draft: "r2694556748870183470",
+       addendum: "r3980890194948961269",
+-      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years.",
++      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years. Skip Applied AI Engineer VP IST PT-JR043455 vs this ED lead — do not spray both.",
+     },
+   },
+   {
+@@ -723,6 +783,33 @@ export const roles: CareerRole[] = [
+     rhymeZh: "平台 CVC。组合是手艺。中资背景，香港台面。",
+     desk: { apply: "Tencent career postId 2089180506259374080.", draft: "r-2146671588397327289" },
+   },
++  {
++    id: "B163",
++    rank: 16,
++    title: "AVP, Health Innovation & Venture Scouting Lead",
++    org: "FWD Group",
++    location: "Taikoo Shing (Group Office), Hong Kong",
++    href: "https://fwd.wd3.myworkdayjobs.com/FWDcareersite/job/Hong-Kong---Taikoo-Shing-Group-Office/Assistant-Vice-President--Health-Innovation---Venture-Scouting-Lead_JR-0027501",
++    closeNote: "Workday FWDcareersite JR-0027501 · canApply true · posted 30+ days · no endDate",
++    tier: "B",
++    bands: ["cvc", "capital", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 3,
++    reputation: 4,
++    balance: 3,
++    fit: 4,
++    rhyme: "Listed-insurer venture scouting next to AI-enabled health. Angel-adjacent. Health-tech years are a stretch. After Meitu if the scouting desk is the want.",
++    rhymeZh: "上市保险公司的风投扫描，贴着带 AI 的健康。贴近天使。健康科技年资是拉伸。美图之后，若扫描席是想要的。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "Official Workday fwd.wd3 FWDcareersite JR-0027501. Hong Kong - Taikoo Shing (Group Office). canApply true.",
++      draft: "r-5576916900423828272",
++      caution:
++        "Minimum 8 years health technology / insurtech / digital health / innovation or venture partnerships — do not invent a health-tech decade. LinkedIn 4451617224 is a mirror. Skip Director, GenAI Digital Delivery R-0022016 (15+ years SWE/architecture, CS degree) vs B4/B34. Skip OCBC VP Head of Digital Wealth & Payments until an official careers URL exists (LinkedIn-only 4460947342). Skip RGA Executive Director Digital Product Solutions J27314 — official careers: no longer posted.",
++    },
++  },
+   {
+     id: "B36",
+     rank: 17,
+@@ -743,7 +830,7 @@ export const roles: CareerRole[] = [
+     rhyme: "Asia AI strategy in a life-company. Then digitization (B100), then optional manager (B35).",
+     rhymeZh: "寿险公司的亚洲 AI 策略。然后数字化（B100），再可选经理（B35）。",
+     desk: {
+-      apply: "Tenant manulife.wd3.myworkdayjobs.com/MFCJH_Jobs. Cover r5801903241139313616.",
++      apply: "Tenant manulife.wd3.myworkdayjobs.com/MFCJH_Jobs. Cover r5801903241139313616. Rechecked canApply true, endDate 2026-09-30.",
+       draft: "r5801903241139313616",
+       addendum: "r4654668089183427838",
+     },
+@@ -791,10 +878,12 @@ export const roles: CareerRole[] = [
+     reputation: 5,
+     balance: 3,
+     fit: 3,
+-    rhyme: "AM-platform product owner for equity and fixed income. After multi-asset. Fund craft, not AI-native building.",
+-    rhymeZh: "股债平台产品负责人。先多元资产。基金手艺，不是原生 AI 建造。",
++    rhyme: "AM-platform product owner for fixed income. After multi-asset. Fund craft, not AI-native building. London Equity J70839 is a different seat — skip it.",
++    rhymeZh: "固收平台产品负责人。先多元资产。基金手艺，不是原生 AI 建造。伦敦股权席不要投。",
+     desk: {
+       apply: "Workday 001 J70844. Hong-Kong-Office-New. After B19 only if the FI platform seat is the one you want.",
++      draft: "r7682432615610235067",
++      caution: "Do not spray J69405 and J70844. Skip London Equity J70839 (Cannon Street, close 25 Sep).",
+     },
+   },
+   {
+@@ -840,7 +929,7 @@ export const roles: CareerRole[] = [
+     desk: {
+       apply: "Workday External JR-68436-1. Path Hong-Kong-HK-AIA-Group-Office. AFTER B9b, before B117.",
+       draft: "r-1064563125725395723",
+-      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering.",
++      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering. Skip JR-68841 People Digital (Digital HR). Skip JR-67573-1 Data Analytics and AI (DS delivery). Skip JR-68248 Agency Digital Principal (Cantonese). Skip JR-69776-1 Customer Digital BD (wellness, Cantonese).",
+     },
+   },
+   {
+@@ -1141,6 +1230,50 @@ export const roles: CareerRole[] = [
+       caution: "Do not guess HR.",
+     },
+   },
++  {
++    id: "A0c",
++    rank: 99,
++    title: "Director (IT & System Development)",
++    org: "HKMA / CMU OmniClear",
++    location: "Hong Kong",
++    href: "https://www.hkma.gov.hk/eng/about-us/join-us/current-vacancies/recruit-20260828-5/",
++    closeAt: "2026-09-12T23:59:00+08:00",
++    closeNote: "Sat 12 Sep 2026 · isolated official JD",
++    tier: "A",
++    bands: ["institutions", "stretch"],
++    status: "skip",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 4,
++    fit: 1,
++    rhyme: "Custody-platform IT director. Not the product seat.",
++    rhymeZh: "托管平台 IT 总监。不是产品席。",
++    skipWhy:
++      "Official JD: 8 years IT leadership including 3 years custody / fund administration / asset servicing; CS/IT degree; SWIFT/FIX/ISO 20022; SQL + Python/C#/Java; English + Chinese including Cantonese and Putonghua. Keep A0b Director, Product Development.",
++  },
++  {
++    id: "A0d",
++    rank: 99,
++    title: "Executive Director (IT & System Development)",
++    org: "HKMA / CMU OmniClear",
++    location: "Hong Kong",
++    href: "https://www.hkma.gov.hk/eng/about-us/join-us/current-vacancies/recruit-20260904-3/",
++    closeAt: "2026-09-19T23:59:00+08:00",
++    closeNote: "Fri 19 Sep 2026 · isolated official JD",
++    tier: "A",
++    bands: ["institutions", "stretch"],
++    status: "skip",
++    pay: 5,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 1,
++    rhyme: "CTO-class FMI architecture. AI is a line on innovation, not the job.",
++    rhymeZh: "金融基建的 CTO 级架构。AI 只是创新里的一行，不是这份工作。",
++    skipWhy:
++      "Official JD: 10 years IT leadership owning architectures and enterprise services; in-house team build; mainframe-to-modular; post-trade/custody domain; SWIFT and ICSD connectivity; Cantonese and Putonghua. Higher than Director IT. Keep A0b.",
++  },
+ ];
+ 
+ export type FieldFilter = "all" | "today" | "institutions" | "capital" | "cvc" | "stretch";
 -- 
 2.43.0
 

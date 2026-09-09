@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T18:57:00Z",
+  updatedAt: "2026-09-09T19:12:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -190,7 +190,8 @@ export const roles: CareerRole[] = [
     portalOnly: true,
     desk: {
       apply: "https://erecruit.hkma.gov.hk/",
-      caution: "Skip OmniClear Director (IT & System Development) vs this product seat.",
+      caution:
+        "Skip OmniClear Director (IT & System Development) recruit-20260828-5 (12 Sep): 8 years IT leadership + 3 years custody/fund admin, CS degree, Cantonese, SWIFT/SQL — A0c. Skip Executive Director (IT & System Development) recruit-20260904-3 (19 Sep): 10 years IT architecture, mainframe-to-modular, post-trade, Cantonese — A0d. Product Development stays the OmniClear seat.",
     },
   },
   {
@@ -366,6 +367,34 @@ export const roles: CareerRole[] = [
       apply: "HKSTP Apply Now. Phenom 1366190466. After A1 if the director seat is the want.",
       draft: "r4261511564452071214",
       caution: "Do not email hr@hkstp.org. Cantonese on JD — do not claim. Do not invent 15 AI/DS years.",
+    },
+  },
+  {
+    id: "A35",
+    rank: 19,
+    title: "Head, Cybersecurity and AI Governance",
+    titleZh: "网络安全与人工智能治理主管",
+    org: "Hong Kong Productivity Council",
+    location: "Hong Kong",
+    href: "https://careers.hkpc.org/job/Head%2C-Cybersecurity-and-AI-Governance/1366848966/",
+    closeNote: "Phenom 1366848966 · Ref DTD/11055 · posted 3 Sep 2026 · apply in 2 weeks then until filled · 12–15-year cyber stretch",
+    tier: "A",
+    bands: ["institutions", "stretch"],
+    status: "live",
+    pay: 3,
+    security: 5,
+    reputation: 4,
+    balance: 4,
+    fit: 2,
+    rhyme: "Statutory AI trust next to HKCERT. Flexi-work. Governance, not a live product or CVC seat. After HKSTP AI director only if public AI security is the want.",
+    rhymeZh: "法定机构的 AI 信任，贴着香港电脑保安事故协调中心。弹性工时。治理，不是已上线产品或 CVC。只若公共 AI 安全是想要的，才在科学园 AI 总监之后。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "HKPC e-Recruitment careers.hkpc.org Phenom 1366848966. Digital Trust and AI Transformation Division. Flexi-work hour on JD.",
+      draft: "r7302180608840283025",
+      caution:
+        "12–15 years cybersecurity / digital risk / AI governance including 5 years leadership. Do not invent CISSP/CISM/ISO 42001. Not an AI-native builder desk. Skip HKPC Senior Consultant Cyber Security vs this Head seat. Skip FWD Director GenAI Digital Delivery R-0022016 (15-year SWE architecture) vs HSBC B4 / MS B34.",
     },
   },
   {
@@ -753,6 +782,33 @@ export const roles: CareerRole[] = [
     rhyme: "Platform CVC. Portfolio as a craft. China-background capital with a Hong Kong desk.",
     rhymeZh: "平台 CVC。组合是手艺。中资背景，香港台面。",
     desk: { apply: "Tencent career postId 2089180506259374080.", draft: "r-2146671588397327289" },
+  },
+  {
+    id: "B163",
+    rank: 16,
+    title: "AVP, Health Innovation & Venture Scouting Lead",
+    org: "FWD Group",
+    location: "Taikoo Shing (Group Office), Hong Kong",
+    href: "https://fwd.wd3.myworkdayjobs.com/FWDcareersite/job/Hong-Kong---Taikoo-Shing-Group-Office/Assistant-Vice-President--Health-Innovation---Venture-Scouting-Lead_JR-0027501",
+    closeNote: "Workday FWDcareersite JR-0027501 · canApply true · posted 30+ days · no endDate",
+    tier: "B",
+    bands: ["cvc", "capital", "stretch"],
+    status: "live",
+    pay: 4,
+    security: 3,
+    reputation: 4,
+    balance: 3,
+    fit: 4,
+    rhyme: "Listed-insurer venture scouting next to AI-enabled health. Angel-adjacent. Health-tech years are a stretch. After Meitu if the scouting desk is the want.",
+    rhymeZh: "上市保险公司的风投扫描，贴着带 AI 的健康。贴近天使。健康科技年资是拉伸。美图之后，若扫描席是想要的。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official Workday fwd.wd3 FWDcareersite JR-0027501. Hong Kong - Taikoo Shing (Group Office). canApply true.",
+      draft: "r-5576916900423828272",
+      caution:
+        "Minimum 8 years health technology / insurtech / digital health / innovation or venture partnerships — do not invent a health-tech decade. LinkedIn 4451617224 is a mirror. Skip Director, GenAI Digital Delivery R-0022016 (15+ years SWE/architecture, CS degree) vs B4/B34. Skip OCBC VP Head of Digital Wealth & Payments until an official careers URL exists (LinkedIn-only 4460947342). Skip RGA Executive Director Digital Product Solutions J27314 — official careers: no longer posted.",
+    },
   },
   {
     id: "B36",
@@ -1173,6 +1229,50 @@ export const roles: CareerRole[] = [
       apply: "Listing only. contact@themillsfabrica.com is general contact, not a job-apply instruction.",
       caution: "Do not guess HR.",
     },
+  },
+  {
+    id: "A0c",
+    rank: 99,
+    title: "Director (IT & System Development)",
+    org: "HKMA / CMU OmniClear",
+    location: "Hong Kong",
+    href: "https://www.hkma.gov.hk/eng/about-us/join-us/current-vacancies/recruit-20260828-5/",
+    closeAt: "2026-09-12T23:59:00+08:00",
+    closeNote: "Sat 12 Sep 2026 · isolated official JD",
+    tier: "A",
+    bands: ["institutions", "stretch"],
+    status: "skip",
+    pay: 4,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 1,
+    rhyme: "Custody-platform IT director. Not the product seat.",
+    rhymeZh: "托管平台 IT 总监。不是产品席。",
+    skipWhy:
+      "Official JD: 8 years IT leadership including 3 years custody / fund administration / asset servicing; CS/IT degree; SWIFT/FIX/ISO 20022; SQL + Python/C#/Java; English + Chinese including Cantonese and Putonghua. Keep A0b Director, Product Development.",
+  },
+  {
+    id: "A0d",
+    rank: 99,
+    title: "Executive Director (IT & System Development)",
+    org: "HKMA / CMU OmniClear",
+    location: "Hong Kong",
+    href: "https://www.hkma.gov.hk/eng/about-us/join-us/current-vacancies/recruit-20260904-3/",
+    closeAt: "2026-09-19T23:59:00+08:00",
+    closeNote: "Fri 19 Sep 2026 · isolated official JD",
+    tier: "A",
+    bands: ["institutions", "stretch"],
+    status: "skip",
+    pay: 5,
+    security: 5,
+    reputation: 5,
+    balance: 3,
+    fit: 1,
+    rhyme: "CTO-class FMI architecture. AI is a line on innovation, not the job.",
+    rhymeZh: "金融基建的 CTO 级架构。AI 只是创新里的一行，不是这份工作。",
+    skipWhy:
+      "Official JD: 10 years IT leadership owning architectures and enterprise services; in-house team build; mainframe-to-modular; post-trade/custody domain; SWIFT and ICSD connectivity; Cantonese and Putonghua. Higher than Director IT. Keep A0b.",
   },
 ];
 
