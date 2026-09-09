@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T21:40:00Z",
+  updatedAt: "2026-09-09T21:50:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -1076,7 +1076,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "Workday External JR-68436-1. Path Hong-Kong-HK-AIA-Group-Office. AFTER B9b, before B117.",
       draft: "r-1064563125725395723",
-      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering. Skip JR-68841 People Digital (Digital HR). Skip JR-67573-1 Data Analytics and AI (DS delivery). Skip JR-68248 Agency Digital Principal (Cantonese). Skip JR-69776-1 Customer Digital BD (wellness, Cantonese).",
+      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering (B188 — canApply true, endDate 12 Sep, 10–15 year SWE stretch). Skip JR-68841 People Digital (Digital HR). Skip JR-67573-1 Data Analytics and AI (DS delivery). Skip JR-68248 Agency Digital Principal (Cantonese). Skip JR-69776-1 Customer Digital BD (wellness, Cantonese).",
     },
   },
   {
@@ -1143,7 +1143,7 @@ export const roles: CareerRole[] = [
     rhyme: "Agentic product at an exchange. High cash, thinner security and hours. HK right-to-work first.",
     rhymeZh: "交易所的代理产品。现金高，安全与工时更薄。香港工作权优先。",
     desk: {
-      apply: "Greenhouse 7531920003. Then optional B174 VP AI Strategy or B177 VP Product AI & Agent — pick one. Wallet AI is B152. Do not spray PM clones. Skip Singapore VP clone 7684887003. Skip AI Agent Product Expert (Middleware) 7731745003 vs this PM seat.",
+      apply: "Greenhouse 7531920003. Then pick ONE of B174 VP AI Strategy / B177 VP Product / B187 Enablement PMO / Sentient B184 / Bjak B186. Wallet AI is B152. Do not spray PM clones. Skip Singapore VP clone 7684887003. Skip AI Agent Product Expert (Middleware) 7731745003 vs this PM seat.",
     },
   },
   {
@@ -1168,7 +1168,7 @@ export const roles: CareerRole[] = [
     stretch: true,
     portalOnly: true,
     desk: {
-      apply: "Official Greenhouse 7684888003 Hong Kong. After B73. Do not spray with B177 VP Product or B152 the same week.",
+      apply: "Official Greenhouse 7684888003 Hong Kong. After B73. Do not spray with B177 / B187 / B152 the same week.",
       draft: "r-1746679636804214893",
       caution:
         "10+ years AI/deep learning, 5 years Director+, MS/PhD, publication/open-source on JD — do not invent. Skip Singapore clone 7684887003. Sibling VP Product is B177 7691999003. HK right-to-work first.",
@@ -1196,7 +1196,7 @@ export const roles: CareerRole[] = [
     stretch: true,
     portalOnly: true,
     desk: {
-      apply: "Official Greenhouse 7691999003 Hong Kong. After B73. Pick this OR B174, not both the same week.",
+      apply: "Official Greenhouse 7691999003 Hong Kong. After B73. Pick this OR B174 OR B187, not all the same week.",
       draft: "r-449291215686061085",
       caution:
         "12+ years product & tech, 5+ years senior leadership owning complex products, conversational/agentic AI as owner not contributor. English and Mandarin on JD — do not claim Cantonese. Skip Singapore clone 7691998003. Trading asked on the form — honest about the hedge book since Sep 2025.",
@@ -1232,7 +1232,7 @@ export const roles: CareerRole[] = [
     org: "Reap",
     location: "Quarry Bay, Hong Kong",
     href: "https://careers.reap.global/jobs/8342685-senior-product-manager-agentic-enablement-platform-ai",
-    closeNote: "LinkedIn 4464641446 · posted ~22h ago · official Apply 9 Sep",
+    closeNote: "Official Teamtailor 8342685 · Apply live 9 Sep 21:50 UTC · HK among locations",
     tier: "cvc",
     bands: ["cvc", "capital"],
     status: "live",
@@ -2110,6 +2110,56 @@ export const roles: CareerRole[] = [
     rhymeZh: "知识产权经理要生命科学与粤语。守住创业席。",
     skipWhy:
       "Official PolyU 260908015-IE is live, but the JD requires a Life Science / Biomedical / Applied Biology degree, six years biotech/pharma IP, and fluency in Cantonese and Putonghua. Do not claim Cantonese. Skip vs A4 SM Entrepreneurship 260827002 and A21 Director KTEO 260827012-IE.",
+  },
+  {
+    id: "B187",
+    rank: 27,
+    title: "AI Enablement PMO Director",
+    titleZh: "人工智能赋能项目管理总监",
+    org: "OKX",
+    location: "Hong Kong / Singapore",
+    href: "https://job-boards.greenhouse.io/okx/jobs/7814862003",
+    closeNote: "Greenhouse 7814862003 · HK+SG · Apply live 9 Sep 21:50 UTC · SG right-to-work prioritised",
+    tier: "cvc",
+    bands: ["cvc", "capital"],
+    status: "live",
+    pay: 4,
+    security: 2,
+    reputation: 3,
+    balance: 2,
+    fit: 5,
+    rhyme: "Hands-on enablement that has to ship. After the agent PM if this is the builder inside the exchange.",
+    rhymeZh: "赋能席，必须做出来。先代理产品经理，若这才是交易所里的建造手。",
+    confirmSeat: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official Greenhouse 7814862003. Confirm Hong Kong. After B73; pick this or B174 or B177 or Sentient B184 or Bjak B186, not all the same week.",
+      draft: "r-4468331310571986932",
+      caution:
+        "Posting prioritises current Singapore right-to-work. Confirm HK on the form. 4+ years execution/PM plus hands-on LLM tools — do not invent a PMO or platform-architect decade. Skip OKX Institutional Product / Core Trading PM-Director clones vs the AI lane. Skip AIA JR-69111 Digital Engineering (B188) vs this builder desk.",
+    },
+  },
+  {
+    id: "B188",
+    rank: 99,
+    title: "Associate Director / Director of Digital Engineering Strategy & Enablement",
+    org: "AIA",
+    location: "Hong Kong, AIA Group Office",
+    href: "https://aia.wd3.myworkdayjobs.com/en-US/External/job/Hong-Kong-HK-AIA-Group-Office/Associate-Director---Director-of-Digital-Engineering-Strategy---Enablement_JR-69111",
+    closeAt: "2026-09-12T23:59:00+08:00",
+    closeNote: "CXS canApply true · endDate 2026-09-12 · skip vs B4 / B117 / B153",
+    tier: "B",
+    bands: ["capital", "stretch"],
+    status: "skip",
+    pay: 4,
+    security: 4,
+    reputation: 4,
+    balance: 3,
+    fit: 2,
+    rhyme: "A Group Digital engineering desk with a Saturday clock. Keep the AI solution lead.",
+    rhymeZh: "集团数字工程席，周六就关。守住 AI 方案负责人。",
+    skipWhy:
+      "Official AIA External JR-69111 is live through 12 Sep, but the JD is 10–15 years software/platform/DevSecOps/MLOps engineering leadership. Not AI-native product and not a CVC cheque. Keep B4 / B117 / B153. Do not spray this Saturday unless the engineering-strategy stretch is an explicit want.",
   },
 ];
 
