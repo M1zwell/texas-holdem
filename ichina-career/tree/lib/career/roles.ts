@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T18:05:00Z",
+  updatedAt: "2026-09-09T18:15:00Z",
   thesis:
     "Licensed Hong Kong operator habits plus live AI products. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -462,6 +462,33 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "HKSTP Apply Now. Phenom 1366215966. AFTER A27. English + Putonghua. Do not claim Cantonese.",
       draft: "r-7994383117556414559",
+    },
+  },
+  {
+    id: "A34",
+    rank: 11,
+    title: "Senior Manager (Entrepreneurship and Funding), Knowledge Transfer Office",
+    titleZh: "高级经理（创业与资助）",
+    org: "Hong Kong Baptist University",
+    location: "Kowloon Tong, Hong Kong",
+    href: "https://fa-ewqq-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/25260765",
+    closeNote: "Oracle 25260765 · until filled · posted 3 Jun 2026",
+    tier: "A",
+    bands: ["institutions", "cvc", "stretch"],
+    status: "live",
+    pay: 3,
+    security: 5,
+    reputation: 4,
+    balance: 5,
+    fit: 4,
+    rhyme: "University KTO next to investors and TSSSU. Ten years incubation is a stretch. After PolyU A4.",
+    rhymeZh: "大学知识转移处，贴着投资人与 TSSSU。十年孵化是拉伸。先 PolyU A4。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "HKBU e-Recruitment only. Oracle job 25260765. Review ongoing until filled. Written test for shortlist. 2-year fixed term.",
+      draft: "r7973575122747931683",
+      caution: "English + Chinese. Do not claim Cantonese. Do not email HRO. Do not invent 10 incubation years. Skip Creative Hub EO and Research Office grants seats vs this KTO desk.",
     },
   },
   {
