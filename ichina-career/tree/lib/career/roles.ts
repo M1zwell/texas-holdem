@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T18:30:00Z",
+  updatedAt: "2026-09-09T18:50:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -508,7 +508,7 @@ export const roles: CareerRole[] = [
     reputation: 5,
     balance: 3,
     fit: 4,
-    rhyme: "Bank AI that has to run. First HSBC gravity well — then commercialization, then currencies.",
+    rhyme: "Bank AI that has to run. First HSBC gravity well — then digital platforms, then IWPB commercialization.",
     rhymeZh: "银行里必须能跑的 AI。汇丰第一口井 —— 再商业化，再货币。",
     desk: { apply: "HSBC Apply Now. Still live 9 Sep." },
   },
@@ -535,7 +535,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "HSBC Apply. After B4. GCB 4. 8–12 years management consulting / enterprise strategy / business architecture — do not invent.",
       draft: "r1038150271801325589",
-      caution: "Skip Senior Strategic Planner 1367731657 (cost/FTE). Skip Sr AD 1370245557 (GPS architecture). Skip Treasury BM 1370434357. Skip Alts Business Architect 1369577157 vs B154.",
+      caution: "Skip Senior Strategic Planner 1367731657 (cost/FTE). Skip Sr AD 1370245557 (GPS architecture). Skip Treasury BM 1370434357. Skip Alts Business Architect 1369577157 vs B154. Sibling IWPB AI/ML commercialization is B146.",
     },
   },
   {
@@ -558,7 +558,12 @@ export const roles: CareerRole[] = [
     rhyme: "Wealth AI commercialization. After the solution lead. Hands-on analytics bar is a stretch.",
     rhymeZh: "财富 AI 商业化。方案负责人之后。动手分析门槛是拉伸。",
     stretch: true,
-    desk: { apply: "After B4 then this then B138.", draft: "r-4207723545408746455" },
+    desk: {
+      apply: "HSBC Apply 1359802857. After B4. GCB 4. Rechecked live validThrough Sat 19 Sep 16:00 UTC.",
+      draft: "r-2204173744577221507",
+      addendum: "Earlier pack r-4207723545408746455.",
+      caution: "Minimum 12 years hands-on analytics — do not invent. Same close clock as B146's week-end with B138 Fri 18 Sep. Do not spray B144 (closes Sat 12) unless CE-office growth is also the want.",
+    },
   },
   {
     id: "B154",
@@ -700,7 +705,7 @@ export const roles: CareerRole[] = [
       apply: "Official Workday External PT-JR037195. canApply true. Hong Kong. Posted 30+ days.",
       draft: "r2694556748870183470",
       addendum: "r3980890194948961269",
-      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years.",
+      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years. Skip Applied AI Engineer VP IST PT-JR043455 vs this ED lead — do not spray both.",
     },
   },
   {
@@ -791,10 +796,12 @@ export const roles: CareerRole[] = [
     reputation: 5,
     balance: 3,
     fit: 3,
-    rhyme: "AM-platform product owner for equity and fixed income. After multi-asset. Fund craft, not AI-native building.",
-    rhymeZh: "股债平台产品负责人。先多元资产。基金手艺，不是原生 AI 建造。",
+    rhyme: "AM-platform product owner for fixed income. After multi-asset. Fund craft, not AI-native building. London Equity J70839 is a different seat — skip it.",
+    rhymeZh: "固收平台产品负责人。先多元资产。基金手艺，不是原生 AI 建造。伦敦股权席不要投。",
     desk: {
       apply: "Workday 001 J70844. Hong-Kong-Office-New. After B19 only if the FI platform seat is the one you want.",
+      draft: "r7682432615610235067",
+      caution: "Do not spray J69405 and J70844. Skip London Equity J70839 (Cannon Street, close 25 Sep).",
     },
   },
   {
