@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T19:55:00Z",
+  updatedAt: "2026-09-09T19:58:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -1238,7 +1238,8 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "citicclsa.wd3 External JR001362-1. Hiring org: CITIC CLSA Capital Partners HK Limited. English + Mandarin. Experienced candidate considered as ED.",
       draft: "r-8224629745074945869",
-      caution: "Do not invent 15 PE years or a Master’s. Cantonese is a bonus — do not claim. Do not apply via LinkedIn-only 4439130089.",
+      caution:
+        "Do not invent 15 PE years or a Master’s. Cantonese is a bonus — do not claim. LinkedIn 4278483732 says no longer accepting; official Workday canApply still true 9 Sep 19:55 UTC. Do not apply LinkedIn-only.",
     },
   },
   {
@@ -1577,32 +1578,62 @@ export const roles: CareerRole[] = [
       apply: "Official Workday hkex.wd3 HKEXCareerPage R004139-1. HK-ONE ES 50/F. canApply true.",
       draft: "r2545377456963307119",
       caution:
-        "TA post prefers MBB — do not invent it. Official JD prefers strategy / corporate finance / exchanges, no numbered years. Sibling ETP is B40b. Do not spray both. Old R004123 slug 404.",
+        "TA post prefers MBB — do not invent it. Official JD prefers strategy / corporate finance / exchanges, no numbered years. Sibling ETP is B40b. Skip Depository Solution & Transformation R004254 vs this Group Strategy seat. Old R004123 slug 404.",
     },
   },
   {
     id: "B171",
-    rank: 80,
+    rank: 13,
     title: "APAC Payments - Strategy - Executive Director",
     org: "JPMorganChase",
     location: "Kwun Tong, Hong Kong",
-    href: "https://hk.linkedin.com/jobs/view/apac-payments-strategy-executive-director-at-jpmorganchase-4405870571",
-    closeNote: "LinkedIn Apply 6 days ago · Evenbreak aggregator close 21 Sep 2026 · official Oracle CX JS-empty",
+    href: "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210739466",
+    closeNote: "Oracle CX 210739466 · ExternalPostedStartDate 18 May 2026 · no endDate · Kwun Tong Quayside",
     tier: "B",
     bands: ["capital", "stretch"],
-    status: "watch",
+    status: "live",
     pay: 5,
     security: 4,
     reputation: 5,
     balance: 2,
     fit: 3,
-    rhyme: "Wholesale payments strategy next to digital rails. Official careers page still not proven this pass.",
-    rhymeZh: "批发支付策略，贴着数字轨道。官方招聘页这一轮还没证实。",
+    rhyme: "Wholesale payments strategy next to digital rails. Official at last. After the AI solution lead, if this is the payments desk.",
+    rhymeZh: "批发支付策略，贴着数字轨道。官网终于到了。先 AI 方案负责人，若这才是支付席。",
     stretch: true,
+    portalOnly: true,
     desk: {
-      apply: "WATCH. Do not apply LinkedIn-only. Re-GET jpmc.fa.oraclecloud.com CX_1001 / 210763531 until postingAvailable is proven.",
+      apply: "Official Oracle CX_1001 job/210739466. REST confirms HK. LinkedIn 4405870571 is a mirror.",
+      draft: "r7906757809933544180",
       caution:
-        "JD: 10+ years payments/banking/treasury + top-tier consulting or internal strategy. Do not invent MBB or a payments decade. Skip sibling FIG Sales ED/MD. Skip Payments Industry Solutions VP until official CX.",
+        "10+ years payments/banking/treasury + top-tier consulting or internal strategy. Do not invent MBB or a payments decade. Wrong id 210763531 was JS-empty. Skip sibling FIG Sales ED/MD. Skip Payments Industry Solutions VP until official CX.",
+    },
+  },
+  {
+    id: "B172",
+    rank: 22,
+    title: "Director, Strategic Change Initiative",
+    org: "Standard Chartered",
+    location: "Kowloon City, Hong Kong",
+    href: "https://jobs.standardchartered.com/job/Director%2C-Strategic-Change-Initiative/60809-en_GB/",
+    closeAt: "2026-09-30T23:59:00+08:00",
+    closeNote: "Req 60809 · Band 5 · posting end 30 Sep 2026 · WRB Digital",
+    tier: "B",
+    bands: ["capital", "stretch"],
+    status: "live",
+    pay: 4,
+    security: 4,
+    reputation: 4,
+    balance: 3,
+    fit: 2,
+    rhyme: "Digital-wealth change PMO. Not an AI product seat. After the AI solution lead if WRB change is the want.",
+    rhymeZh: "数字财富变革 PMO。不是 AI 产品席。先 AI 方案负责人，若 WRB 变革是想要的。",
+    stretch: true,
+    portalOnly: true,
+    desk: {
+      apply: "Official jobs.standardchartered.com 60809. Kowloon City. Band 5.",
+      draft: "r7566136181211083618",
+      caution:
+        "10+ years large-scale change. Do not invent SAFe/PMP/TOGAF. Skip 60894 Client Care Center PM (close 25 Sep). Skip Digital Engagement 48866 (ended 14 Jun). Skip Head of CBDC and DA China 57782 until that page is live.",
     },
   },
   {
@@ -1625,6 +1656,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "建造业合作，贴着创科标签。守住 AI 总监席。",
     skipWhy:
       "Official JD: construction and built-environment executives; government works departments; 10 years preferably construction/entrepreneurship; English + Chinese including Cantonese and Putonghua. Keep A30 Director AI and Data 1366190466 and A1 Investor Engagement.",
+  },
+  {
+    id: "B173",
+    rank: 99,
+    title: "Vice President – Depository - Solution & Transformation",
+    org: "HKEX",
+    location: "Hong Kong",
+    href: "https://hkex.wd3.myworkdayjobs.com/HKEXCareerPage/job/HK-CMP-6F/Vice-President---Depository---Payment---Transformation_R004254",
+    closeNote: "Workday R004254 · canApply true · posted 3 Aug 2026 · 12-year / 8-year ops stretch",
+    tier: "B",
+    bands: ["institutions", "stretch"],
+    status: "skip",
+    pay: 4,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 2,
+    rhyme: "Post-trade ops with an AI line. Keep Group Strategy.",
+    rhymeZh: "后交易运维，带着一行 AI。守住集团策略席。",
+    skipWhy:
+      "Official JD: 12 years including 8 years senior leadership in FS / market infrastructure / vault; fee and payment operations; AI/automation/chatbot as ops tools. Keep B170 Group Strategy R004139-1. Do not spray both. Skip Cyberport Chief Corporate Development Officer LinkedIn — Georgina Chu in seat since Feb 2024.",
   },
 ];
 
