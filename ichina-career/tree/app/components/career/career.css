@@ -1,0 +1,68 @@
+.career-clock {
+  backdrop-filter: blur(16px);
+}
+
+.career-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 28px;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-hair);
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition:
+    border-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.career-chip:hover,
+.career-chip.is-on {
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-hair));
+  color: var(--color-fg);
+}
+
+.career-chip.is-on {
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent);
+}
+
+.career-chip-now {
+  border-color: color-mix(in srgb, var(--color-spark) 45%, var(--color-hair));
+  color: var(--color-accent-hover);
+}
+
+.career-proof {
+  min-height: 8.5rem;
+}
+
+.career-select {
+  min-height: 36px;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-hair);
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  color: var(--color-fg);
+  font-size: 12px;
+}
+
+.career-table th,
+.career-table td {
+  vertical-align: top;
+}
+
+.career-day {
+  min-height: 8.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .career-chip,
+  .career-proof {
+    transition: none;
+  }
+}

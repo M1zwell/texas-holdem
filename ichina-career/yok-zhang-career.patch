@@ -1,0 +1,4418 @@
+From 781681a053b356f7b8886edacf47c82ea6edfe01 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Wed, 9 Sep 2026 18:26:58 +0000
+Subject: [PATCH 1/5] Add private /career hunt desk gated to
+ yying2010@gmail.com.
+
+Ship ichina.co/career as a Google (Jubit SSO) lock. Only the owner email
+sees the dashboard. Public nav stays empty until that session. Static HTML
+must not leak hunt copy.
+---
+ README.md                               |    5 +-
+ app/[locale]/career/page.tsx            |   28 +
+ app/career/page.tsx                     |   15 +
+ app/components/AuthCta.tsx              |   27 +-
+ app/components/HomeView.tsx             |    2 +
+ app/components/SiteFooter.tsx           |    2 +
+ app/components/SiteHeader.tsx           |    3 +
+ app/components/career/CareerGate.tsx    |  148 +++
+ app/components/career/CareerNavLink.tsx |   55 ++
+ app/components/career/CareerView.tsx    |  718 ++++++++++++++
+ app/components/career/career.css        |   68 ++
+ lib/career/clock.ts                     |   62 ++
+ lib/career/gate.ts                      |   10 +
+ lib/career/hunt.ts                      |  205 ++++
+ lib/career/profile.ts                   |   72 ++
+ lib/career/proof.ts                     |   70 ++
+ lib/career/roles.ts                     | 1183 +++++++++++++++++++++++
+ lib/career/types.ts                     |   54 ++
+ lib/career/verify-owner.ts              |   27 +
+ lib/family-session.ts                   |   25 +
+ lib/messages/en.ts                      |   92 ++
+ lib/messages/ja.ts                      |   92 ++
+ lib/messages/ko.ts                      |   92 ++
+ lib/messages/nl.ts                      |   92 ++
+ lib/messages/th.ts                      |   92 ++
+ lib/messages/zh-Hans.ts                 |   92 ++
+ lib/messages/zh-Hant.ts                 |   92 ++
+ lib/site.ts                             |    1 +
+ package.json                            |    3 +-
+ scripts/verify-career-gate.ts           |   48 +
+ 30 files changed, 3448 insertions(+), 27 deletions(-)
+ create mode 100644 app/[locale]/career/page.tsx
+ create mode 100644 app/career/page.tsx
+ create mode 100644 app/components/career/CareerGate.tsx
+ create mode 100644 app/components/career/CareerNavLink.tsx
+ create mode 100644 app/components/career/CareerView.tsx
+ create mode 100644 app/components/career/career.css
+ create mode 100644 lib/career/clock.ts
+ create mode 100644 lib/career/gate.ts
+ create mode 100644 lib/career/hunt.ts
+ create mode 100644 lib/career/profile.ts
+ create mode 100644 lib/career/proof.ts
+ create mode 100644 lib/career/roles.ts
+ create mode 100644 lib/career/types.ts
+ create mode 100644 lib/career/verify-owner.ts
+ create mode 100644 lib/family-session.ts
+ create mode 100644 scripts/verify-career-gate.ts
+
+diff --git a/README.md b/README.md
+index ef559c4..40e00a9 100644
+--- a/README.md
++++ b/README.md
+@@ -17,6 +17,7 @@ The improved dseek mark lives on this garden only — it is not deployed to dsee
+ - `/blog` redirects to `/writing` (old links)
+ - `/tools` workspace (tacit — universe launcher, HK district jump, live frames)
+ - `/products` live product directory; city-planet / worlds first
++- `/career` private hunt dashboard — Google via Jubit OAuth, only `yying2010@gmail.com`
+ - `/share` omni-channel publish desk (YouTube / TikTok / Xiaohongshu / X copy kits)
+ - `/auth/callback` family SSO return from jubit.ai — exchanges `sso_token`, keeps the session on ichina
+ - `/tools` and Writing: Studio outputs via jubit.ai/terminal (NotebookLM-class)
+@@ -35,7 +36,9 @@ Locale is stored in a `locale` cookie and reflected in the URL. Default English
+ 
+ 4. Production: run the build script. Static files land in `out/` (output export is on).
+ 
+-Sign in / Register send you through `www.jubit.ai/auth/sso` with `redirect_uri=https://ichina.co/…`. After Google, the hub returns to `/auth/callback?sso_token=…`. The garden exchanges that token with the public hub function (same contract as dseek) and stores the session in `localStorage`. No extra env secrets.
++Sign in / Register send you through `www.jubit.ai/auth/sso` with `redirect_uri=https://ichina.co/…`. After Google, the hub returns to `/auth/callback?sso_token=…` (or the page in `redirect_uri`). The garden exchanges that token with the public hub function (same contract as dseek) and stores the session in `localStorage`. No extra env secrets.
++
++`/career` is not a public garden page. It stays off the public nav. The lock asks to continue with Google. After exchange, the garden checks the hub user and only `yying2010@gmail.com` sees the dashboard (schedule, matching, pools, progress, reminders). Other signed-in accounts are refused. Static export still emits a JS chunk; the door is the session, not a server ACL.
+ 
+ Family check-in on `/hometown` is optional. Apply `supabase/hometown_checkins.sql` in Supabase, then set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` on the deploy. Without them the tree still ships; the 报到 form stays quiet.
+ 
+diff --git a/app/[locale]/career/page.tsx b/app/[locale]/career/page.tsx
+new file mode 100644
+index 0000000..98a2a72
+--- /dev/null
++++ b/app/[locale]/career/page.tsx
+@@ -0,0 +1,28 @@
++import { CareerGate } from "@/app/components/career/CareerGate";
++import { isPrefixedLocale } from "@/lib/i18n";
++import { t } from "@/lib/messages";
++import { seo } from "@/lib/seo";
++import { notFound } from "next/navigation";
++
++type Params = { locale: string };
++
++export async function generateMetadata({ params }: { params: Promise<Params> }) {
++  const { locale } = await params;
++  if (!isPrefixedLocale(locale)) return {};
++  const m = t(locale);
++  return {
++    ...seo({
++      title: m.nav.career,
++      description: m.careerPage.gateLead,
++      path: "/career",
++      locale,
++    }),
++    robots: { index: false, follow: false },
++  };
++}
++
++export default async function LocaleCareer({ params }: { params: Promise<Params> }) {
++  const { locale } = await params;
++  if (!isPrefixedLocale(locale)) notFound();
++  return <CareerGate locale={locale} />;
++}
+diff --git a/app/career/page.tsx b/app/career/page.tsx
+new file mode 100644
+index 0000000..fc41c8b
+--- /dev/null
++++ b/app/career/page.tsx
+@@ -0,0 +1,15 @@
++import { CareerGate } from "@/app/components/career/CareerGate";
++import { seo } from "@/lib/seo";
++
++export const metadata = {
++  ...seo({
++    title: "Career",
++    description: "Private desk. Continue with Google.",
++    path: "/career",
++  }),
++  robots: { index: false, follow: false },
++};
++
++export default function CareerPage() {
++  return <CareerGate locale="en" />;
++}
+diff --git a/app/components/AuthCta.tsx b/app/components/AuthCta.tsx
+index 246e70c..204f647 100644
+--- a/app/components/AuthCta.tsx
++++ b/app/components/AuthCta.tsx
+@@ -1,34 +1,11 @@
+ "use client";
+ 
+-import { useEffect, useState } from "react";
+ import { usePathname } from "next/navigation";
++import { useFamilySession } from "@/lib/family-session";
+ import { stripLocale } from "@/lib/i18n";
+-import {
+-  FAMILY_SESSION_EVENT,
+-  familySsoUrl,
+-  readFamilySession,
+-  signOutFamilySession,
+-  type FamilySession,
+-} from "@/lib/jubit-sso";
++import { familySsoUrl, signOutFamilySession } from "@/lib/jubit-sso";
+ import { t } from "@/lib/messages";
+ 
+-function useFamilySession(): FamilySession | null {
+-  const [session, setSession] = useState<FamilySession | null>(null);
+-
+-  useEffect(() => {
+-    const sync = () => setSession(readFamilySession());
+-    sync();
+-    window.addEventListener(FAMILY_SESSION_EVENT, sync);
+-    window.addEventListener("storage", sync);
+-    return () => {
+-      window.removeEventListener(FAMILY_SESSION_EVENT, sync);
+-      window.removeEventListener("storage", sync);
+-    };
+-  }, []);
+-
+-  return session;
+-}
+-
+ export function AuthHeaderButtons() {
+   const pathname = usePathname() || "/";
+   const { locale } = stripLocale(pathname);
+diff --git a/app/components/HomeView.tsx b/app/components/HomeView.tsx
+index f1a6b7c..a875257 100644
+--- a/app/components/HomeView.tsx
++++ b/app/components/HomeView.tsx
+@@ -1,4 +1,5 @@
+ import Link from "next/link";
++import { CareerNavLink } from "@/app/components/career/CareerNavLink";
+ import { JoinFlow } from "@/app/components/JoinFlow";
+ import { PostCard } from "@/app/components/PostCard";
+ import { PretextLines } from "@/app/components/PretextLines";
+@@ -44,6 +45,7 @@ export function HomeView({ locale = "en" }: { locale?: Locale }) {
+               <Link href={href("/writing")} className="btn btn-ghost">
+                 {m.nav.writing}
+               </Link>
++              <CareerNavLink locale={locale} variant="home" />
+             </div>
+             <div className="mt-8">
+               <QuoteRotator />
+diff --git a/app/components/SiteFooter.tsx b/app/components/SiteFooter.tsx
+index 7cdf9b8..dc6dc34 100644
+--- a/app/components/SiteFooter.tsx
++++ b/app/components/SiteFooter.tsx
+@@ -3,6 +3,7 @@
+ import Link from "next/link";
+ import { usePathname } from "next/navigation";
+ import { AuthRegisterLink } from "@/app/components/AuthCta";
++import { CareerNavLink } from "@/app/components/career/CareerNavLink";
+ import { EnterButton } from "@/app/components/JoinFlow";
+ import { localizeHref, stripLocale } from "@/lib/i18n";
+ import { t } from "@/lib/messages";
+@@ -58,6 +59,7 @@ export function SiteFooter() {
+               {email.label}
+             </a>
+           ))}
++          <CareerNavLink locale={locale} variant="footer" />
+           <Link href={localizeHref("/share", locale)} className="text-accent hover:text-accent-hover">
+             {m.nav.share}
+           </Link>
+diff --git a/app/components/SiteHeader.tsx b/app/components/SiteHeader.tsx
+index 1f67683..a37fc2d 100644
+--- a/app/components/SiteHeader.tsx
++++ b/app/components/SiteHeader.tsx
+@@ -3,6 +3,7 @@
+ import Link from "next/link";
+ import { usePathname } from "next/navigation";
+ import { AuthHeaderButtons, AuthRailLink } from "@/app/components/AuthCta";
++import { CareerNavLink } from "@/app/components/career/CareerNavLink";
+ import { EnterButton } from "@/app/components/JoinFlow";
+ import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
+ import { ThemeToggle } from "@/app/components/ThemeToggle";
+@@ -77,6 +78,7 @@ export function SiteHeader() {
+               </Link>
+             );
+           })}
++          <CareerNavLink locale={locale} />
+           <a
+             href={links.gghereWorlds}
+             target="_blank"
+@@ -123,6 +125,7 @@ export function SiteHeader() {
+             {item.label}
+           </Link>
+         ))}
++        <CareerNavLink locale={locale} variant="rail" />
+         <a
+           href={links.gghereWorlds}
+           target="_blank"
+diff --git a/app/components/career/CareerGate.tsx b/app/components/career/CareerGate.tsx
+new file mode 100644
+index 0000000..20d23cc
+--- /dev/null
++++ b/app/components/career/CareerGate.tsx
+@@ -0,0 +1,148 @@
++"use client";
++
++import dynamic from "next/dynamic";
++import Link from "next/link";
++import { useEffect, useState } from "react";
++import { usePathname } from "next/navigation";
++import { PretextLines } from "@/app/components/PretextLines";
++import {
++  CAREER_OWNER_EMAIL,
++  isCareerOwner,
++} from "@/lib/career/gate";
++import { verifyCareerOwner } from "@/lib/career/verify-owner";
++import { useFamilySession } from "@/lib/family-session";
++import type { Locale } from "@/lib/i18n";
++import { localizeHref } from "@/lib/i18n";
++import {
++  exchangeSsoToken,
++  familySsoUrl,
++  readFamilySession,
++  signOutFamilySession,
++  ssoTokenFromSearch,
++  writeFamilySession,
++} from "@/lib/jubit-sso";
++import { t } from "@/lib/messages";
++import "./career.css";
++
++const CareerView = dynamic(() => import("./CareerView").then((mod) => ({ default: mod.CareerView })), {
++  ssr: false,
++});
++
++const exchanges = new Map<string, ReturnType<typeof exchangeSsoToken>>();
++
++function exchangeOnce(token: string) {
++  const existing = exchanges.get(token);
++  if (existing) return existing;
++  const pending = exchangeSsoToken(token);
++  exchanges.set(token, pending);
++  void pending.then((result) => {
++    if (!result.ok) exchanges.delete(token);
++  });
++  return pending;
++}
++
++type Phase = "working" | "in" | "out" | "denied";
++
++export function CareerGate({ locale = "en" }: { locale?: Locale }) {
++  const session = useFamilySession();
++  const [phase, setPhase] = useState<Phase>("working");
++
++  useEffect(() => {
++    let cancelled = false;
++
++    void (async () => {
++      const params = new URLSearchParams(window.location.search);
++      const token = ssoTokenFromSearch(params);
++      if (token) {
++        const result = await exchangeOnce(token);
++        if (cancelled) return;
++        if (result.ok) {
++          writeFamilySession(result.session);
++          const url = new URL(window.location.href);
++          url.searchParams.delete("sso_token");
++          url.searchParams.delete("token");
++          url.searchParams.delete("exchange_token");
++          window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
++        }
++      }
++
++      const current = readFamilySession();
++      if (!current) {
++        if (!cancelled) setPhase("out");
++        return;
++      }
++      if (!isCareerOwner(current.email)) {
++        if (!cancelled) setPhase("denied");
++        return;
++      }
++      const ok = await verifyCareerOwner(current);
++      if (cancelled) return;
++      setPhase(ok ? "in" : "denied");
++    })();
++
++    return () => {
++      cancelled = true;
++    };
++  }, [session]);
++
++  if (phase === "in") return <CareerView locale={locale} />;
++  return <CareerLock locale={locale} phase={phase} />;
++}
++
++export function CareerLock({ locale, phase }: { locale: Locale; phase: Phase }) {
++  const pathname = usePathname() || "/career";
++  const m = t(locale);
++  const c = m.careerPage;
++  const href = (path: string) => localizeHref(path, locale);
++  const signInHref = familySsoUrl({ next: pathname });
++
++  return (
++    <main className="career-field">
++      <section className="page-x mx-auto flex min-h-[58vh] max-w-lg items-center py-10 sm:min-h-[70vh] sm:py-16">
++        <div className="card w-full p-5 sm:p-8">
++          <p className="kicker">{c.gateKicker}</p>
++          <PretextLines
++            text={c.gateTitle}
++            as="h1"
++            locale={locale}
++            className="mt-3 font-display text-[1.7rem] leading-[1.05] tracking-tight text-fg sm:text-4xl"
++          />
++          {phase === "working" ? (
++            <p className="mt-5 text-sm leading-relaxed text-muted">{c.gateWorking}</p>
++          ) : null}
++          {phase === "out" ? (
++            <>
++              <p className="mt-5 text-sm leading-relaxed text-muted">{c.gateLead}</p>
++              <p className="mt-3 font-mono text-[12px] text-accent">Google · {CAREER_OWNER_EMAIL}</p>
++              <div className="mt-8 flex flex-wrap gap-3">
++                <a href={signInHref} className="btn btn-primary cta-pop">
++                  {c.gateSignIn}
++                </a>
++                <Link href={href("/")} className="btn btn-ghost">
++                  {m.auth.goHome}
++                </Link>
++              </div>
++            </>
++          ) : null}
++          {phase === "denied" ? (
++            <>
++              <p className="mt-5 text-sm leading-relaxed text-secondary">{c.gateDenied}</p>
++              <p className="mt-2 text-[13px] leading-relaxed text-muted">{c.gateDeniedHint}</p>
++              <div className="mt-8 flex flex-wrap gap-3">
++                <button type="button" className="btn btn-primary" onClick={() => void signOutFamilySession()}>
++                  {m.cta.signOut}
++                </button>
++                <a href={signInHref} className="btn btn-ghost">
++                  {c.gateSignIn}
++                </a>
++                <Link href={href("/")} className="btn btn-ghost">
++                  {m.auth.goHome}
++                </Link>
++              </div>
++            </>
++          ) : null}
++        </div>
++      </section>
++    </main>
++  );
++}
+diff --git a/app/components/career/CareerNavLink.tsx b/app/components/career/CareerNavLink.tsx
+new file mode 100644
+index 0000000..0cc6282
+--- /dev/null
++++ b/app/components/career/CareerNavLink.tsx
+@@ -0,0 +1,55 @@
++"use client";
++
++import Link from "next/link";
++import { usePathname } from "next/navigation";
++import { isCareerOwner } from "@/lib/career/gate";
++import { useFamilySession } from "@/lib/family-session";
++import type { Locale } from "@/lib/i18n";
++import { localizeHref } from "@/lib/i18n";
++import { t } from "@/lib/messages";
++
++export function CareerNavLink({
++  locale,
++  variant = "header",
++}: {
++  locale: Locale;
++  variant?: "header" | "rail" | "footer" | "home";
++}) {
++  const session = useFamilySession();
++  const pathname = usePathname() || "/";
++  if (!isCareerOwner(session?.email)) return null;
++
++  const m = t(locale);
++  const href = localizeHref("/career", locale);
++  const on = pathname === href || pathname.endsWith("/career");
++
++  if (variant === "home") {
++    return (
++      <Link href={href} className="btn btn-ghost">
++        {m.nav.career}
++      </Link>
++    );
++  }
++
++  if (variant === "footer") {
++    return (
++      <Link href={href} className="text-accent hover:text-accent-hover">
++        {m.nav.career}
++      </Link>
++    );
++  }
++
++  if (variant === "rail") {
++    return (
++      <Link href={href} className="shrink-0 text-[12px] font-medium text-muted hover:text-fg">
++        {m.nav.career}
++      </Link>
++    );
++  }
++
++  return (
++    <Link href={href} className={on ? "nav-link is-on" : "nav-link"}>
++      {m.nav.career}
++    </Link>
++  );
++}
+diff --git a/app/components/career/CareerView.tsx b/app/components/career/CareerView.tsx
+new file mode 100644
+index 0000000..9b9fb5f
+--- /dev/null
++++ b/app/components/career/CareerView.tsx
+@@ -0,0 +1,718 @@
++"use client";
++
++/** Owner-only field. Mount only behind CareerGate. */
++
++import Link from "next/link";
++import { useEffect, useMemo, useState } from "react";
++import { Reveal } from "@/app/components/Reveal";
++import "./career.css";
++import { PretextLines } from "@/app/components/PretextLines";
++import type { Locale } from "@/lib/i18n";
++import { localizeHref } from "@/lib/i18n";
++import { signOutFamilySession } from "@/lib/jubit-sso";
++import { t } from "@/lib/messages";
++import { links } from "@/lib/site";
++import { countdown, formatHk, formatHkDate, isOpen, urgency } from "@/lib/career/clock";
++import {
++  type CareerPane,
++  type HuntBook,
++  type HuntStatus,
++  PANE_KEY,
++  WATCH_KEY,
++  huntStatuses,
++  inPool,
++  matchScore,
++  matchWhy,
++  panes,
++  poolOrder,
++  progressCounts,
++  readHunt,
++  resolveStatus,
++  scheduleDays,
++  setHuntStatus,
++} from "@/lib/career/hunt";
++import { careerOwner, priorSeats, seats } from "@/lib/career/profile";
++import { proofs } from "@/lib/career/proof";
++import { inField, nextMoves, roles, snapshot, sortField, type FieldFilter } from "@/lib/career/roles";
++import type { CareerRole, Felt } from "@/lib/career/types";
++
++const DESK_KEY = "ichina-career-desk";
++
++const filters: FieldFilter[] = ["all", "today", "institutions", "capital", "cvc", "stretch"];
++
++function FeltRow({ value, label }: { value: Felt; label: string }) {
++  return (
++    <div className="flex items-center justify-between gap-3">
++      <span className="text-[11px] tracking-[0.14em] text-muted uppercase">{label}</span>
++      <span className="flex gap-1" aria-hidden>
++        {([1, 2, 3, 4, 5] as Felt[]).map((n) => (
++          <i
++            key={n}
++            className={
++              n <= value
++                ? "h-1.5 w-1.5 rounded-full bg-accent"
++                : "h-1.5 w-1.5 rounded-full bg-line"
++            }
++          />
++        ))}
++      </span>
++      <span className="sr-only">
++        {label} {value} of 5
++      </span>
++    </div>
++  );
++}
++
++function useNow(ms = 30000) {
++  const [now, setNow] = useState(() => new Date());
++  useEffect(() => {
++    const id = window.setInterval(() => setNow(new Date()), ms);
++    return () => window.clearInterval(id);
++  }, [ms]);
++  return now;
++}
++
++function paneFromLocation(): CareerPane {
++  try {
++    const q = new URLSearchParams(window.location.search).get("pane");
++    const hash = window.location.hash.replace("#", "");
++    const stored = localStorage.getItem(PANE_KEY);
++    const candidate = (q || hash || stored || "dash") as CareerPane;
++    if (panes.includes(candidate)) return candidate;
++  } catch {
++    /* private mode */
++  }
++  return "dash";
++}
++
++export function CareerView({ locale = "en" }: { locale?: Locale }) {
++  const m = t(locale);
++  const c = m.careerPage;
++  const zh = locale === "zh-Hans" || locale === "zh-Hant";
++  const now = useNow();
++  const [pane, setPane] = useState<CareerPane>("dash");
++  const [filter, setFilter] = useState<FieldFilter>("all");
++  const [watch, setWatch] = useState<string[]>([]);
++  const [book, setBook] = useState<HuntBook>({});
++  const href = (path: string) => localizeHref(path, locale);
++
++  useEffect(() => {
++    try {
++      const raw = localStorage.getItem(WATCH_KEY);
++      if (raw) setWatch(JSON.parse(raw) as string[]);
++      setBook(readHunt());
++      setPane(paneFromLocation());
++    } catch {
++      /* ignore */
++    }
++  }, []);
++
++  const persistPane = (next: CareerPane) => {
++    setPane(next);
++    try {
++      localStorage.setItem(PANE_KEY, next);
++      const url = new URL(window.location.href);
++      url.searchParams.set("pane", next);
++      url.hash = next;
++      window.history.replaceState(null, "", url.toString());
++    } catch {
++      /* ignore */
++    }
++  };
++
++  const persistWatch = (ids: string[]) => {
++    setWatch(ids);
++    try {
++      localStorage.setItem(WATCH_KEY, JSON.stringify(ids));
++      localStorage.setItem(DESK_KEY, "1");
++    } catch {
++      /* ignore */
++    }
++  };
++
++  const live = useMemo(
++    () => roles.filter((r) => r.status === "live" || r.status === "watch"),
++    [],
++  );
++
++  const field = useMemo(() => {
++    const list = live.filter((r) => inField(r, filter, now));
++    return sortField(list, now).sort((a, b) => {
++      if (pane !== "match") return 0;
++      return matchScore(b) - matchScore(a);
++    });
++  }, [filter, now, pane, live]);
++
++  const moves = useMemo(() => nextMoves(now), [now]);
++  const closing = live.filter((r) => r.closeAt && isOpen(r.closeAt, now) && urgency(r.closeAt, now) === "now");
++  const week = useMemo(() => scheduleDays(live, now, 10), [now, live]);
++  const counts = useMemo(() => progressCounts(live, book, now, watch), [book, now, watch, live]);
++  const ranked = useMemo(
++    () => [...live].filter((r) => isOpen(r.closeAt, now)).sort((a, b) => matchScore(b) - matchScore(a)),
++    [now, live],
++  );
++
++  useEffect(() => {
++    if (!("Notification" in window) || Notification.permission !== "granted") return;
++    for (const id of watch) {
++      const role = roles.find((r) => r.id === id);
++      if (!role?.closeAt || urgency(role.closeAt, now) !== "now") continue;
++      const key = `ichina-career-ping-${role.id}-${role.closeAt}`;
++      try {
++        if (sessionStorage.getItem(key)) continue;
++        sessionStorage.setItem(key, "1");
++      } catch {
++        /* ignore */
++      }
++      new Notification(`${role.org} · ${countdown(role.closeAt, now)}`, {
++        body: role.title,
++      });
++    }
++  }, [now, watch]);
++
++  const askNotify = async () => {
++    if (!("Notification" in window)) return;
++    if (Notification.permission === "granted") return;
++    await Notification.requestPermission();
++  };
++
++  const paneLabel: Record<CareerPane, string> = {
++    dash: c.paneDash,
++    schedule: c.paneSchedule,
++    match: c.paneMatch,
++    pools: c.panePools,
++    progress: c.paneProgress,
++    desk: c.paneDesk,
++  };
++
++  const statusLabel: Record<HuntStatus, string> = {
++    pooled: c.statusPooled,
++    matched: c.statusMatched,
++    watching: c.statusWatching,
++    queued: c.statusQueued,
++    drafted: c.statusDrafted,
++    applied: c.statusApplied,
++    interview: c.statusInterview,
++    hold: c.statusHold,
++    skipped: c.statusSkipped,
++    closed: c.statusClosed,
++  };
++
++  return (
++    <main className="career-field">
++      <div className="career-clock glass-header sticky top-[5.75rem] z-30 border-b border-hair sm:top-[3.6rem] lg:top-[3.35rem]">
++        <div className="page-x mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 py-2">
++          <p className="font-mono text-[11px] tracking-wide text-muted">
++            <span className="mr-1.5 text-accent">香港</span>
++            {c.clockLabel} · {formatHk(now)}
++          </p>
++          <div className="flex flex-wrap items-center gap-2">
++            {closing.slice(0, 3).map((role) => (
++              <button
++                key={role.id}
++                type="button"
++                onClick={() => persistPane("schedule")}
++                className="career-chip career-chip-now"
++              >
++                {role.org}
++                <span className="font-mono text-[10px]">{countdown(role.closeAt!, now)}</span>
++              </button>
++            ))}
++            <span className="hidden font-mono text-[10px] text-muted sm:inline">{c.signedInAs}</span>
++            <button type="button" className="career-chip" onClick={() => void signOutFamilySession()}>
++              {m.cta.signOut}
++            </button>
++          </div>
++        </div>
++        <div className="page-x mx-auto flex max-w-6xl flex-wrap gap-1 pb-2" role="tablist" aria-label={c.paneDash}>
++          {panes.map((id) => (
++            <button
++              key={id}
++              type="button"
++              role="tab"
++              aria-selected={pane === id}
++              onClick={() => persistPane(id)}
++              className={pane === id ? "career-chip is-on" : "career-chip"}
++            >
++              {paneLabel[id]}
++            </button>
++          ))}
++        </div>
++      </div>
++
++      {pane === "dash" ? (
++        <Dashboard
++          locale={locale}
++          zh={zh}
++          now={now}
++          counts={counts}
++          moves={moves}
++          week={week}
++          ranked={ranked}
++          copy={c}
++          onOpen={persistPane}
++        />
++      ) : null}
++
++      {pane === "schedule" ? (
++        <section className="page-x mx-auto max-w-6xl py-10 pb-20">
++          <p className="kicker">{c.scheduleKicker}</p>
++          <h2 className="mt-3 font-display text-3xl tracking-tight">{c.scheduleTitle}</h2>
++          <ol className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
++            {week.map((day) => (
++              <li key={day.key} className="career-day rounded-[16px] border border-hair bg-surface/70 p-4">
++                <p className="font-mono text-[11px] text-accent">{day.label}</p>
++                {day.roles.length === 0 ? (
++                  <p className="mt-3 text-[12px] text-muted">{c.scheduleEmpty}</p>
++                ) : (
++                  <ul className="mt-3 space-y-2">
++                    {day.roles.map((role) => (
++                      <li key={role.id}>
++                        <a href={`#role-${role.id}`} onClick={() => persistPane("match")} className="text-[13px] text-fg hover:text-accent">
++                          {role.org}
++                        </a>
++                        <p className="font-mono text-[10px] text-muted">
++                          {role.closeAt ? countdown(role.closeAt, now) : c.noClose}
++                        </p>
++                      </li>
++                    ))}
++                  </ul>
++                )}
++              </li>
++            ))}
++          </ol>
++        </section>
++      ) : null}
++
++      {pane === "match" || pane === "desk" ? (
++        <section className="page-x mx-auto max-w-6xl pb-20 pt-10">
++          <div className="flex flex-wrap items-end justify-between gap-4">
++            <div>
++              <p className="kicker">{c.matchKicker}</p>
++              <h2 className="mt-3 font-display text-3xl tracking-tight sm:text-4xl">{c.matchTitle}</h2>
++              <p className="mt-3 max-w-xl text-sm text-muted">{c.matchLead}</p>
++            </div>
++            <div className="flex flex-wrap gap-1.5" role="tablist" aria-label={c.fieldTitle}>
++              {filters.map((id) => (
++                <button
++                  key={id}
++                  type="button"
++                  role="tab"
++                  aria-selected={filter === id}
++                  onClick={() => setFilter(id)}
++                  className={filter === id ? "career-chip is-on" : "career-chip"}
++                >
++                  {c[id]}
++                </button>
++              ))}
++            </div>
++          </div>
++
++          {field.length === 0 ? (
++            <p className="mt-10 text-sm text-muted">{c.filterEmpty}</p>
++          ) : (
++            <ul className="mt-8 space-y-4">
++              {field.map((role) => (
++                <RoleCard
++                  key={role.id}
++                  role={role}
++                  now={now}
++                  desk={pane === "desk"}
++                  zh={zh}
++                  copy={c}
++                  status={resolveStatus(role, book, now, watch.includes(role.id))}
++                  statusLabel={statusLabel}
++                  watching={watch.includes(role.id)}
++                  onWatch={() => {
++                    const next = watch.includes(role.id) ? watch.filter((id) => id !== role.id) : [...watch, role.id];
++                    persistWatch(next);
++                    void askNotify();
++                  }}
++                  onStatus={(status) => setBook(setHuntStatus(book, role.id, status))}
++                />
++              ))}
++            </ul>
++          )}
++        </section>
++      ) : null}
++
++      {pane === "pools" ? (
++        <section className="page-x mx-auto max-w-6xl py-10 pb-20">
++          <p className="kicker">{c.poolKicker}</p>
++          <h2 className="mt-3 font-display text-3xl tracking-tight">{c.poolTitle}</h2>
++          <div className="mt-8 grid gap-4 lg:grid-cols-5">
++            {poolOrder.map((band) => {
++              const list = sortField(
++                live.filter((r) => inPool(r, band, now)),
++                now,
++              );
++              return (
++                <article key={band} className="rounded-[16px] border border-hair bg-surface/70 p-4">
++                  <p className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">{c[band]}</p>
++                  <p className="mt-2 font-display text-3xl">{list.length}</p>
++                  <ul className="mt-4 space-y-2">
++                    {list.slice(0, 5).map((role) => (
++                      <li key={role.id}>
++                        <button type="button" className="text-left text-[13px] hover:text-accent" onClick={() => persistPane("match")}>
++                          {role.org}
++                        </button>
++                        <p className="font-mono text-[10px] text-muted">{matchScore(role).toFixed(1)}</p>
++                      </li>
++                    ))}
++                  </ul>
++                </article>
++              );
++            })}
++          </div>
++        </section>
++      ) : null}
++
++      {pane === "progress" ? (
++        <section className="page-x mx-auto max-w-6xl py-10 pb-20">
++          <p className="kicker">{c.progressKicker}</p>
++          <h2 className="mt-3 font-display text-3xl tracking-tight">{c.progressTitle}</h2>
++          <p className="mt-3 max-w-xl text-sm text-muted">{c.progressLead}</p>
++          <div className="mt-6 flex flex-wrap gap-2">
++            {huntStatuses.map((status) => (
++              <span key={status} className="career-chip">
++                {statusLabel[status]}
++                <span className="font-mono text-[10px]">{counts[status]}</span>
++              </span>
++            ))}
++          </div>
++          <div className="mt-8 overflow-x-auto">
++            <table className="career-table w-full text-left text-[13px]">
++              <thead>
++                <tr className="text-[11px] tracking-[0.12em] text-muted uppercase">
++                  <th className="pb-3">{c.fieldTitle}</th>
++                  <th>{c.paneProgress}</th>
++                  <th>{c.fit}</th>
++                  <th>{c.clockLabel}</th>
++                </tr>
++              </thead>
++              <tbody>
++                {sortField(live, now).map((role) => {
++                  const status = resolveStatus(role, book, now, watch.includes(role.id));
++                  return (
++                    <tr key={role.id} className="border-t border-hair">
++                      <td className="py-3 pr-4">
++                        <p className="font-medium">{role.org}</p>
++                        <p className="text-muted">{zh && role.titleZh ? role.titleZh : role.title}</p>
++                      </td>
++                      <td className="pr-4">
++                        <select
++                          className="career-select"
++                          value={status}
++                          onChange={(e) => setBook(setHuntStatus(book, role.id, e.target.value as HuntStatus))}
++                          aria-label={c.setStatus}
++                        >
++                          {huntStatuses.map((statusOption) => (
++                            <option key={statusOption} value={statusOption}>
++                              {statusLabel[statusOption]}
++                            </option>
++                          ))}
++                        </select>
++                      </td>
++                      <td className="pr-4 font-mono text-[12px] text-accent">{matchScore(role).toFixed(1)}</td>
++                      <td className="font-mono text-[12px] text-muted">
++                        {role.closeAt ? countdown(role.closeAt, now) : c.noClose}
++                      </td>
++                    </tr>
++                  );
++                })}
++              </tbody>
++            </table>
++          </div>
++        </section>
++      ) : null}
++
++      {pane === "dash" ? null : (
++        <section className="page-x mx-auto max-w-5xl pb-16">
++          <p className="text-[12px] text-muted">
++            {c.deskHint} {c.publicNote}
++          </p>
++          <div className="mt-4 flex flex-wrap gap-3">
++            <button type="button" onClick={askNotify} className="btn btn-ghost">
++              {c.notifyAsk}
++            </button>
++            <Link href={href("/products")} className="btn btn-ghost">
++              {m.cta.allProducts}
++            </Link>
++          </div>
++        </section>
++      )}
++    </main>
++  );
++}
++
++function Dashboard({
++  locale,
++  zh,
++  now,
++  counts,
++  moves,
++  week,
++  ranked,
++  copy,
++  onOpen,
++}: {
++  locale: Locale;
++  zh: boolean;
++  now: Date;
++  counts: ReturnType<typeof progressCounts>;
++  moves: CareerRole[];
++  week: ReturnType<typeof scheduleDays>;
++  ranked: CareerRole[];
++  copy: ReturnType<typeof t>["careerPage"];
++  onOpen: (pane: CareerPane) => void;
++}) {
++  const m = t(locale);
++  const href = (path: string) => localizeHref(path, locale);
++  const stats = [
++    { label: copy.statLive, value: roles.filter((r) => r.status === "live").length },
++    { label: copy.statClosing, value: week.reduce((n, d) => n + d.roles.length, 0) },
++    { label: copy.statWatching, value: counts.watching },
++    { label: copy.statDrafted, value: counts.drafted },
++    { label: copy.statApplied, value: counts.applied },
++  ];
++
++  return (
++    <>
++      <section className="page-x mx-auto max-w-5xl pt-12 pb-10 sm:pt-16">
++        <p className="kicker">{copy.kicker}</p>
++        <PretextLines
++          text={copy.title}
++          as="h1"
++          locale={locale}
++          className="mt-4 font-display text-[clamp(2.3rem,6.6vw,4.3rem)] leading-[0.98] tracking-tight"
++        />
++        <p className="mt-5 font-mono text-[12px] text-accent">{careerOwner.email}</p>
++        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-secondary">
++          {zh ? snapshot.thesisZh : snapshot.thesis}
++        </p>
++        <p className="mt-3 text-[12px] text-muted">{zh ? careerOwner.cityuZh : careerOwner.cityu}</p>
++        <div className="mt-8 flex flex-wrap gap-3">
++          <a href={links.emailGmail} className="btn btn-primary cta-pop">
++            {copy.writeYok}
++          </a>
++          <Link href={href("/products")} className="btn btn-ghost">
++            {m.cta.allProducts}
++          </Link>
++          <button type="button" className="btn btn-ghost" onClick={() => onOpen("schedule")}>
++            {copy.paneSchedule}
++          </button>
++        </div>
++        <p className="mt-5 font-mono text-[11px] text-muted">
++          {copy.updated} · {formatHk(new Date(snapshot.updatedAt))}
++        </p>
++      </section>
++
++      <section className="page-x mx-auto max-w-6xl pb-12">
++        <p className="kicker">{copy.profileKicker}</p>
++        <h2 className="mt-3 font-display text-3xl tracking-tight">{copy.profileTitle}</h2>
++        <ul className="mt-6 grid gap-3 md:grid-cols-3">
++          {seats.map((seat) => (
++            <li key={seat.id} className="rounded-[16px] border border-accent/25 bg-deep/50 p-4">
++              <p className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">
++                {zh ? seat.titleZh : seat.title}
++              </p>
++              <p className="mt-2 text-sm leading-relaxed text-secondary">{zh ? seat.orgZh : seat.org}</p>
++              {seat.since ? <p className="mt-2 font-mono text-[11px] text-accent">since {seat.since}</p> : null}
++              {seat.confidential ? <p className="mt-2 text-[11px] text-muted">{copy.confidential}</p> : null}
++            </li>
++          ))}
++        </ul>
++        <p className="mt-4 text-[12px] text-muted">
++          {copy.priorNote}{" "}
++          {priorSeats.map((seat) => (zh ? `${seat.titleZh} · ${seat.orgZh}` : `${seat.title} · ${seat.org}`)).join(" · ")}
++        </p>
++      </section>
++
++      <section className="page-x mx-auto max-w-6xl pb-12">
++        <div className="grid gap-3 sm:grid-cols-5">
++          {stats.map((stat) => (
++            <button
++              key={stat.label}
++              type="button"
++              onClick={() => onOpen("progress")}
++              className="rounded-[16px] border border-hair bg-surface/70 p-4 text-left"
++            >
++              <p className="text-[11px] tracking-[0.12em] text-muted uppercase">{stat.label}</p>
++              <p className="mt-2 font-display text-3xl">{stat.value}</p>
++            </button>
++          ))}
++        </div>
++      </section>
++
++      <section className="page-x mx-auto max-w-6xl pb-12">
++        <Reveal>
++          <p className="kicker">{copy.proofKicker}</p>
++          <h2 className="mt-3 font-display text-3xl tracking-tight sm:text-4xl">{copy.proofTitle}</h2>
++          <p className="mt-3 max-w-xl text-sm text-muted">{copy.proofLead}</p>
++          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
++            {proofs.map((p) => (
++              <li key={p.id}>
++                <a
++                  href={p.href}
++                  target={p.href.startsWith("http") ? "_blank" : undefined}
++                  rel={p.href.startsWith("http") ? "noopener noreferrer" : undefined}
++                  className="career-proof group block h-full rounded-[16px] border border-hair bg-surface/70 p-4 transition-colors hover:border-accent/40"
++                >
++                  <p className="font-display text-xl tracking-tight group-hover:text-accent">{p.title}</p>
++                  <p className="mt-2 text-[13px] leading-relaxed text-muted">{zh ? p.tacitZh : p.tacit}</p>
++                  <p className="mt-3 font-mono text-[10px] text-accent">{p.path}</p>
++                </a>
++              </li>
++            ))}
++          </ul>
++        </Reveal>
++      </section>
++
++      <section className="page-x mx-auto max-w-5xl pb-12">
++        <Reveal>
++          <p className="kicker">{copy.suggestKicker}</p>
++          <h2 className="mt-3 font-display text-3xl tracking-tight">{copy.suggestTitle}</h2>
++          <ol className="mt-6 space-y-3">
++            {moves.map((role, i) => (
++              <li key={role.id} className="flex gap-4 border-t border-hair pt-3">
++                <span className="font-mono text-[11px] text-accent">{String(i + 1).padStart(2, "0")}</span>
++                <div className="min-w-0">
++                  <button type="button" onClick={() => onOpen("match")} className="font-medium text-fg hover:text-accent">
++                    {role.org} · {zh && role.titleZh ? role.titleZh : role.title}
++                  </button>
++                  <p className="mt-1 text-[13px] text-muted">
++                    {role.closeAt ? `${countdown(role.closeAt, now)} · ${formatHkDate(role.closeAt)}` : copy.noClose}
++                    {role.confirmSeat ? ` · ${copy.confirmSeat}` : ""}
++                    {role.stretch ? ` · ${copy.stretchNote}` : ""}
++                  </p>
++                </div>
++              </li>
++            ))}
++          </ol>
++        </Reveal>
++      </section>
++
++      <section className="page-x mx-auto max-w-6xl pb-20">
++        <p className="kicker">{copy.matchKicker}</p>
++        <h2 className="mt-3 font-display text-3xl tracking-tight">{copy.matchTitle}</h2>
++        <ul className="mt-6 space-y-3">
++          {ranked.slice(0, 6).map((role) => (
++            <li key={role.id} className="flex flex-wrap items-baseline justify-between gap-2 border-t border-hair pt-3">
++              <button type="button" className="text-left" onClick={() => onOpen("match")}>
++                <span className="font-medium">{role.org}</span>
++                <span className="ml-2 text-muted">{zh && role.titleZh ? role.titleZh : role.title}</span>
++              </button>
++              <span className="font-mono text-[12px] text-accent">{matchScore(role).toFixed(1)}</span>
++            </li>
++          ))}
++        </ul>
++      </section>
++    </>
++  );
++}
++
++function RoleCard({
++  role,
++  now,
++  desk,
++  zh,
++  copy,
++  status,
++  statusLabel,
++  watching,
++  onWatch,
++  onStatus,
++}: {
++  role: CareerRole;
++  now: Date;
++  desk: boolean;
++  zh: boolean;
++  copy: ReturnType<typeof t>["careerPage"];
++  status: HuntStatus;
++  statusLabel: Record<HuntStatus, string>;
++  watching: boolean;
++  onWatch: () => void;
++  onStatus: (status: HuntStatus) => void;
++}) {
++  const open = isOpen(role.closeAt, now);
++  const u = urgency(role.closeAt, now);
++  const title = zh && role.titleZh ? role.titleZh : role.title;
++  const rhyme = zh ? role.rhymeZh : role.rhyme;
++
++  return (
++    <li id={`role-${role.id}`}>
++      <article
++        className={
++          role.tier === "ideal"
++            ? "rounded-[20px] border border-accent/35 bg-deep/70 p-5 sm:p-7"
++            : "rounded-[20px] border border-hair bg-surface/60 p-5 sm:p-7"
++        }
++      >
++        <div className="flex flex-wrap items-start justify-between gap-3">
++          <div className="min-w-0">
++            <p className="flex flex-wrap items-center gap-2 text-[11px] font-semibold tracking-[0.16em] text-muted uppercase">
++              <span>{role.tier === "ideal" ? copy.ideal : role.org}</span>
++              {role.tier === "ideal" ? <span className="text-accent">{role.org}</span> : null}
++              {u === "now" && open ? <span className="career-chip career-chip-now">{copy.today}</span> : null}
++              {!open && role.closeAt ? <span className="career-chip">{copy.closed}</span> : null}
++              {role.stretch ? <span className="career-chip">{copy.stretch}</span> : null}
++              <span className="career-chip is-on">{statusLabel[status]}</span>
++            </p>
++            <h3 className="mt-2 font-display text-[1.55rem] leading-[1.05] tracking-tight sm:text-3xl">{title}</h3>
++            <p className="mt-1 text-sm text-secondary">
++              {role.org} · {role.location}
++            </p>
++          </div>
++          <p className="font-mono text-[11px] text-accent">
++            {copy.whyMatch} {matchScore(role).toFixed(1)}
++            {role.closeAt ? ` · ${countdown(role.closeAt, now)}` : ` · ${copy.noClose}`}
++          </p>
++        </div>
++
++        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-secondary">{rhyme}</p>
++        <p className="mt-2 max-w-2xl text-[13px] text-muted">{matchWhy(role, zh)}</p>
++        {role.closeNote ? <p className="mt-2 text-[12px] text-muted">{role.closeNote}</p> : null}
++        {role.confirmSeat ? <p className="mt-2 text-[12px] text-accent">{copy.confirmSeat}</p> : null}
++
++        <div className="mt-5 grid max-w-md gap-2">
++          <FeltRow value={role.pay} label={copy.pay} />
++          <FeltRow value={role.security} label={copy.security} />
++          <FeltRow value={role.reputation} label={copy.reputation} />
++          <FeltRow value={role.balance} label={copy.balance} />
++          <FeltRow value={role.fit} label={copy.fit} />
++        </div>
++
++        <div className="mt-6 flex flex-wrap gap-2">
++          <a href={role.href} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
++            {copy.openRole}
++          </a>
++          <button type="button" onClick={onWatch} className={watching ? "btn btn-ghost text-accent" : "btn btn-ghost"}>
++            {watching ? copy.reminded : copy.reminder}
++          </button>
++          <select
++            className="career-select"
++            value={status}
++            onChange={(e) => onStatus(e.target.value as HuntStatus)}
++            aria-label={copy.setStatus}
++          >
++            {huntStatuses.map((statusOption) => (
++              <option key={statusOption} value={statusOption}>
++                {statusLabel[statusOption]}
++              </option>
++            ))}
++          </select>
++        </div>
++
++        {desk && role.desk ? (
++          <div className="mt-5 rounded-xl border border-hair bg-bg/40 p-4 font-mono text-[12px] leading-relaxed text-secondary">
++            <p>{role.desk.apply}</p>
++            {role.desk.draft ? <p className="mt-2 text-accent">draft {role.desk.draft}</p> : null}
++            {role.desk.addendum ? <p className="mt-1">addendum {role.desk.addendum}</p> : null}
++            {role.desk.caution ? <p className="mt-2 text-muted">{role.desk.caution}</p> : null}
++            {role.portalOnly ? <p className="mt-2">{copy.portalOnly}</p> : null}
++          </div>
++        ) : null}
++      </article>
++    </li>
++  );
++}
+diff --git a/app/components/career/career.css b/app/components/career/career.css
+new file mode 100644
+index 0000000..bac3100
+--- /dev/null
++++ b/app/components/career/career.css
+@@ -0,0 +1,68 @@
++.career-clock {
++  backdrop-filter: blur(16px);
++}
++
++.career-chip {
++  display: inline-flex;
++  align-items: center;
++  gap: 0.4rem;
++  min-height: 28px;
++  padding: 0.15rem 0.7rem;
++  border-radius: 999px;
++  border: 1px solid var(--color-hair);
++  background: transparent;
++  color: var(--color-muted);
++  font-size: 11px;
++  font-weight: 600;
++  letter-spacing: 0.04em;
++  transition:
++    border-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
++    color 180ms cubic-bezier(0.22, 1, 0.36, 1),
++    background 180ms cubic-bezier(0.22, 1, 0.36, 1);
++}
++
++.career-chip:hover,
++.career-chip.is-on {
++  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-hair));
++  color: var(--color-fg);
++}
++
++.career-chip.is-on {
++  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
++  color: var(--color-accent);
++}
++
++.career-chip-now {
++  border-color: color-mix(in srgb, var(--color-spark) 45%, var(--color-hair));
++  color: var(--color-accent-hover);
++}
++
++.career-proof {
++  min-height: 8.5rem;
++}
++
++.career-select {
++  min-height: 36px;
++  padding: 0.25rem 0.7rem;
++  border-radius: 999px;
++  border: 1px solid var(--color-hair);
++  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
++  color: var(--color-fg);
++  font-size: 12px;
++}
++
++.career-table th,
++.career-table td {
++  vertical-align: top;
++}
++
++.career-day {
++  min-height: 8.5rem;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .career-chip,
++  .career-proof {
++    transition: none;
++  }
++}
+diff --git a/lib/career/clock.ts b/lib/career/clock.ts
+new file mode 100644
+index 0000000..db9d48b
+--- /dev/null
++++ b/lib/career/clock.ts
+@@ -0,0 +1,62 @@
++const HK = "Asia/Hong_Kong";
++
++export function hkNow(now = new Date()): Date {
++  return now;
++}
++
++export function formatHk(now = new Date(), opts?: Intl.DateTimeFormatOptions): string {
++  return new Intl.DateTimeFormat("en-HK", {
++    timeZone: HK,
++    weekday: "short",
++    day: "numeric",
++    month: "short",
++    hour: "2-digit",
++    minute: "2-digit",
++    hour12: false,
++    ...opts,
++  }).format(now);
++}
++
++export function formatHkDate(iso: string): string {
++  return new Intl.DateTimeFormat("en-HK", {
++    timeZone: HK,
++    weekday: "short",
++    day: "numeric",
++    month: "short",
++    hour: "2-digit",
++    minute: "2-digit",
++    hour12: false,
++  }).format(new Date(iso));
++}
++
++export function msUntil(iso: string, now = new Date()): number {
++  return new Date(iso).getTime() - now.getTime();
++}
++
++export function isOpen(iso: string | undefined, now = new Date()): boolean {
++  if (!iso) return true;
++  return new Date(iso).getTime() > now.getTime();
++}
++
++export function urgency(iso: string | undefined, now = new Date()): "now" | "soon" | "week" | "open" {
++  if (!iso) return "open";
++  const ms = msUntil(iso, now);
++  if (ms <= 0) return "now";
++  if (ms <= 36 * 3600 * 1000) return "now";
++  if (ms <= 4 * 24 * 3600 * 1000) return "soon";
++  if (ms <= 10 * 24 * 3600 * 1000) return "week";
++  return "open";
++}
++
++export function countdown(iso: string, now = new Date()): string {
++  const ms = msUntil(iso, now);
++  if (ms <= 0) return "closed";
++  const s = Math.floor(ms / 1000);
++  const d = Math.floor(s / 86400);
++  const h = Math.floor((s % 86400) / 3600);
++  const m = Math.floor((s % 3600) / 60);
++  if (d > 1) return `${d}d ${h}h`;
++  if (d === 1) return `1d ${h}h`;
++  if (h >= 1) return `${h}h ${m}m`;
++  return `${m}m`;
++}
+diff --git a/lib/career/gate.ts b/lib/career/gate.ts
+new file mode 100644
+index 0000000..7b3d206
+--- /dev/null
++++ b/lib/career/gate.ts
+@@ -0,0 +1,10 @@
++/** The only Google identity that may open ichina.co/career. */
++export const CAREER_OWNER_EMAIL = "yying2010@gmail.com";
++
++export function normalizeEmail(value: string | null | undefined): string {
++  return (value || "").trim().toLowerCase();
++}
++
++export function isCareerOwner(email: string | null | undefined): boolean {
++  return normalizeEmail(email) === CAREER_OWNER_EMAIL;
++}
+diff --git a/lib/career/hunt.ts b/lib/career/hunt.ts
+new file mode 100644
+index 0000000..4f3e0ce
+--- /dev/null
++++ b/lib/career/hunt.ts
+@@ -0,0 +1,205 @@
++import { isOpen, urgency } from "./clock";
++import type { CareerBand, CareerRole, Felt } from "./types";
++
++export const HUNT_KEY = "ichina-career-hunt";
++export const WATCH_KEY = "ichina-career-watch";
++export const PANE_KEY = "ichina-career-pane";
++
++export type CareerPane = "dash" | "schedule" | "match" | "pools" | "progress" | "desk";
++
++export const panes: CareerPane[] = ["dash", "schedule", "match", "pools", "progress", "desk"];
++
++export type HuntStatus =
++  | "pooled"
++  | "matched"
++  | "watching"
++  | "queued"
++  | "drafted"
++  | "applied"
++  | "interview"
++  | "hold"
++  | "skipped"
++  | "closed";
++
++export const huntStatuses: HuntStatus[] = [
++  "pooled",
++  "matched",
++  "watching",
++  "queued",
++  "drafted",
++  "applied",
++  "interview",
++  "hold",
++  "skipped",
++  "closed",
++];
++
++export type HuntEntry = {
++  status: HuntStatus;
++  note: string;
++  updatedAt: string;
++};
++
++export type HuntBook = Record<string, HuntEntry>;
++
++export function feltMean(role: CareerRole): number {
++  const parts: Felt[] = [role.pay, role.security, role.reputation, role.balance, role.fit];
++  return parts.reduce((sum, n) => sum + n, 0) / parts.length;
++}
++
++/** How the new desk rhymes with a listing. Higher is closer. */
++export function matchScore(role: CareerRole): number {
++  let score = feltMean(role);
++  if (role.tier === "ideal") score += 0.6;
++  if (role.bands.includes("cvc")) score += 0.35;
++  if (role.bands.includes("capital")) score += 0.25;
++  if (role.bands.includes("institutions")) score += 0.2;
++  if (role.stretch) score -= 0.45;
++  if (role.status === "skip") score -= 2;
++  return Math.max(1, Math.min(5, Math.round(score * 10) / 10));
++}
++
++export function matchWhy(role: CareerRole, zh: boolean): string {
++  const bits: string[] = [];
++  if (role.tier === "ideal") {
++    bits.push(zh ? "你点名的理想席" : "The seat you named as ideal.");
++  }
++  if (role.bands.includes("cvc")) {
++    bits.push(zh ? "贴天使 / CVC / 战略投资" : "Rhymes with angel / CVC / strategic investment.");
++  }
++  if (role.bands.includes("capital")) {
++    bits.push(zh ? "资本台 + 已上线 AI" : "Capital desk next to live AI.");
++  }
++  if (role.bands.includes("institutions")) {
++    bits.push(zh ? "持牌运营 / 机构名声与稳" : "Licensed operator habits; institutional security.");
++  }
++  if (role.bands.includes("today")) {
++    bits.push(zh ? "香港钟还在走" : "The Hong Kong clock is still running.");
++  }
++  if (role.stretch) {
++    bits.push(zh ? "拉伸 — 不要声称没有的年资" : "Stretch — do not claim years you do not have.");
++  }
++  if (!bits.length) {
++    bits.push(zh ? "形状相近，再看贴合" : "Same shape. Read the fit.");
++  }
++  return bits.join(" ");
++}
++
++export function defaultStatus(role: CareerRole, now: Date, watching: boolean): HuntStatus {
++  if (role.status === "skip") return "skipped";
++  if (role.closeAt && !isOpen(role.closeAt, now)) return "closed";
++  if (watching) return "watching";
++  if (role.tier === "ideal") return "matched";
++  if (matchScore(role) >= 4.2) return "matched";
++  return "pooled";
++}
++
++export function readHunt(): HuntBook {
++  try {
++    const raw = localStorage.getItem(HUNT_KEY);
++    if (!raw) return {};
++    const parsed = JSON.parse(raw) as HuntBook;
++    return parsed && typeof parsed === "object" ? parsed : {};
++  } catch {
++    return {};
++  }
++}
++
++export function writeHunt(book: HuntBook) {
++  localStorage.setItem(HUNT_KEY, JSON.stringify(book));
++}
++
++export function setHuntStatus(book: HuntBook, id: string, status: HuntStatus, note?: string): HuntBook {
++  const next: HuntBook = {
++    ...book,
++    [id]: {
++      status,
++      note: note ?? book[id]?.note ?? "",
++      updatedAt: new Date().toISOString(),
++    },
++  };
++  writeHunt(next);
++  return next;
++}
++
++export function resolveStatus(role: CareerRole, book: HuntBook, now: Date, watching: boolean): HuntStatus {
++  const saved = book[role.id]?.status;
++  if (saved) return saved;
++  return defaultStatus(role, now, watching);
++}
++
++export function progressCounts(roles: CareerRole[], book: HuntBook, now: Date, watch: string[]) {
++  const counts: Record<HuntStatus, number> = {
++    pooled: 0,
++    matched: 0,
++    watching: 0,
++    queued: 0,
++    drafted: 0,
++    applied: 0,
++    interview: 0,
++    hold: 0,
++    skipped: 0,
++    closed: 0,
++  };
++  for (const role of roles) {
++    if (role.status === "skip") continue;
++    counts[resolveStatus(role, book, now, watch.includes(role.id))] += 1;
++  }
++  return counts;
++}
++
++export type DayBucket = {
++  key: string;
++  label: string;
++  roles: CareerRole[];
++};
++
++export function scheduleDays(roles: CareerRole[], now: Date, days = 14): DayBucket[] {
++  const fmt = new Intl.DateTimeFormat("en-CA", {
++    timeZone: "Asia/Hong_Kong",
++    year: "numeric",
++    month: "2-digit",
++    day: "2-digit",
++  });
++  const label = new Intl.DateTimeFormat("en-HK", {
++    timeZone: "Asia/Hong_Kong",
++    weekday: "short",
++    day: "numeric",
++    month: "short",
++  });
++  const buckets = new Map<string, CareerRole[]>();
++  for (const role of roles) {
++    if (!role.closeAt || !isOpen(role.closeAt, now)) continue;
++    const key = fmt.format(new Date(role.closeAt));
++    const list = buckets.get(key) ?? [];
++    list.push(role);
++    buckets.set(key, list);
++  }
++  const out: DayBucket[] = [];
++  const start = new Date(now);
++  for (let i = 0; i < days; i++) {
++    const d = new Date(start);
++    d.setDate(start.getDate() + i);
++    const key = fmt.format(d);
++    const list = (buckets.get(key) ?? []).sort((a, b) => {
++      const am = a.closeAt ? new Date(a.closeAt).getTime() : 0;
++      const bm = b.closeAt ? new Date(b.closeAt).getTime() : 0;
++      return am - bm;
++    });
++    out.push({ key, label: label.format(d), roles: list });
++  }
++  return out;
++}
++
++export const poolOrder: CareerBand[] = ["today", "institutions", "capital", "cvc", "stretch"];
++
++export function inPool(role: CareerRole, band: CareerBand, now: Date): boolean {
++  if (role.status === "skip") return false;
++  if (band === "today") return role.bands.includes("today") && isOpen(role.closeAt, now);
++  return role.bands.includes(band);
++}
++
++export function urgencyRank(role: CareerRole, now: Date): number {
++  const order = { now: 0, soon: 1, week: 2, open: 3 } as const;
++  return order[urgency(role.closeAt, now)];
++}
+diff --git a/lib/career/profile.ts b/lib/career/profile.ts
+new file mode 100644
+index 0000000..639c2df
+--- /dev/null
++++ b/lib/career/profile.ts
+@@ -0,0 +1,72 @@
++/** Owner-desk identity. Never import from the public lock. Do not name the current fund. */
++
++export type CareerSeat = {
++  id: string;
++  title: string;
++  titleZh: string;
++  org: string;
++  orgZh: string;
++  since?: string;
++  confidential?: boolean;
++};
++
++export const careerOwner = {
++  name: "Yok Zhang",
++  handle: "m1zwell",
++  email: "yying2010@gmail.com",
++  linkedin: "https://www.linkedin.com/in/yok-zhang-8793a611",
++  cityu: "City University of Hong Kong alumnus. Degree title unclaimed until filled.",
++  cityuZh: "香港城市大学校友。学位名称未填之前，不写。",
++  licences: "RO / OMO. Do not claim Type 4/9, CFA, or Cantonese unless filled.",
++  licencesZh: "负责人员 / 整体管理监督。未填之前不声称第 4/9 类、CFA、粤语。",
++  languages: "English + Putonghua.",
++  languagesZh: "英语 + 普通话。",
++};
++
++export const seats: CareerSeat[] = [
++  {
++    id: "quant",
++    title: "IM / Director / OMO / RO",
++    titleZh: "投资经理 / 董事 / 整体管理监督（OMO）/ 负责人员",
++    org: "China top-15 quantitative fund",
++    orgZh: "中国头部十五量化基金",
++    confidential: true,
++  },
++  {
++    id: "founder",
++    title: "Founder & Executive Director",
++    titleZh: "创始人兼执行董事",
++    org: "Live AI products — ichina.co, jubuddy.com, gozayden.com, gghere.com, jubit.ai, dseek.ai",
++    orgZh: "已上线的 AI 产品 — ichina.co, jubuddy.com, gozayden.com, gghere.com, jubit.ai, dseek.ai",
++  },
++  {
++    id: "hedge",
++    title: "Offshore hedge trading fund",
++    titleZh: "离岸对冲交易基金",
++    org: "Hedge / offshore trading book",
++    orgZh: "对冲 / 离岸交易账簿",
++    since: "2025-09",
++  },
++];
++
++export const priorSeats: CareerSeat[] = [
++  {
++    id: "tongfang",
++    title: "VP / RO",
++    titleZh: "副总裁 / 负责人员",
++    org: "Tongfang Securities",
++    orgZh: "同方证券",
++  },
++  {
++    id: "huatai",
++    title: "Distribution Management Lead, VP Wealth / RO",
++    titleZh: "分销管理负责人、财富副总裁 / 负责人员",
++    org: "Huatai Financial Holdings (Hong Kong)",
++    orgZh: "华泰金融控股（香港）",
++  },
++];
++
++export const huntThesis = {
++  en: "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
++  zh: "香港持牌投资经理 / 董事 / 整体管理监督 / 负责人员，任职中国头部十五量化基金；同时是已上线 AI 产品的创始人兼执行董事，并自 2025 年 9 月起运营离岸对冲交易账簿。不是典型 PE 建模手。长处是默会：先做出来，再守住台面。",
++};
+diff --git a/lib/career/proof.ts b/lib/career/proof.ts
+new file mode 100644
+index 0000000..5ec2ff3
+--- /dev/null
++++ b/lib/career/proof.ts
+@@ -0,0 +1,70 @@
++import { links } from "@/lib/site";
++import type { ProductProof } from "./types";
++
++/** Live surfaces as the part of the CV that cannot be told. */
++export const proofs: ProductProof[] = [
++  {
++    id: "ichina",
++    title: "ichina.co",
++    href: "https://ichina.co",
++    path: "ichina.co",
++    tacit: "A garden that holds what can be written — and points at the rest.",
++    tacitZh: "能写下的放在园地。其余的要走。",
++  },
++  {
++    id: "gghere",
++    title: "gghere.com",
++    href: links.gghereHk,
++    path: "gghere.com/hk",
++    tacit: "Walk a city. No account. Product as place.",
++    tacitZh: "走进一座城。不用账号。产品即地方。",
++  },
++  {
++    id: "planet",
++    title: "jubuddy.com/planet",
++    href: links.jubuddyPlanet,
++    path: "jubuddy.com/planet",
++    tacit: "A planet surface that actually runs.",
++    tacitZh: "行星表面，真的能跑。",
++  },
++  {
++    id: "jubit",
++    title: "jubit.ai",
++    href: links.jubitHome,
++    path: "jubit.ai",
++    tacit: "AI that actually runs — not a slide.",
++    tacitZh: "能跑的 AI，不是幻灯片。",
++  },
++  {
++    id: "jubuddy",
++    title: "jubuddy.com",
++    href: links.jubuddyHome,
++    path: "jubuddy.com",
++    tacit: "Theme factory in the same universe. Ships.",
++    tacitZh: "同一宇宙里的主题工厂。已经上线。",
++  },
++  {
++    id: "dseek",
++    title: "dseek.ai",
++    href: links.dseekHome,
++    path: "dseek.ai",
++    tacit: "Scattered feeds, held together. Research and terminals as a habit.",
++    tacitZh: "散落的源，收在一处。研究与终端是习惯。",
++  },
++  {
++    id: "gozayden",
++    title: "gozayden.com",
++    href: links.gozayden,
++    path: "gozayden.com",
++    tacit: "Another live surface. The bias is to ship.",
++    tacitZh: "又一处现场。偏向把东西做出来。",
++  },
++  {
++    id: "poker",
++    title: "jubuddy.com/poker",
++    href: "https://jubuddy.com/poker",
++    path: "jubuddy.com/poker",
++    tacit: "A house engine with tables, bots, and a lobby that stays up.",
++    tacitZh: "自家引擎：牌桌、机器人、大厅还在跑。",
++  },
++];
+diff --git a/lib/career/roles.ts b/lib/career/roles.ts
+new file mode 100644
+index 0000000..f99fe82
+--- /dev/null
++++ b/lib/career/roles.ts
+@@ -0,0 +1,1183 @@
++import type { CareerRole, CareerSnapshot } from "./types";
++import { isOpen, msUntil, urgency } from "./clock";
++
++export const snapshot: CareerSnapshot = {
++  updatedAt: "2026-09-09T18:30:00Z",
++  thesis:
++    "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
++  thesisZh:
++    "香港持牌投资经理 / 董事 / 整体管理监督 / 负责人员，任职中国头部十五量化基金；同时是已上线 AI 产品的创始人兼执行董事，并自 2025 年 9 月起运营离岸对冲交易账簿。不是典型 PE 建模手。长处是默会：先做出来，再守住台面。",
++};
++
++export const roles: CareerRole[] = [
++  {
++    id: "B71",
++    rank: 1,
++    title: "Director, Strategic Investments",
++    titleZh: "投资总监",
++    org: "Meitu",
++    location: "Hong Kong / Shenzhen / Xiamen",
++    href: "https://www.meitu.com/en/jobs/",
++    closeAt: undefined,
++    closeNote: "Posted 24 Aug 2026 · confirm HK seat",
++    tier: "ideal",
++    bands: ["cvc", "capital"],
++    status: "live",
++    pay: 5,
++    security: 3,
++    reputation: 4,
++    balance: 3,
++    fit: 5,
++    rhyme: "The role that named itself. CVC seat next to live AI, China and Hong Kong in one body.",
++    rhymeZh: "自己找上门的位子。CVC 坐在能跑的 AI 旁边，中国与香港同一副身体。",
++    confirmSeat: true,
++    portalOnly: true,
++    desk: {
++      apply: "Portal first. Job ID 5166696c-9849-4733-aba5-5c144514d716. Confirm Hong Kong seat.",
++      draft: "r-4680797737198275177",
++      addendum: "LinkedIn note to LIN Lin after portal: r6795721307197991422",
++      caution: "Do not email guessed hr@meitu.com.",
++    },
++  },
++  {
++    id: "InvestHK",
++    rank: 8,
++    title: "SVP, Thought Leadership, Marketing and PR (Family Office)",
++    titleZh: "高级副总裁 · 家族办公室思想领导与公关",
++    org: "InvestHK",
++    location: "Hong Kong",
++    href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
++    closeAt: "2026-09-10T17:00:00+08:00",
++    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email",
++    tier: "A",
++    bands: ["today", "institutions"],
++    status: "live",
++    pay: 3,
++    security: 5,
++    reputation: 5,
++    balance: 4,
++    fit: 3,
++    rhyme: "Public-mission Hong Kong. Family-office story, not an AI product seat. Optional skip unless the civic clock matters today.",
++    rhymeZh: "香港公共使命。家族办公室叙事，不是 AI 产品席。除非今天的钟有意义。",
++    desk: {
++      apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
++      draft: "r-929527304975604502",
++      caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
++    },
++  },
++  {
++    id: "B76",
++    rank: 12,
++    title: "Senior Product Manager, Digital Currencies",
++    org: "HSBC",
++    location: "Central, Hong Kong",
++    href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Digital-Currencies-Hong/1369854357/",
++    closeAt: "2026-09-10T16:00:00Z",
++    closeNote: "validThrough Thu 10 Sep 16:00 UTC",
++    tier: "B",
++    bands: ["today", "capital"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 4,
++    rhyme: "Digital-asset product next to markets. After the AI solution lead, if the currency seat is the one you want today.",
++    rhymeZh: "数字货币产品，贴着市场。先 AI 方案负责人，若今天想要这个货币席。",
++    desk: {
++      apply: "HSBC Apply. After B4 → B121 then this if still Apply.",
++      draft: "r8491470372987069425",
++      addendum: "r-6669650216517528312",
++    },
++  },
++  {
++    id: "B69",
++    rank: 28,
++    title: "AVP, Agency Digital Strategy & Development",
++    org: "Sun Life",
++    location: "Hung Hom, Hong Kong",
++    href: "https://sunlife.wd3.myworkdayjobs.com/Experienced-Jobs/job/Hunghom-Kowloon-Hong-Kong/AVP--Agency-Digital-Lead_JR00126149-3",
++    closeAt: "2026-09-10T23:59:00+08:00",
++    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding",
++    tier: "B",
++    bands: ["today", "capital", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 4,
++    balance: 3,
++    fit: 2,
++    rhyme: "Agency digital, not AI-native building. Fifteen-year stretch. Only if the clock is today.",
++    rhymeZh: "代理数字，不是原生 AI 建造。十五年拉伸。只因今天的钟。",
++    stretch: true,
++    desk: {
++      apply: "Workday Experienced-Jobs JR00126149-3",
++      draft: "r2323555476074751961",
++      addendum: "r8209773115604455947",
++    },
++  },
++  {
++    id: "A0",
++    rank: 6,
++    title: "Senior Manager (Research & Development)",
++    org: "HKIC",
++    location: "Hong Kong",
++    href: "https://www.hkic.org.hk/careers/d1vgj5hkqkfsmy6a0lhsmjpe",
++    closeAt: "2026-09-11T17:00:00+08:00",
++    closeNote: "Fri 11 Sep 2026, 5:00 p.m. · portal only",
++    tier: "A",
++    bands: ["today", "institutions"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 4,
++    fit: 4,
++    rhyme: "Sovereign capital, research desk. Security and reputation at the institutional ceiling.",
++    rhymeZh: "主权资本，研究台。安全与名声在机构天花板。",
++    portalOnly: true,
++    desk: {
++      apply: "https://erecruit.hkic.org.hk/ — portal only. Use NEW cover.",
++      draft: "r-6787894533467501973",
++      caution: "HKIC SAD Investment closed 4 Sep — skip that one.",
++    },
++  },
++  {
++    id: "A0b",
++    rank: 9,
++    title: "Director, Product Development",
++    org: "HKMA / CMU OmniClear",
++    location: "Hong Kong",
++    href: "https://www.hkma.gov.hk/eng/about-us/join-us/current-vacancies/recruit-20260828-4/",
++    closeAt: "2026-09-12T23:59:00+08:00",
++    closeNote: "Sat 12 Sep 2026",
++    tier: "A",
++    bands: ["today", "institutions"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 4,
++    fit: 4,
++    rhyme: "Market-infrastructure product. FMI, not a startup sprint.",
++    rhymeZh: "金融基建产品。市场设施，不是创业冲刺。",
++    portalOnly: true,
++    desk: {
++      apply: "https://erecruit.hkma.gov.hk/",
++      caution: "Skip OmniClear Director (IT & System Development) vs this product seat.",
++    },
++  },
++  {
++    id: "A33",
++    rank: 17,
++    title: "Senior Manager (Knowledge Transfer) (ORA)",
++    titleZh: "高级经理（知识转移）",
++    org: "Hong Kong Metropolitan University",
++    location: "Hong Kong",
++    href: "https://hkmu.taleo.net/careersection/ex_full_time/jobdetail.ftl?job=26001XV&lang=en",
++    closeAt: "2026-09-14T23:59:00+08:00",
++    closeNote: "Sun 14 Sep 2026, 11:59 p.m. · Taleo 26001XV",
++    tier: "A",
++    bands: ["today", "institutions", "stretch"],
++    status: "live",
++    pay: 3,
++    security: 5,
++    reputation: 4,
++    balance: 5,
++    fit: 4,
++    rhyme: "University knowledge-transfer desk next to angels and incubators. Fifteen years on the JD is a stretch. After PolyU A4.",
++    rhymeZh: "大学知识转移台，贴着天使与孵化器。招聘启事上的十五年是拉伸。先 PolyU A4。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "HKMU Taleo eRecruitment only. Job 26001XV. Office of Research Affairs and Knowledge Transfer.",
++      draft: "r-4774827538237651559",
++      caution: "Do not email hrowww@hkmu.edu.hk. English + Chinese including Putonghua. Do not claim Cantonese. Do not invent 15 years.",
++    },
++  },
++  {
++    id: "B144",
++    rank: 26,
++    title: "Senior Manager, Strategic Growth, HK Business",
++    org: "HSBC",
++    location: "Hong Kong",
++    href: "https://apply.careers.hsbc.com/job/Hong-Kong-Senior-Manager-Strategic-Growth-Hong/1363613557/",
++    closeAt: "2026-09-12T16:00:00Z",
++    closeNote: "validThrough Sat 12 Sep 2026",
++    tier: "B",
++    bands: ["today", "capital", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 3,
++    rhyme: "CEO Office / Wealth-Mobile-AI strategy. Visibility, not an AI product seat.",
++    rhymeZh: "香港行政总裁办公室 / 财富-移动-AI 策略。能见度，不是 AI 产品席。",
++    stretch: true,
++    desk: {
++      apply: "After B4 only if CE Office visibility is the want.",
++      draft: "r-89953901072626315",
++    },
++  },
++  {
++    id: "A4",
++    rank: 7,
++    title: "Senior Manager (Entrepreneurship), KTEO",
++    org: "PolyU",
++    location: "Hung Hom, Hong Kong",
++    href: "https://jobs.polyu.edu.hk/job_detail.php?job=260827002",
++    closeNote: "Apply Now live 9 Sep · 8 years entrepreneurship / incubation / VC",
++    tier: "A",
++    bands: ["institutions"],
++    status: "live",
++    pay: 3,
++    security: 5,
++    reputation: 5,
++    balance: 5,
++    fit: 4,
++    rhyme: "University entrepreneurship desk. Angel-adjacent, workable hours, CityU path into the other campus.",
++    rhymeZh: "大学创业台。贴近天使，工时能过，城大出身走进另一座校园。",
++    portalOnly: true,
++    desk: {
++      apply: "https://jobs.polyu.edu.hk/job_detail.php?job=260827002 — English + Chinese + Putonghua.",
++    },
++  },
++  {
++    id: "A4b",
++    rank: 18,
++    title: "Manager (Temporary), KTEO",
++    org: "PolyU",
++    location: "Hung Hom, Hong Kong",
++    href: "https://jobs.polyu.edu.hk/job_detail.php?job=260721012",
++    tier: "A",
++    bands: ["institutions"],
++    status: "live",
++    pay: 2,
++    security: 4,
++    reputation: 5,
++    balance: 5,
++    fit: 3,
++    rhyme: "Temporary manager beside the entrepreneurship seat. Lower cash, same campus gravity.",
++    rhymeZh: "创业席旁边的临时经理。现金较低，同一座校园的引力。",
++    portalOnly: true,
++    desk: { apply: "https://jobs.polyu.edu.hk/job_detail.php?job=260721012" },
++  },
++  {
++    id: "A21",
++    rank: 14,
++    title: "Director, Knowledge Transfer and Entrepreneurship Office",
++    org: "PolyU",
++    location: "Hung Hom, Hong Kong",
++    href: "https://jobs.polyu.edu.hk/job_detail.php?job=260827012",
++    closeAt: "2026-09-15T00:00:00+08:00",
++    closeNote: "Consideration from 15 Sep 2026 until filled",
++    tier: "A",
++    bands: ["institutions", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 4,
++    fit: 3,
++    rhyme: "Director of the office. Fifteen years / ten years senior management — optional stretch after A4.",
++    rhymeZh: "办公室主任。十五年 / 十年高管 —— A4 之后的可选拉伸。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "Portal first. Cover r6079673746910716347. Optional nomination to hrstaff@polyu.edu.hk AFTER portal.",
++      draft: "r6079673746910716347",
++      addendum: "r4273063444403575804 · nomination r-6829610728334285386",
++    },
++  },
++  {
++    id: "A1",
++    rank: 10,
++    title: "Manager, Investor Engagement",
++    org: "HKSTP",
++    location: "Island East, Hong Kong",
++    href: "https://careers.hkstp.org/job/Island-East-Manager%2C-Investor-Engagement-HK-H/1366224266/",
++    tier: "A",
++    bands: ["institutions", "cvc"],
++    status: "live",
++    pay: 3,
++    security: 4,
++    reputation: 4,
++    balance: 4,
++    fit: 4,
++    rhyme: "Investor engagement on the science park. VC/PE/IB/CVC eight years. Do not claim Cantonese.",
++    rhymeZh: "科学园的投资人对接。VC/PE/IB/CVC 八年。不要自称粤语。",
++    portalOnly: true,
++    desk: {
++      apply: "HKSTP portal. Cover r3431284342015499835.",
++      draft: "r3431284342015499835",
++      caution: "Cantonese on JD — do not claim.",
++    },
++  },
++  {
++    id: "A30",
++    rank: 9,
++    title: "Director, AI and Data",
++    titleZh: "人工智能与数据总监",
++    org: "HKSTP",
++    location: "Island East, Hong Kong",
++    href: "https://careers.hkstp.org/job/Island-East-Director%2C-AI-and-Data-HK-H/1366190466/",
++    closeAt: "2026-09-13T16:00:00Z",
++    closeNote: "validThrough Sun 13 Sep 16:00 UTC · 15-year stretch",
++    tier: "A",
++    bands: ["today", "institutions", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 5,
++    balance: 4,
++    fit: 4,
++    rhyme: "Park-level AI capital. Attract the companies, then hold the cluster. Fifteen years on the JD is a stretch.",
++    rhymeZh: "科学园这一层的 AI 资本。把公司吸引来，再守住集群。招聘启事上的十五年是拉伸。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "HKSTP Apply Now. Phenom 1366190466. After A1 if the director seat is the want.",
++      draft: "r4261511564452071214",
++      caution: "Do not email hr@hkstp.org. Cantonese on JD — do not claim. Do not invent 15 AI/DS years.",
++    },
++  },
++  {
++    id: "A31",
++    rank: 15,
++    title: "Chief Digital and Technology Officer",
++    titleZh: "首席数字与技术官",
++    org: "City University of Hong Kong",
++    location: "Kowloon Tong, Hong Kong",
++    href: "https://jobs1.cityu.edu.hk/apply/Default.aspx?jobtype=NACAD",
++    closeNote: "Ref R/305/26 · until filled · NACAD Apply Now",
++    tier: "A",
++    bands: ["institutions", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 4,
++    fit: 3,
++    rhyme: "Alma mater. A CIO-class desk, not a CVC seat. The university already knows the name.",
++    rhymeZh: "母校。CIO 级台面，不是 CVC 席。学校已经知道这个名字。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "jobs1.cityu.edu.hk NACAD Apply Now. Ref R/305/26. LinkedIn 4463824877 is a mirror.",
++      draft: "r981486238148765924",
++      caution: "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk.",
++    },
++  },
++  {
++    id: "A32",
++    rank: 16,
++    title: "Chief Director, AI Platform & Solutions",
++    org: "ASTRI",
++    location: "Hong Kong",
++    href: "https://careers.astri.org/job/Chief-Director%2C-AI-Platform-%26-Solutions/53997644/",
++    closeNote: "Official Apply live 10 Sep · until filled",
++    tier: "A",
++    bands: ["institutions", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 4,
++    balance: 3,
++    fit: 3,
++    rhyme: "Agentic platform for FinTech and the rest. After the ecosystem manager. Do not invent a PhD.",
++    rhymeZh: "给金融科技和其他域用的智能体平台。生态经理之后。不要编博士。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "ASTRI Apply Now 53997644. AFTER A22. Do not spray ASTRI engineering clones.",
++      draft: "r253940768081559446",
++      caution: "15+ years R&D leadership and PhD preferred — optional stretch only.",
++    },
++  },
++  {
++    id: "A22",
++    rank: 11,
++    title: "Senior Manager, Ecosystem and Channel",
++    org: "ASTRI",
++    location: "Hong Kong",
++    href: "https://careers.astri.org/job/Deputy-Director%2C-Ecosystem-and-Channel/56190244/",
++    tier: "A",
++    bands: ["institutions"],
++    status: "live",
++    pay: 3,
++    security: 5,
++    reputation: 4,
++    balance: 4,
++    fit: 4,
++    rhyme: "Applied-science ecosystem. Channel, not a lab coat. Title on the page is Senior Manager.",
++    rhymeZh: "应用科学生态。渠道，不是实验袍。页面职称是高级经理。",
++    portalOnly: true,
++    desk: { apply: "ASTRI Apply Now. URL still says Deputy-Director. Official Apply live 10 Sep. Chief Director AI Platform is A32 after this." },
++  },
++  {
++    id: "A27",
++    rank: 13,
++    title: "Assistant Director, InnoHK and University Collaborations",
++    org: "HKSTP",
++    location: "Island East, Hong Kong",
++    href: "https://careers.hkstp.org/job/Island-East-Assistant-Director%2C-InnoHK-and-University-Collaborations-HK-H/1366195766/",
++    closeNote: "Official Apply live 10 Sep · 10-year startup ecosystem",
++    tier: "A",
++    bands: ["institutions", "cvc"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 4,
++    balance: 4,
++    fit: 4,
++    rhyme: "InnoHK cluster plus university venture-building. After investor engagement. Then the Manager Uni Collab seat if this director-class desk is not the want.",
++    rhymeZh: "InnoHK 集群，加上大学造企业。投资人对接之后。若这层主任席不是想要的，再经理席。",
++    portalOnly: true,
++    desk: {
++      apply: "HKSTP Apply Now. Phenom 1366195766. After A1 then this. Then Manager University Collaborations 1366215966.",
++      draft: "r-1603957299526558471",
++      caution: "English + Putonghua. Do not claim Cantonese. Skip Senior Manager, New Ventures Programmes 1367071866 — JD is 10-year marketing/events, not ventures investing.",
++    },
++  },
++  {
++    id: "A27b",
++    rank: 18,
++    title: "Manager, University Collaborations",
++    org: "HKSTP",
++    location: "Island East, Hong Kong",
++    href: "https://careers.hkstp.org/job/Island-East-Manager%2C-University-Collaborations-HK-H/1366215966/",
++    closeNote: "Official Apply live 10 Sep · 8-year deeptech / incubation",
++    tier: "A",
++    bands: ["institutions", "cvc"],
++    status: "live",
++    pay: 3,
++    security: 4,
++    reputation: 4,
++    balance: 5,
++    fit: 4,
++    rhyme: "Eight-year university venture-building. Five-day week. After the InnoHK assistant director if that desk is too high.",
++    rhymeZh: "八年大学造企业。五天工作周。InnoHK 助理总监之后，若那层太高。",
++    portalOnly: true,
++    desk: {
++      apply: "HKSTP Apply Now. Phenom 1366215966. AFTER A27. English + Putonghua. Do not claim Cantonese.",
++      draft: "r-7994383117556414559",
++    },
++  },
++  {
++    id: "A34",
++    rank: 11,
++    title: "Senior Manager (Entrepreneurship and Funding), Knowledge Transfer Office",
++    titleZh: "高级经理（创业与资助）",
++    org: "Hong Kong Baptist University",
++    location: "Kowloon Tong, Hong Kong",
++    href: "https://fa-ewqq-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/25260765",
++    closeNote: "Oracle 25260765 · until filled · posted 3 Jun 2026",
++    tier: "A",
++    bands: ["institutions", "cvc", "stretch"],
++    status: "live",
++    pay: 3,
++    security: 5,
++    reputation: 4,
++    balance: 5,
++    fit: 4,
++    rhyme: "University KTO next to investors and TSSSU. Ten years incubation is a stretch. After PolyU A4.",
++    rhymeZh: "大学知识转移处，贴着投资人与 TSSSU。十年孵化是拉伸。先 PolyU A4。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "HKBU e-Recruitment only. Oracle job 25260765. Review ongoing until filled. Written test for shortlist. 2-year fixed term.",
++      draft: "r7973575122747931683",
++      caution: "English + Chinese. Do not claim Cantonese. Do not email HRO. Do not invent 10 incubation years. Skip Creative Hub EO and Research Office grants seats vs this KTO desk.",
++    },
++  },
++  {
++    id: "B4",
++    rank: 5,
++    title: "Senior AI Solution Lead",
++    org: "HSBC",
++    location: "Central, Hong Kong",
++    href: "https://apply.careers.hsbc.com/job/Central-Senior-AI-Solution-Lead-Hong/1330173757/",
++    closeAt: "2026-09-30T16:00:00Z",
++    closeNote: "validThrough Wed 30 Sep",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 5,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 4,
++    rhyme: "Bank AI that has to run. First HSBC gravity well — then commercialization, then currencies.",
++    rhymeZh: "银行里必须能跑的 AI。汇丰第一口井 —— 再商业化，再货币。",
++    desk: { apply: "HSBC Apply Now. Still live 9 Sep." },
++  },
++  {
++    id: "B159",
++    rank: 14,
++    title: "Business Capability and Solution Lead - Digital Platforms",
++    org: "HSBC",
++    location: "Kowloon City, Hong Kong",
++    href: "https://apply.careers.hsbc.com/job/Kowloon-City-Business-Capability-and-Solution-Lead-Digital-Platforms-Kowl/1367725557/",
++    closeAt: "2026-09-27T16:00:00Z",
++    closeNote: "validThrough Sun 27 Sep 16:00 UTC · GCB 4",
++    tier: "B",
++    bands: ["capital", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 3,
++    rhyme: "AI-native and agentic banking on a digital-platform desk. After the AI solution lead. Eight-to-twelve-year consulting stretch.",
++    rhymeZh: "数字平台上的原生 AI 与智能体银行。先 AI 方案负责人。八到十二年咨询拉伸。",
++    stretch: true,
++    desk: {
++      apply: "HSBC Apply. After B4. GCB 4. 8–12 years management consulting / enterprise strategy / business architecture — do not invent.",
++      draft: "r1038150271801325589",
++      caution: "Skip Senior Strategic Planner 1367731657 (cost/FTE). Skip Sr AD 1370245557 (GPS architecture). Skip Treasury BM 1370434357. Skip Alts Business Architect 1369577157 vs B154.",
++    },
++  },
++  {
++    id: "B146",
++    rank: 15,
++    title: "AI/ML Design Commercialization Manager, IWPB",
++    org: "HSBC",
++    location: "Central, Hong Kong",
++    href: "https://apply.careers.hsbc.com/job/Central-AI-ML-Design-Commercialization-Manager-International-Wealth-and-Premier-Banking-Hong/1359802857/",
++    closeAt: "2026-09-19T16:00:00Z",
++    closeNote: "validThrough Sat 19 Sep · GCB 4 · 12-year stretch",
++    tier: "B",
++    bands: ["capital", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 3,
++    rhyme: "Wealth AI commercialization. After the solution lead. Hands-on analytics bar is a stretch.",
++    rhymeZh: "财富 AI 商业化。方案负责人之后。动手分析门槛是拉伸。",
++    stretch: true,
++    desk: { apply: "After B4 then this then B138.", draft: "r-4207723545408746455" },
++  },
++  {
++    id: "B154",
++    rank: 14,
++    title: "Head of Alts Investment Solutions, Data and Automation",
++    org: "HSBC Global Asset Management",
++    location: "Central, Hong Kong",
++    href: "https://apply.careers.hsbc.com/job/Central-Head-of-Alts-Investment-Solutions%2C-Data-and-Automation-HSBC-Global-Asset-Management-Hong/1369577357/",
++    closeAt: "2026-09-30T16:00:00Z",
++    closeNote: "validThrough Wed 30 Sep 16:00 UTC · GCB 4",
++    tier: "B",
++    bands: ["capital", "stretch"],
++    status: "live",
++    pay: 5,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 4,
++    rhyme: "Asset-management operations with a data-and-AI mandate. After the AI solution lead. Named alts platforms are a stretch — do not invent eFront.",
++    rhymeZh: "资管运营，带着数据与 AI 的任务。先 AI 方案负责人。点名的另类平台是拉伸 —— 不要编造 eFront。",
++    stretch: true,
++    desk: {
++      apply: "HSBC Apply Now. Phenom 1369577357. After B4. Skip Director, Investment Strategy 1371461457 — House View economist, not this ops/AI seat.",
++      draft: "r3331028330889342623",
++    },
++  },
++  {
++    id: "B157",
++    rank: 22,
++    title: "Head of Alts Ops Valuation Oversight",
++    org: "HSBC Global Asset Management",
++    location: "Central, Hong Kong",
++    href: "https://apply.careers.hsbc.com/job/Central-Head-of-Alts-Ops-Valuation-Oversight-HSBC-Global-Asset-Management-Hong/1367968757/",
++    closeAt: "2026-09-14T16:00:00Z",
++    closeNote: "validThrough Mon 14 Sep 16:00 UTC · GCB 4",
++    tier: "B",
++    bands: ["today", "capital", "stretch"],
++    status: "live",
++    pay: 5,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 3,
++    rhyme: "AM ops that has to hold independence. AI is on the JD as tooling, not the product. After B154. Closes 14 Sep UTC.",
++    rhymeZh: "资管运营，要守住独立性。AI 在招聘启事上是工具，不是产品。B154 之后。14 Sep UTC 截止。",
++    stretch: true,
++    desk: {
++      apply: "HSBC Apply Now. Phenom 1367968757. After B4 then B154 then this if valuation oversight is the want.",
++      draft: "r-7019214125721853508",
++      caution: "Do not invent CFA/CAIA or valuation-specialist years. Skip HKEX SVP IT Project Management R004449 vs AI-native.",
++    },
++  },
++  {
++    id: "B158",
++    rank: 21,
++    title: "AVP, Channel Management & Experience, Digital",
++    org: "DBS",
++    location: "One Island East, Hong Kong",
++    href: "https://dbs.wd3.myworkdayjobs.com/DBS_Careers/job/One-Island-East/Assistant-Vice-President--Channel-Management---Experience--Digital_WD85621",
++    closeNote: "Workday WD85621 · posted 5 days ago · 6–8 year digital banking",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 4,
++    balance: 3,
++    fit: 4,
++    rhyme: "Bank digital channels with AI on the roadmap. After HSBC B4. AVP, not a director seat.",
++    rhymeZh: "银行数字渠道，路线图上有 AI。先汇丰 B4。副总裁，不是总监席。",
++    desk: {
++      apply: "dbs.wd3 DBS_Careers WD85621. One Island East. After B4 if the digital-channel seat is the want.",
++      draft: "r-6768283435307523797",
++    },
++  },
++  {
++    id: "B138",
++    rank: 16,
++    title: "Senior Product Manager, Markets & Securities Services",
++    org: "HSBC",
++    location: "Hong Kong",
++    href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Markets-Securities-Services-Hong/1367848757/",
++    closeAt: "2026-09-18T16:00:00Z",
++    closeNote: "validThrough Fri 18 Sep · digital-asset custody",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 4,
++    rhyme: "Custody product. Digital assets with a bank spine.",
++    rhymeZh: "托管产品。数字资产，银行脊骨。",
++    desk: { apply: "After B4 → B121 → B76 then this.", draft: "r-6811361595115717280" },
++  },
++  {
++    id: "B6",
++    rank: 4,
++    title: "SVP, AI Adoption and Commercialization",
++    org: "Citi",
++    location: "Hong Kong",
++    href: "https://jobs.citi.com/job/hong-kong/senior-vice-president-ai-adoption-and-commercialization-senior-lead/287/99751202496",
++    closeNote: "Job Req 26990009 · posted 26 Aug 2026",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 5,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 4,
++    rhyme: "Adoption that has to sell inside a bank. Commercialization, not a lab.",
++    rhymeZh: "银行内部必须卖得出去的采用。商业化，不是实验室。",
++    desk: {
++      apply: "Citi portal. Cover r-962642582042496067 + addendum r8039054950086008481.",
++      draft: "r-962642582042496067",
++    },
++  },
++  {
++    id: "B34",
++    rank: 3,
++    title: "Applied AI Lead, Executive Director",
++    org: "Morgan Stanley",
++    location: "Hong Kong",
++    href: "https://ms.wd5.myworkdayjobs.com/External/job/Hong-Kong-Hong-Kong/Applied-AI-Lead--Executive-Director--Enterprise-Technology-Services_PT-JR037195",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 5,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 4,
++    rhyme: "Applied AI at a markets house. Reputation ceiling, bank hours. Twelve-year / five-year VP stretch — do not invent ETS years.",
++    rhymeZh: "市场机构里的应用 AI。名声天花板，银行工时。十二年 / 五年 VP 拉伸 —— 不要编造 ETS 年资。",
++    stretch: true,
++    desk: {
++      apply: "Official Workday External PT-JR037195. canApply true. Hong Kong. Posted 30+ days.",
++      draft: "r2694556748870183470",
++      addendum: "r3980890194948961269",
++      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years.",
++    },
++  },
++  {
++    id: "B72",
++    rank: 2,
++    title: "M&A SA / AD, Portfolio Management, SEA & India",
++    org: "Tencent",
++    location: "Hong Kong / SEA",
++    href: "https://careers.tencent.com/",
++    closeNote: "postId 2089180506259374080",
++    tier: "cvc",
++    bands: ["cvc", "capital"],
++    status: "live",
++    pay: 5,
++    security: 3,
++    reputation: 5,
++    balance: 3,
++    fit: 4,
++    rhyme: "Platform CVC. Portfolio as a craft. China-background capital with a Hong Kong desk.",
++    rhymeZh: "平台 CVC。组合是手艺。中资背景，香港台面。",
++    desk: { apply: "Tencent career postId 2089180506259374080.", draft: "r-2146671588397327289" },
++  },
++  {
++    id: "B36",
++    rank: 17,
++    title: "Senior Director / Director, AI & Data Strategy",
++    org: "Manulife",
++    location: "Hong Kong",
++    href: "https://manulife.wd3.myworkdayjobs.com/MFCJH_Jobs/job/Hong-Kong/Senior-Director---Director-AI---Data-Strategy---Transformation-Lead_JR26071432",
++    closeAt: "2026-09-30T23:59:00+08:00",
++    closeNote: "Workday close 30 Sep 2026",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 4,
++    balance: 3,
++    fit: 4,
++    rhyme: "Asia AI strategy in a life-company. Then digitization (B100), then optional manager (B35).",
++    rhymeZh: "寿险公司的亚洲 AI 策略。然后数字化（B100），再可选经理（B35）。",
++    desk: {
++      apply: "Tenant manulife.wd3.myworkdayjobs.com/MFCJH_Jobs. Cover r5801903241139313616.",
++      draft: "r5801903241139313616",
++      addendum: "r4654668089183427838",
++    },
++  },
++  {
++    id: "B19",
++    rank: 19,
++    title: "Product Owner — Multi-Asset",
++    org: "Fidelity",
++    location: "Hong Kong",
++    href: "https://fil.wd3.myworkdayjobs.com/001/job/Hong-Kong-Office-New/Product-Owner---Multi-Asset_J69405",
++    closeAt: "2026-09-30T23:59:00+08:00",
++    closeNote: "Close 30 Sep 2026 · path Hong-Kong-Office-New",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 5,
++    balance: 3,
++    fit: 4,
++    rhyme: "Multi-asset product owner. Fund craft, not a chatbot seat.",
++    rhymeZh: "多元资产产品负责人。基金手艺，不是聊天机器人席。",
++    desk: {
++      apply: "Workday J69405. Pack r7257447307743357641. Rechecked live validThrough 2026-09-30.",
++      draft: "r7257447307743357641",
++      addendum: "r4621871729198491241",
++      caution: "Sibling Product Owner - Fixed Income J70844 is B160. Do not spray both.",
++    },
++  },
++  {
++    id: "B160",
++    rank: 21,
++    title: "Product Owner - Fixed Income",
++    org: "Fidelity",
++    location: "Hong Kong",
++    href: "https://fil.wd3.myworkdayjobs.com/001/job/Hong-Kong-Office-New/Product-Owner---Fixed-Income_J70844",
++    closeAt: "2026-10-31T23:59:00+08:00",
++    closeNote: "validThrough 31 Oct 2026 · after B19 · do not spray both",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 5,
++    balance: 3,
++    fit: 3,
++    rhyme: "AM-platform product owner for equity and fixed income. After multi-asset. Fund craft, not AI-native building.",
++    rhymeZh: "股债平台产品负责人。先多元资产。基金手艺，不是原生 AI 建造。",
++    desk: {
++      apply: "Workday 001 J70844. Hong-Kong-Office-New. After B19 only if the FI platform seat is the one you want.",
++    },
++  },
++  {
++    id: "B50",
++    rank: 20,
++    title: "Senior Manager, APAC Product Owner — Digital Distribution",
++    org: "Invesco",
++    location: "Hong Kong",
++    href: "https://invesco.wd1.myworkdayjobs.com/en-US/IVZ/job/Hong-Kong-Hong-Kong/Senior-Manager--APAC-Product-Owner---Digital-Distribution---Enterprise-Engineering_R-14368",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 4,
++    balance: 3,
++    fit: 4,
++    rhyme: "Asset-manager digital distribution. After Fidelity, if the product-owner craft is the want.",
++    rhymeZh: "资管数字分销。富达之后，若产品负责人手艺是想要的。",
++    desk: { apply: "Invesco Workday R-14368." },
++  },
++  {
++    id: "B153",
++    rank: 20,
++    title: "Associate Director, Distribution Digital",
++    org: "AIA",
++    location: "Hong Kong, AIA Group Office",
++    href: "https://aia.wd3.myworkdayjobs.com/en-US/External/job/Hong-Kong-HK-AIA-Group-Office/Associate-Director--Digital-Agency-Platforms_JR-68436-1",
++    closeAt: "2026-09-30T23:59:00+08:00",
++    closeNote: "CXS canApply true · endDate 2026-09-30 · slug JR-68436-1",
++    tier: "B",
++    bands: ["capital", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 4,
++    balance: 3,
++    fit: 3,
++    rhyme: "Agency platforms with AI inside. Group Office, not Macau path. Twelve to fifteen years is a stretch. Then Customer AI.",
++    rhymeZh: "代理平台，里面有 AI。集团办公室，不是澳门那条路径。十二到十五年是拉伸。然后才是客户 AI。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "Workday External JR-68436-1. Path Hong-Kong-HK-AIA-Group-Office. AFTER B9b, before B117.",
++      draft: "r-1064563125725395723",
++      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering.",
++    },
++  },
++  {
++    id: "B117",
++    rank: 21,
++    title: "Associate Director, Customer AI & Analytics Product Management",
++    org: "AIA",
++    location: "Hong Kong / Macau",
++    href: "https://aia.wd3.myworkdayjobs.com/en-US/External/job/Hong-Kong-HK-AIA-Hong-Kong--Macau/Associate-Director--Customer-AI---Analytics-Product-Management_JR-68056",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 4,
++    balance: 3,
++    fit: 4,
++    rhyme: "Customer AI product. After Distribution Digital B153. Skip the engineering-strategy clone.",
++    rhymeZh: "客户 AI 产品。分销数字之后。跳过工程策略那条克隆。",
++    desk: {
++      apply: "AIA Workday JR-68056. Path Hong-Kong-HK-AIA-Hong-Kong--Macau.",
++      addendum: "r-1766768802526645146",
++    },
++  },
++  {
++    id: "B33",
++    rank: 22,
++    title: "Product Owner, AI in Brand & Marketing",
++    org: "Zurich",
++    location: "Hong Kong / Singapore / Malaysia",
++    href: "https://www.careers.zurich.com/job/Hong-Kong-Product-Owner%2C-AI-in-Brand-%26-Marketing/1368805957/",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 3,
++    security: 4,
++    reputation: 4,
++    balance: 3,
++    fit: 4,
++    rhyme: "Agentic marketing product. Confirm the Hong Kong seat. Phenom, not Workday.",
++    rhymeZh: "代理式营销产品。确认香港席。Phenom，不是 Workday。",
++    confirmSeat: true,
++    desk: {
++      apply: "www.careers.zurich.com Phenom 1368805957. Do not use zurich.wd3.",
++      draft: "r-8168033812393573138",
++      caution: "CONFIRM HK SEAT. Possible step-down vs Director.",
++    },
++  },
++  {
++    id: "B73",
++    rank: 23,
++    title: "Principal / Senior PM, AI and Agent",
++    org: "OKX",
++    location: "Hong Kong",
++    href: "https://job-boards.greenhouse.io/okx/jobs/7531920003",
++    tier: "cvc",
++    bands: ["cvc", "capital"],
++    status: "live",
++    pay: 5,
++    security: 2,
++    reputation: 3,
++    balance: 2,
++    fit: 4,
++    rhyme: "Agentic product at an exchange. High cash, thinner security and hours. HK right-to-work first.",
++    rhymeZh: "交易所的代理产品。现金高，安全与工时更薄。香港工作权优先。",
++    desk: {
++      apply: "Greenhouse 7531920003. Then optional VP Product 7691999003, then VP AI Strategy 7684888003. Wallet AI is B152 7777029003. Do not spray PM clones. Skip AI Agent Product Expert (Middleware) 7731745003 vs this PM seat.",
++    },
++  },
++  {
++    id: "B152",
++    rank: 23,
++    title: "Principal / Senior PM, AI & Web3 Wallet",
++    org: "OKX",
++    location: "Hong Kong",
++    href: "https://job-boards.greenhouse.io/okx/jobs/7777029003",
++    closeNote: "Greenhouse live 10 Sep 2026",
++    tier: "cvc",
++    bands: ["cvc", "capital"],
++    status: "live",
++    pay: 5,
++    security: 2,
++    reputation: 3,
++    balance: 2,
++    fit: 4,
++    rhyme: "Wallet plus agent. After the AI-and-Agent PM, if that is the product you want to hold.",
++    rhymeZh: "钱包加上代理。先 AI and Agent 产品经理，若这才是要守的产品。",
++    desk: {
++      apply: "Greenhouse 7777029003. AFTER B73. Confirm HK seat. Do not spray OKX PM clones.",
++      draft: "r-8203520062962774517",
++    },
++  },
++  {
++    id: "B149",
++    rank: 23,
++    title: "Senior Product Manager, Agentic Enablement (Platform AI)",
++    org: "Reap",
++    location: "Quarry Bay, Hong Kong",
++    href: "https://careers.reap.global/jobs/8342685-senior-product-manager-agentic-enablement-platform-ai",
++    closeNote: "LinkedIn 4464641446 · posted ~22h ago · official Apply 9 Sep",
++    tier: "cvc",
++    bands: ["cvc", "capital"],
++    status: "live",
++    pay: 4,
++    security: 2,
++    reputation: 3,
++    balance: 2,
++    fit: 4,
++    rhyme: "Hong Kong-headquartered fintech standing up agentic rails. High AI-native fit. Below the bank/university bar for hours and security.",
++    rhymeZh: "香港总部的金融科技，在搭代理式轨道。AI 原生贴合高。工时与安全低于银行/大学那条杠。",
++    desk: {
++      apply: "careers.reap.global 8342685. After OKX B73 if the HK-HQ agentic platform is the want. Skip Reap Engineering Manager AI Agentic vs this PM seat.",
++      draft: "r-7528244399176004260",
++    },
++  },
++  {
++    id: "B155",
++    rank: 26,
++    title: "Product Manager",
++    org: "HashKey Capital",
++    location: "Hong Kong",
++    href: "https://hashkey.capital/careers/details44_611.html",
++    closeNote: "Official getJobList id 611 · Apply Now to sgrecruitment@hashkey.com",
++    tier: "cvc",
++    bands: ["cvc", "capital"],
++    status: "live",
++    pay: 3,
++    security: 2,
++    reputation: 3,
++    balance: 2,
++    fit: 4,
++    rhyme: "TradFi-and-Web3 fund product. SFC product lifecycle plus AI tools on the JD. PM, not the LinkedIn Product Director.",
++    rhymeZh: "传统金融与 Web3 基金产品。持牌产品生命周期，招聘启事上还有 AI 工具。产品经理，不是 LinkedIn 上的产品总监。",
++    desk: {
++      apply: "Official JD Apply Now: sgrecruitment@hashkey.com. details44_611.html. After bank/university. Do not also spray Product Manager/Specialist 593.",
++      draft: "r2852953938224944669",
++      caution:
++        "LinkedIn Product Director 4463321930 is not on official getJobList (ids 694, 692, 613, 612, 611, 593, 454, 445). Do not apply via LinkedIn-only. Skip Risk Director 612 vs AI-native builder. Skip BD Manager 454 vs this product seat.",
++    },
++  },
++  {
++    id: "B156",
++    rank: 31,
++    title: "Director, Technology Investment",
++    org: "CLSA Capital Partners",
++    location: "Hong Kong (Singapore listed as additional)",
++    href: "https://citicclsa.wd3.myworkdayjobs.com/External/job/Hong-Kong/Director--Technology-Investment--CLSA-Capital-Partners_JR001362-1",
++    closeNote: "Workday JR001362 · posted 30+ days · HK required · 15-year PE stretch",
++    tier: "cvc",
++    bands: ["cvc", "stretch"],
++    status: "live",
++    pay: 5,
++    security: 3,
++    reputation: 4,
++    balance: 2,
++    fit: 2,
++    rhyme: "Official PE seat at last. Fifteen years and ten in USD growth funds is not the edge. After Meitu, only if classic PE is the want.",
++    rhymeZh: "终于有官网 PE 席。十五年、十年美元成长基金，不是这条长处。美图之后，只若要的是经典 PE。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "citicclsa.wd3 External JR001362-1. Hiring org: CITIC CLSA Capital Partners HK Limited. English + Mandarin. Experienced candidate considered as ED.",
++      draft: "r-8224629745074945869",
++      caution: "Do not invent 15 PE years or a Master’s. Cantonese is a bonus — do not claim. Do not apply via LinkedIn-only 4439130089.",
++    },
++  },
++  {
++    id: "B150",
++    rank: 24,
++    title: "Senior Product Manager — TradFi Wealth",
++    org: "Binance",
++    location: "Hong Kong / Remote",
++    href: "https://jobs.lever.co/binance/1c3e9e01-82b8-4840-85b1-82cabd86bcfd",
++    closeNote: "Lever Apply 9 Sep · confirm Hong Kong seat vs Remote",
++    tier: "cvc",
++    bands: ["cvc", "capital"],
++    status: "live",
++    pay: 5,
++    security: 2,
++    reputation: 3,
++    balance: 2,
++    fit: 4,
++    rhyme: "TradFi wealth product on an exchange. Trading and asset-management habits meet a live product seat. Confirm Hong Kong. Do not spray Binance PM clones.",
++    rhymeZh: "交易所上的传统金融财富产品。交易与资管习惯碰上产品席。确认香港。不要群发币安产品克隆。",
++    confirmSeat: true,
++    desk: {
++      apply: "jobs.lever.co/binance/1c3e9e01-82b8-4840-85b1-82cabd86bcfd. Then optional AI Agent & Harness. Skip Stock Trading AM vs this wealth seat. Skip accelerator/junior.",
++      draft: "r2859635877950117754",
++    },
++  },
++  {
++    id: "B151",
++    rank: 25,
++    title: "Product Manager, AI Agent & Harness",
++    org: "Binance",
++    location: "Hong Kong / Remote",
++    href: "https://jobs.lever.co/binance/0a03c5e3-4a06-4aa7-8c06-25a473ceeb33",
++    closeNote: "Lever Apply 9 Sep · after B150 only",
++    tier: "cvc",
++    bands: ["cvc"],
++    status: "live",
++    pay: 4,
++    security: 2,
++    reputation: 3,
++    balance: 2,
++    fit: 4,
++    rhyme: "Agent harness product. After TradFi wealth, only if the agent seat is the one you want. Do not also spray chatbot / search PM clones.",
++    rhymeZh: "代理挽具产品。传统金融财富之后，只若这个代理席是想要的。不要再群发聊天机器人/搜索克隆。",
++    desk: {
++      apply: "jobs.lever.co/binance/0a03c5e3-4a06-4aa7-8c06-25a473ceeb33. AFTER B150. Skip AI Chatbot PM and AI Search contract.",
++      draft: "r-8111998692901901578",
++    },
++  },
++  {
++    id: "B113",
++    rank: 27,
++    title: "Product Lead – AI Investing",
++    org: "BJAK",
++    location: "Hong Kong",
++    href: "https://jobs.ashbyhq.com/bjakcareer/c3e6469e-684d-4ecd-843a-ce3f7da8cf4d",
++    tier: "cvc",
++    bands: ["cvc", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 2,
++    reputation: 2,
++    balance: 1,
++    fit: 4,
++    rhyme: "AI investing product. Below the bank/university bar for hours. One vertical only — do not spray clones.",
++    rhymeZh: "AI 投资产品。工时低于银行/大学那条杠。只选一条垂类 —— 不要群发克隆。",
++    stretch: true,
++    desk: {
++      apply: "Ashby. Then optional TPM stockbroking, then Head of Strategy. Pick one vertical.",
++      caution: "JD says not counting hours.",
++    },
++  },
++  {
++    id: "B110",
++    rank: 24,
++    title: "Innovation Manager – Product Management",
++    org: "BOCHK",
++    location: "Hong Kong",
++    href: "https://careers.pageuppeople.com/798/cw/en/job/500073",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 4,
++    balance: 3,
++    fit: 4,
++    rhyme: "Bank innovation with a product-management name. Then digital strategy 500080.",
++    rhymeZh: "银行创新，名字叫产品管理。然后数字策略 500080。",
++    desk: { apply: "PageUp 500073 still Apply 9 Sep. Then 500080." },
++  },
++  {
++    id: "B40b",
++    rank: 25,
++    title: "AVP, ETP Product",
++    org: "HKEX",
++    location: "Hong Kong",
++    href: "https://hkex.wd3.myworkdayjobs.com/HKEXCareerPage",
++    closeNote: "R004400 canApply true 9 Sep · Group Strategy R004123 slug 404",
++    tier: "B",
++    bands: ["capital", "institutions"],
++    status: "live",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 3,
++    rhyme: "Exchange-traded product. Market infrastructure with a product name.",
++    rhymeZh: "交易所买卖产品。市场基建，带着产品的名字。",
++    desk: {
++      apply: "HKEXCareerPage R004400. Do not apply Group Strategy R004123 slug — 404.",
++    },
++  },
++  {
++    id: "A25",
++    rank: 29,
++    title: "Manager, Investment (HK)",
++    org: "The Mills Fabrica",
++    location: "Hong Kong",
++    href: "https://www.themillsfabrica.com/careers/manager-investment-hk/",
++    closeNote: "Posted 29 Apr 2026",
++    tier: "A",
++    bands: ["cvc", "institutions"],
++    status: "live",
++    pay: 3,
++    security: 3,
++    reputation: 3,
++    balance: 4,
++    fit: 4,
++    rhyme: "Climate/fashion CVC. Angel-adjacent. Do not email the general contact as if it were HR.",
++    rhymeZh: "气候/时尚 CVC。贴近天使。不要把总邮箱当成 HR。",
++    desk: {
++      apply: "Listing only. contact@themillsfabrica.com is general contact, not a job-apply instruction.",
++      caution: "Do not guess HR.",
++    },
++  },
++];
++
++export type FieldFilter = "all" | "today" | "institutions" | "capital" | "cvc" | "stretch";
++
++export function inField(role: CareerRole, filter: FieldFilter, now = new Date()): boolean {
++  if (role.status === "skip") return false;
++  if (filter === "all") return true;
++  if (filter === "today") {
++    return role.bands.includes("today") && isOpen(role.closeAt, now);
++  }
++  return role.bands.includes(filter);
++}
++
++export function sortField(list: CareerRole[], now = new Date()): CareerRole[] {
++  return [...list].sort((a, b) => {
++    const ua = urgency(a.closeAt, now);
++    const ub = urgency(b.closeAt, now);
++    const order = { now: 0, soon: 1, week: 2, open: 3 };
++    if (order[ua] !== order[ub]) return order[ua] - order[ub];
++    if (a.tier === "ideal" && b.tier !== "ideal") return -1;
++    if (b.tier === "ideal" && a.tier !== "ideal") return 1;
++    const am = a.closeAt ? msUntil(a.closeAt, now) : Number.POSITIVE_INFINITY;
++    const bm = b.closeAt ? msUntil(b.closeAt, now) : Number.POSITIVE_INFINITY;
++    if (am !== bm) return am - bm;
++    return a.rank - b.rank;
++  });
++}
++
++export function nextMoves(now = new Date()): CareerRole[] {
++  const open = roles.filter((r) => r.status === "live" && isOpen(r.closeAt, now));
++  const today = sortField(
++    open.filter((r) => r.bands.includes("today") || r.tier === "ideal"),
++    now,
++  );
++  const rest = sortField(
++    open.filter((r) => !today.includes(r)),
++    now,
++  );
++  return [...today, ...rest].slice(0, 8);
++}
+diff --git a/lib/career/types.ts b/lib/career/types.ts
+new file mode 100644
+index 0000000..a3b7d1c
+--- /dev/null
++++ b/lib/career/types.ts
+@@ -0,0 +1,54 @@
++export type CareerTier = "ideal" | "A" | "B" | "cvc";
++export type CareerBand = "today" | "institutions" | "capital" | "cvc" | "stretch";
++export type CareerStatus = "live" | "watch" | "skip";
++
++export type Felt = 1 | 2 | 3 | 4 | 5;
++
++export type ProductProof = {
++  id: string;
++  title: string;
++  href: string;
++  path: string;
++  tacit: string;
++  tacitZh: string;
++};
++
++export type CareerRole = {
++  id: string;
++  rank: number;
++  title: string;
++  titleZh?: string;
++  org: string;
++  location: string;
++  href: string;
++  closeAt?: string;
++  closeNote?: string;
++  tier: CareerTier;
++  bands: CareerBand[];
++  status: CareerStatus;
++  pay: Felt;
++  security: Felt;
++  reputation: Felt;
++  balance: Felt;
++  fit: Felt;
++  rhyme: string;
++  rhymeZh: string;
++  stretch?: boolean;
++  confirmSeat?: boolean;
++  portalOnly?: boolean;
++  skipWhy?: string;
++  desk?: {
++    apply: string;
++    draft?: string;
++    addendum?: string;
++    caution?: string;
++  };
++};
++
++export type CareerSnapshot = {
++  updatedAt: string;
++  thesis: string;
++  thesisZh: string;
++};
++
++export type HuntLens = "dash" | "schedule" | "match" | "pools" | "progress" | "desk";
+diff --git a/lib/career/verify-owner.ts b/lib/career/verify-owner.ts
+new file mode 100644
+index 0000000..6e581c2
+--- /dev/null
++++ b/lib/career/verify-owner.ts
+@@ -0,0 +1,27 @@
++import { JUBIT_ANON_KEY, JUBIT_SUPABASE_URL, decodeJwtPayload, type FamilySession } from "@/lib/jubit-sso";
++import { isCareerOwner } from "./gate";
++
++type AuthUserPayload = {
++  email?: string;
++  user?: { email?: string };
++};
++
++export async function verifyCareerOwner(session: FamilySession): Promise<boolean> {
++  const jwt = decodeJwtPayload(session.accessToken);
++  const claimed = session.email || jwt?.email || "";
++  if (!isCareerOwner(claimed)) return false;
++
++  try {
++    const response = await fetch(`${JUBIT_SUPABASE_URL}/auth/v1/user`, {
++      headers: {
++        apikey: JUBIT_ANON_KEY,
++        Authorization: `Bearer ${session.accessToken}`,
++      },
++    });
++    if (!response.ok) return false;
++    const payload = (await response.json()) as AuthUserPayload;
++    return isCareerOwner(payload.email || payload.user?.email);
++  } catch {
++    return false;
++  }
++}
+diff --git a/lib/family-session.ts b/lib/family-session.ts
+new file mode 100644
+index 0000000..09384f2
+--- /dev/null
++++ b/lib/family-session.ts
+@@ -0,0 +1,25 @@
++"use client";
++
++import { useEffect, useState } from "react";
++import {
++  FAMILY_SESSION_EVENT,
++  readFamilySession,
++  type FamilySession,
++} from "@/lib/jubit-sso";
++
++export function useFamilySession(): FamilySession | null {
++  const [session, setSession] = useState<FamilySession | null>(null);
++
++  useEffect(() => {
++    const sync = () => setSession(readFamilySession());
++    sync();
++    window.addEventListener(FAMILY_SESSION_EVENT, sync);
++    window.addEventListener("storage", sync);
++    return () => {
++      window.removeEventListener(FAMILY_SESSION_EVENT, sync);
++      window.removeEventListener("storage", sync);
++    };
++  }, []);
++
++  return session;
++}
+diff --git a/lib/messages/en.ts b/lib/messages/en.ts
+index 3246a94..acedd3c 100644
+--- a/lib/messages/en.ts
++++ b/lib/messages/en.ts
+@@ -7,6 +7,7 @@ export const en = {
+     game: "Game",
+     worlds: "Worlds",
+     share: "Share",
++    career: "Career",
+   },
+   heroLine: "Hong Kong. Builds AI. Walks the rest.",
+   tacitLine: "What can be told is here. The rest you walk — planets, the map, the terminal.",
+@@ -28,6 +29,7 @@ export const en = {
+     studio: "Studio",
+     intro: "In frame",
+     publish: "Omni-channel",
++    career: "Tacit",
+   },
+   cta: {
+     startReading: "Start Reading",
+@@ -132,6 +134,96 @@ export const en = {
+     inPlace: "Presenting",
+     inPlaceLead: "Live apps, in frame. Terminal opens on Polymarket. Research opens the research desk.",
+   },
++  careerPage: {
++    kicker: "Tacit · Career",
++    title: "What the work already knows",
++    lead: "We know more than we can tell. Live products are the CV. Roles are gravity — they pull the same shape.",
++    clockLabel: "Hong Kong",
++    desk: "Desk",
++    deskOpen: "Desk is open",
++    deskHint: "The hunt desk stays on this device after Google sign-in. It is not a public CV. Drafts wait in Gmail until you approve a send.",
++    proofKicker: "Indwelling",
++    proofTitle: "Walk the work",
++    proofLead: "A CV lists titles. These run.",
++    fieldKicker: "Field",
++    fieldTitle: "Roles that rhyme",
++    today: "Today",
++    institutions: "Institutions",
++    capital: "Capital + AI",
++    cvc: "CVC",
++    stretch: "Stretch",
++    all: "All",
++    ideal: "Ideal",
++    closed: "Closed",
++    watch: "Watch",
++    live: "Live",
++    pay: "Pay",
++    security: "Security",
++    reputation: "Reputation",
++    balance: "Balance",
++    fit: "Fit",
++    openRole: "Open the listing",
++    reminder: "Remind me",
++    reminded: "Watching",
++    suggestKicker: "Next",
++    suggestTitle: "The next step the field suggests",
++    noClose: "Open",
++    confirmSeat: "Confirm the Hong Kong seat",
++    stretchNote: "Stretch — do not claim years you do not have",
++    cityu: "City University of Hong Kong alumnus. Degree title stays unclaimed until it is filled.",
++    writeYok: "Write Yok",
++    updated: "Field updated",
++    filterEmpty: "Nothing in this slice of the field.",
++    notifyAsk: "Remind me in this browser",
++    publicNote: "The garden shows the work. The desk is the hunt. Current employer stays off this page.",
++    portalOnly: "Portal only — do not send email unless the listing asks.",
++    gateKicker: "Private desk",
++    gateTitle: "This field is not public",
++    gateLead: "Continue with Google. Only yying2010@gmail.com can open this desk.",
++    gateSignIn: "Continue with Google",
++    gateDenied: "This desk is not open for this account.",
++    gateDeniedHint: "Sign out, then sign in with Google as yying2010@gmail.com.",
++    gateWorking: "Checking the door…",
++    paneDash: "Dashboard",
++    paneSchedule: "Schedule",
++    paneMatch: "Matching",
++    panePools: "Pools",
++    paneProgress: "Progress",
++    paneDesk: "Desk",
++    signedInAs: "Signed in",
++    profileKicker: "Now",
++    profileTitle: "The desk you already hold",
++    confidential: "Name stays off the garden. Fill it on a CV or portal if you choose.",
++    priorNote: "Prior:",
++    matchKicker: "Matching",
++    matchTitle: "Roles that rhyme with this desk",
++    matchLead: "Pay, security, reputation, balance, and fit — scored against licensed HK operator habits, live AI products, and the offshore hedge book.",
++    whyMatch: "Match",
++    scheduleKicker: "Clock",
++    scheduleTitle: "Hong Kong close dates",
++    scheduleEmpty: "Nothing closing this day.",
++    poolKicker: "Pools",
++    poolTitle: "Today, institutions, capital, CVC, stretch",
++    progressKicker: "Hunt",
++    progressTitle: "Status of every live seat",
++    progressLead: "Pooled, matched, watching, drafted, applied, interview. This device remembers. Nothing is sent.",
++    setStatus: "Set hunt status",
++    statusPooled: "Pooled",
++    statusMatched: "Matched",
++    statusWatching: "Watching",
++    statusQueued: "Queued",
++    statusDrafted: "Drafted",
++    statusApplied: "Applied",
++    statusInterview: "Interview",
++    statusHold: "Hold",
++    statusSkipped: "Skip",
++    statusClosed: "Closed",
++    statLive: "Live",
++    statClosing: "This clock",
++    statWatching: "Reminders",
++    statDrafted: "Drafts",
++    statApplied: "Applied",
++  },
+   writingPage: {
+     title: "Writing",
+     loading: "Loading notes…",
+diff --git a/lib/messages/ja.ts b/lib/messages/ja.ts
+index d10e3d1..bdff21a 100644
+--- a/lib/messages/ja.ts
++++ b/lib/messages/ja.ts
+@@ -9,6 +9,7 @@ export const ja: Messages = {
+     game: "ゲーム",
+     worlds: "ワールド",
+     share: "共有",
++    career: "キャリア",
+   },
+   heroLine: "香港。AI を作る。残りは歩く。",
+   tacitLine: "書けるものはここにある。残りは歩く —— 惑星、地図、ターミナル。",
+@@ -30,6 +31,7 @@ export const ja: Messages = {
+     studio: "スタジオ",
+     intro: "フレーム",
+     publish: "全チャネル",
++    career: "暗黙",
+   },
+   cta: {
+     startReading: "読みはじめる",
+@@ -132,6 +134,96 @@ export const ja: Messages = {
+     inPlace: "いま見せている",
+     inPlaceLead: "ライブのアプリを、このページに。ターミナルは Polymarket。リサーチはリサーチデスク。",
+   },
++  careerPage: {
++    kicker: "暗黙 · キャリア",
++    title: "仕事がすでに知っていること",
++    lead: "語れる以上のことを、私たちは知っている。動いているプロダクトが履歴書。役割は重力 —— 同じ形を引く。",
++    clockLabel: "香港",
++    desk: "デスク",
++    deskOpen: "デスクを開く",
++    deskHint: "求職デスクはこの端末に残る。公開履歴書ではない。下書きは Gmail。承認するまで送らない。",
++    proofKicker: "住み込み",
++    proofTitle: "仕事を歩く",
++    proofLead: "履歴書は肩書きを並べる。これらは動いている。",
++    fieldKicker: "場",
++    fieldTitle: "韻を踏む役割",
++    today: "今日",
++    institutions: "機関",
++    capital: "資本 + AI",
++    cvc: "CVC",
++    stretch: "ストレッチ",
++    all: "すべて",
++    ideal: "理想",
++    closed: "終了",
++    watch: "注視",
++    live: "募集中",
++    pay: "報酬",
++    security: "安定",
++    reputation: "名声",
++    balance: "生活",
++    fit: "適合",
++    openRole: "求人を開く",
++    reminder: "知らせる",
++    reminded: "注視中",
++    suggestKicker: "次",
++    suggestTitle: "場が示す次の一歩",
++    noClose: "募集中",
++    confirmSeat: "香港席を確認",
++    stretchNote: "ストレッチ — 持っていない年数を名乗らない",
++    cityu: "香港城市大学の卒業生。学位名は記入されるまで書かない。",
++    writeYok: "Yok に書く",
++    updated: "場を更新",
++    filterEmpty: "この切片は空。",
++    notifyAsk: "このブラウザで知らせる",
++    publicNote: "庭は作品を見せる。デスクが求職。いまの雇用主はこのページに出ない。",
++    portalOnly: "ポータルのみ — 求人がメールを求めないなら送らない。",
++    gateKicker: "私室",
++    gateTitle: "この場は公開しない",
++    gateLead: "Google で続ける。開けるのは yying2010@gmail.com だけ。",
++    gateSignIn: "Google で続ける",
++    gateDenied: "このアカウントではデスクを開けない。",
++    gateDeniedHint: "サインアウトして Google の yying2010@gmail.com で入り直す。",
++    gateWorking: "扉を確認している…",
++    paneDash: "ダッシュボード",
++    paneSchedule: "日程",
++    paneMatch: "マッチ",
++    panePools: "プール",
++    paneProgress: "進捗",
++    paneDesk: "デスク",
++    signedInAs: "サインイン中",
++    profileKicker: "いま",
++    profileTitle: "すでに持っている席",
++    confidential: "名前は庭に出さない。履歴書やポータルで書くかはあなたが決める。",
++    priorNote: "以前：",
++    matchKicker: "マッチ",
++    matchTitle: "このデスクと韻を踏む役割",
++    matchLead: "報酬・安定・名声・生活・適合を、香港の免許オペレーター、動いている AI、オフショア・ヘッジに照らす。",
++    whyMatch: "マッチ",
++    scheduleKicker: "時計",
++    scheduleTitle: "香港の締切",
++    scheduleEmpty: "この日は締切なし。",
++    poolKicker: "プール",
++    poolTitle: "今日、機関、資本、CVC、ストレッチ",
++    progressKicker: "ハント",
++    progressTitle: "募集中の席の状態",
++    progressLead: "プール、マッチ、注視、下書き、応募、面接。この端末が覚える。送信しない。",
++    setStatus: "状態を設定",
++    statusPooled: "プール",
++    statusMatched: "マッチ",
++    statusWatching: "注視",
++    statusQueued: "待機",
++    statusDrafted: "下書き",
++    statusApplied: "応募済",
++    statusInterview: "面接",
++    statusHold: "保留",
++    statusSkipped: "見送り",
++    statusClosed: "終了",
++    statLive: "募集中",
++    statClosing: "この時計",
++    statWatching: "通知",
++    statDrafted: "下書き",
++    statApplied: "応募",
++  },
+   writingPage: {
+     title: "文章",
+     loading: "ノートを読み込み中…",
+diff --git a/lib/messages/ko.ts b/lib/messages/ko.ts
+index 2fae3cd..3ad005d 100644
+--- a/lib/messages/ko.ts
++++ b/lib/messages/ko.ts
+@@ -9,6 +9,7 @@ export const ko: Messages = {
+     game: "게임",
+     worlds: "월드",
+     share: "공유",
++    career: "커리어",
+   },
+   heroLine: "홍콩. AI를 만든다. 나머지는 산다.",
+   tacitLine: "말할 수 있는 것은 여기 있다. 나머지는 걷는다 — 행성, 지도, 터미널.",
+@@ -30,6 +31,7 @@ export const ko: Messages = {
+     studio: "스튜디오",
+     intro: "프레임",
+     publish: "옴니채널",
++    career: "암묵",
+   },
+   cta: {
+     startReading: "읽기 시작",
+@@ -132,6 +134,96 @@ export const ko: Messages = {
+     inPlace: "보여주는 중",
+     inPlaceLead: "라이브 앱을 이 페이지에. 터미널은 Polymarket. 리서치는 리서치 데스크.",
+   },
++  careerPage: {
++    kicker: "암묵 · 커리어",
++    title: "일이 이미 아는 것",
++    lead: "우리는 말할 수 있는 것보다 더 많이 안다. 돌아가는 제품이 이력서다. 역할은 중력 — 같은 모양을 끌어당긴다.",
++    clockLabel: "홍콩",
++    desk: "데스크",
++    deskOpen: "데스크 열림",
++    deskHint: "구직 데스크는 이 기기에 남는다. 공개 이력서가 아니다. 초안은 Gmail. 승인 전까지 보내지 않는다.",
++    proofKicker: "내주",
++    proofTitle: "일을 걷다",
++    proofLead: "이력서는 직함을 나열한다. 이것들은 돌아간다.",
++    fieldKicker: "장",
++    fieldTitle: "운이 맞는 자리",
++    today: "오늘",
++    institutions: "기관",
++    capital: "자본 + AI",
++    cvc: "CVC",
++    stretch: "스트레치",
++    all: "전체",
++    ideal: "이상",
++    closed: "마감",
++    watch: "주시",
++    live: "채용 중",
++    pay: "보수",
++    security: "안정",
++    reputation: "명성",
++    balance: "생활",
++    fit: "적합",
++    openRole: "공고 열기",
++    reminder: "알려 주세요",
++    reminded: "주시 중",
++    suggestKicker: "다음",
++    suggestTitle: "장이 가리키는 다음 걸음",
++    noClose: "진행 중",
++    confirmSeat: "홍콩 좌석 확인",
++    stretchNote: "스트레치 — 없는 연차를 주장하지 말 것",
++    cityu: "홍콩시립대학교 동문. 학위명은 채워지기 전까지 쓰지 않는다.",
++    writeYok: "Yok에게 쓰기",
++    updated: "장 갱신",
++    filterEmpty: "이 조각은 비어 있다.",
++    notifyAsk: "이 브라우저에서 알림",
++    publicNote: "정원은 작업을 보여 준다. 데스크가 구직. 현 고용주는 이 페이지에 없다.",
++    portalOnly: "포털만 — 공고가 이메일을 요구하지 않으면 보내지 말 것.",
++    gateKicker: "비공개 책상",
++    gateTitle: "이 장은 공개되지 않는다",
++    gateLead: "Google로 계속. yying2010@gmail.com 만 이 책상을 열 수 있다.",
++    gateSignIn: "Google로 계속",
++    gateDenied: "이 계정으로는 책상을 열 수 없다.",
++    gateDeniedHint: "로그아웃한 뒤 Google 계정 yying2010@gmail.com 으로 다시 로그인.",
++    gateWorking: "문을 확인하는 중…",
++    paneDash: "대시보드",
++    paneSchedule: "일정",
++    paneMatch: "매칭",
++    panePools: "풀",
++    paneProgress: "진행",
++    paneDesk: "데스크",
++    signedInAs: "로그인됨",
++    profileKicker: "지금",
++    profileTitle: "이미 앉은 자리",
++    confidential: "이름은 정원에 내지 않는다. 이력서나 포털에 쓸지는 당신이 정한다.",
++    priorNote: "이전:",
++    matchKicker: "매칭",
++    matchTitle: "이 책상과 운이 맞는 자리",
++    matchLead: "보수, 안정, 명성, 생활, 적합 — 홍콩 라이선스 운영, 돌아가는 AI, 역외 헤지 장부와 대조.",
++    whyMatch: "매칭",
++    scheduleKicker: "시계",
++    scheduleTitle: "홍콩 마감",
++    scheduleEmpty: "이 날은 마감 없음.",
++    poolKicker: "풀",
++    poolTitle: "오늘, 기관, 자본, CVC, 스트레치",
++    progressKicker: "사냥",
++    progressTitle: "채용 중인 자리의 상태",
++    progressLead: "풀, 매칭, 주시, 초안, 지원, 면접. 이 기기가 기억한다. 보내지 않는다.",
++    setStatus: "상태 설정",
++    statusPooled: "풀",
++    statusMatched: "매칭",
++    statusWatching: "주시",
++    statusQueued: "대기",
++    statusDrafted: "초안",
++    statusApplied: "지원",
++    statusInterview: "면접",
++    statusHold: "보류",
++    statusSkipped: "건너뜀",
++    statusClosed: "마감",
++    statLive: "채용 중",
++    statClosing: "이 시계",
++    statWatching: "알림",
++    statDrafted: "초안",
++    statApplied: "지원",
++  },
+   writingPage: {
+     title: "글",
+     loading: "노트를 불러오는 중…",
+diff --git a/lib/messages/nl.ts b/lib/messages/nl.ts
+index e384505..a4faa72 100644
+--- a/lib/messages/nl.ts
++++ b/lib/messages/nl.ts
+@@ -9,6 +9,7 @@ export const nl: Messages = {
+     game: "Spel",
+     worlds: "Werelden",
+     share: "Delen",
++    career: "Loopbaan",
+   },
+   heroLine: "Hongkong. Bouwt AI. Loopt de rest.",
+   tacitLine: "Wat gezegd kan worden staat hier. De rest loop je — planeten, de kaart, de terminal.",
+@@ -30,6 +31,7 @@ export const nl: Messages = {
+     studio: "Studio",
+     intro: "In beeld",
+     publish: "Omnichannel",
++    career: "Stil",
+   },
+   cta: {
+     startReading: "Begin met lezen",
+@@ -133,6 +135,96 @@ export const nl: Messages = {
+     inPlace: "In beeld",
+     inPlaceLead: "Live apps, in dit frame. Terminal opent Polymarket. Research opent de research desk.",
+   },
++  careerPage: {
++    kicker: "Stil · Loopbaan",
++    title: "Wat het werk al weet",
++    lead: "We weten meer dan we kunnen zeggen. Live producten zijn het cv. Rollen zijn zwaartekracht — ze trekken dezelfde vorm.",
++    clockLabel: "Hongkong",
++    desk: "Bureau",
++    deskOpen: "Bureau is open",
++    deskHint: "Het zoekbureau blijft op dit apparaat. Het is geen openbaar cv. Concepten wachten in Gmail tot jij een verzending goedkeurt.",
++    proofKicker: "Inwonen",
++    proofTitle: "Loop het werk",
++    proofLead: "Een cv somt titels op. Deze draaien.",
++    fieldKicker: "Veld",
++    fieldTitle: "Rollen die rijmen",
++    today: "Vandaag",
++    institutions: "Instellingen",
++    capital: "Kapitaal + AI",
++    cvc: "CVC",
++    stretch: "Rek",
++    all: "Alles",
++    ideal: "Ideaal",
++    closed: "Gesloten",
++    watch: "Volgen",
++    live: "Open",
++    pay: "Loon",
++    security: "Zekerheid",
++    reputation: "Faam",
++    balance: "Leven",
++    fit: "Fit",
++    openRole: "Open de vacature",
++    reminder: "Herinner mij",
++    reminded: "Volgend",
++    suggestKicker: "Volgende",
++    suggestTitle: "De volgende stap die het veld voorstelt",
++    noClose: "Open",
++    confirmSeat: "Bevestig de Hongkong-stoel",
++    stretchNote: "Rek — claim geen jaren die je niet hebt",
++    cityu: "Alumnus van City University of Hong Kong. Geen diploma-titel tot die is ingevuld.",
++    writeYok: "Schrijf Yok",
++    updated: "Veld bijgewerkt",
++    filterEmpty: "Niets in deze snede van het veld.",
++    notifyAsk: "Herinner mij in deze browser",
++    publicNote: "De tuin toont het werk. Het bureau is de jacht. De huidige werkgever blijft van deze pagina.",
++    portalOnly: "Alleen portaal — stuur geen mail tenzij de vacature het vraagt.",
++    gateKicker: "Privébureau",
++    gateTitle: "Dit veld is niet openbaar",
++    gateLead: "Ga verder met Google. Alleen yying2010@gmail.com kan dit bureau openen.",
++    gateSignIn: "Doorgaan met Google",
++    gateDenied: "Dit bureau is niet open voor dit account.",
++    gateDeniedHint: "Meld af, en meld aan met Google als yying2010@gmail.com.",
++    gateWorking: "De deur wordt gecontroleerd…",
++    paneDash: "Dashboard",
++    paneSchedule: "Agenda",
++    paneMatch: "Matching",
++    panePools: "Pools",
++    paneProgress: "Voortgang",
++    paneDesk: "Bureau",
++    signedInAs: "Aangemeld",
++    profileKicker: "Nu",
++    profileTitle: "Het bureau dat je al hebt",
++    confidential: "De naam blijft van de tuin. Zet hem op cv of portaal als jij dat wilt.",
++    priorNote: "Eerder:",
++    matchKicker: "Matching",
++    matchTitle: "Rollen die bij dit bureau passen",
++    matchLead: "Loon, zekerheid, faam, leven, fit — tegenover HK-vergunning, live AI, en het offshore hedge-boek.",
++    whyMatch: "Match",
++    scheduleKicker: "Klok",
++    scheduleTitle: "Hongkongse sluitdata",
++    scheduleEmpty: "Niets sluit deze dag.",
++    poolKicker: "Pools",
++    poolTitle: "Vandaag, instellingen, kapitaal, CVC, rek",
++    progressKicker: "Jacht",
++    progressTitle: "Status van elke open stoel",
++    progressLead: "Pool, match, volgen, concept, sollicitatie, gesprek. Dit apparaat onthoudt. Niets wordt verzonden.",
++    setStatus: "Zet status",
++    statusPooled: "Pool",
++    statusMatched: "Match",
++    statusWatching: "Volgend",
++    statusQueued: "Wachtrij",
++    statusDrafted: "Concept",
++    statusApplied: "Gesolliciteerd",
++    statusInterview: "Gesprek",
++    statusHold: "Pauze",
++    statusSkipped: "Slaan",
++    statusClosed: "Gesloten",
++    statLive: "Open",
++    statClosing: "Deze klok",
++    statWatching: "Herinneringen",
++    statDrafted: "Concepten",
++    statApplied: "Gesolliciteerd",
++  },
+   writingPage: {
+     title: "Schrijven",
+     loading: "Notities laden…",
+diff --git a/lib/messages/th.ts b/lib/messages/th.ts
+index 2fcb707..471128d 100644
+--- a/lib/messages/th.ts
++++ b/lib/messages/th.ts
+@@ -9,6 +9,7 @@ export const th: Messages = {
+     game: "เกม",
+     worlds: "โลก",
+     share: "แชร์",
++    career: "อาชีพ",
+   },
+   heroLine: "ฮ่องกง สร้าง AI ใช้ชีวิตที่เหลือ",
+   tacitLine: "สิ่งที่บอกได้มีอยู่ที่นี่ ที่เหลือต้องเดิน — ดาวเคราะห์ แผนที่ เทอร์มินัล",
+@@ -30,6 +31,7 @@ export const th: Messages = {
+     studio: "สตูดิโอ",
+     intro: "ในเฟรม",
+     publish: "ทุกช่องทาง",
++    career: "ที่บอกไม่ได้",
+   },
+   cta: {
+     startReading: "เริ่มอ่าน",
+@@ -131,6 +133,96 @@ export const th: Messages = {
+     inPlace: "กำลังนำเสนอ",
+     inPlaceLead: "แอปสดในหน้านี้ เทอร์มินัลเปิด Polymarket งานวิจัยเปิดโต๊ะวิจัย",
+   },
++  careerPage: {
++    kicker: "ที่บอกไม่ได้ · อาชีพ",
++    title: "งานที่รู้อยู่แล้ว",
++    lead: "เรารู้มากกว่าที่บอกได้ สินค้าที่วิ่งได้คือประวัติย่อ ตำแหน่งคือแรงโน้มถ่วง — ดึงรูปทรงเดียวกัน",
++    clockLabel: "ฮ่องกง",
++    desk: "โต๊ะ",
++    deskOpen: "เปิดโต๊ะแล้ว",
++    deskHint: "โต๊ะหางานอยู่ที่เครื่องนี้ ไม่ใช่ประวัติย่อสาธารณะ ร่างอยู่ใน Gmail จนกว่าจะอนุมัติให้ส่ง",
++    proofKicker: "อาศัยอยู่",
++    proofTitle: "เดินเข้าไปในงาน",
++    proofLead: "ประวัติย่อเรียงตำแหน่ง สิ่งเหล่านี้วิ่งอยู่",
++    fieldKicker: "สนาม",
++    fieldTitle: "ตำแหน่งที่สัมผัสกันได้",
++    today: "วันนี้",
++    institutions: "สถาบัน",
++    capital: "ทุน + AI",
++    cvc: "CVC",
++    stretch: "ยืด",
++    all: "ทั้งหมด",
++    ideal: "ในอุดมคติ",
++    closed: "ปิดแล้ว",
++    watch: "เฝ้า",
++    live: "เปิดรับ",
++    pay: "ค่าตอบแทน",
++    security: "มั่นคง",
++    reputation: "ชื่อเสียง",
++    balance: "ชีวิต",
++    fit: "เข้ากัน",
++    openRole: "เปิดประกาศ",
++    reminder: "เตือนฉัน",
++    reminded: "กำลังเฝ้า",
++    suggestKicker: "ถัดไป",
++    suggestTitle: "ก้าวถัดไปที่สนามชี้",
++    noClose: "ยังเปิด",
++    confirmSeat: "ยืนยันที่นั่งฮ่องกง",
++    stretchNote: "ยืด — อย่าอ้างปีที่ไม่มี",
++    cityu: "ศิษย์เก่า City University of Hong Kong ยังไม่ใส่ชื่อปริญญาจนกว่าจะกรอก",
++    writeYok: "เขียนถึง Yok",
++    updated: "อัปเดตสนามแล้ว",
++    filterEmpty: "ชิ้นนี้ว่าง",
++    notifyAsk: "เตือนในเบราว์เซอร์นี้",
++    publicNote: "สวนโชว์งาน โต๊ะคือการหางาน นายจ้างปัจจุบันไม่อยู่ในหน้านี้",
++    portalOnly: "พอร์ทัลเท่านั้น — อย่าส่งอีเมลถ้าประกาศไม่ได้ขอ",
++    gateKicker: "โต๊ะส่วนตัว",
++    gateTitle: "สนามนี้ไม่เปิดสาธารณะ",
++    gateLead: "ดำเนินการต่อด้วย Google เฉพาะ yying2010@gmail.com เท่านั้นที่เปิดโต๊ะนี้ได้",
++    gateSignIn: "ดำเนินการต่อด้วย Google",
++    gateDenied: "บัญชีนี้เปิดโต๊ะไม่ได้",
++    gateDeniedHint: "ออกจากระบบ แล้วเข้าด้วย Google yying2010@gmail.com",
++    gateWorking: "กำลังตรวจประตู…",
++    paneDash: "แดชบอร์ด",
++    paneSchedule: "ตาราง",
++    paneMatch: "จับคู่",
++    panePools: "พูล",
++    paneProgress: "ความคืบหน้า",
++    paneDesk: "โต๊ะ",
++    signedInAs: "เข้าสู่ระบบแล้ว",
++    profileKicker: "ตอนนี้",
++    profileTitle: "โต๊ะที่นั่งอยู่แล้ว",
++    confidential: "ไม่ใส่ชื่อบนสวน ใส่ในประวัติหรือพอร์ทัลถ้าคุณเลือก",
++    priorNote: "ก่อนหน้า:",
++    matchKicker: "จับคู่",
++    matchTitle: "ตำแหน่งที่สัมผัสกับโต๊ะนี้",
++    matchLead: "ค่าตอบแทน ความมั่นคง ชื่อเสียง ชีวิต ความเข้ากัน — เทียบใบอนุญาตฮ่องกง, AI ที่วิ่ง, และสมุดเฮดจ์นอกชายฝั่ง",
++    whyMatch: "จับคู่",
++    scheduleKicker: "นาฬิกา",
++    scheduleTitle: "วันปิดฮ่องกง",
++    scheduleEmpty: "วันนี้ไม่มีปิดรับ",
++    poolKicker: "พูล",
++    poolTitle: "วันนี้ สถาบัน ทุน CVC ยืด",
++    progressKicker: "ล่า",
++    progressTitle: "สถานะทุกที่นั่งที่เปิด",
++    progressLead: "พูล จับคู่ เฝ้า ร่าง สมัคร สัมภาษณ์ เครื่องนี้จำ ไม่มีการส่ง",
++    setStatus: "ตั้งสถานะ",
++    statusPooled: "พูล",
++    statusMatched: "จับคู่",
++    statusWatching: "เฝ้า",
++    statusQueued: "คิว",
++    statusDrafted: "ร่าง",
++    statusApplied: "สมัครแล้ว",
++    statusInterview: "สัมภาษณ์",
++    statusHold: "พัก",
++    statusSkipped: "ข้าม",
++    statusClosed: "ปิดแล้ว",
++    statLive: "เปิดรับ",
++    statClosing: "นาฬิกานี้",
++    statWatching: "เตือน",
++    statDrafted: "ร่าง",
++    statApplied: "สมัคร",
++  },
+   writingPage: {
+     title: "งานเขียน",
+     loading: "กำลังโหลดบันทึก…",
+diff --git a/lib/messages/zh-Hans.ts b/lib/messages/zh-Hans.ts
+index 5aca4b2..8534b85 100644
+--- a/lib/messages/zh-Hans.ts
++++ b/lib/messages/zh-Hans.ts
+@@ -9,6 +9,7 @@ export const zhHans: Messages = {
+     game: "游戏",
+     worlds: "世界",
+     share: "分享",
++    career: "职场",
+   },
+   heroLine: "香港。做 AI。走其余的。",
+   tacitLine: "能写下的在这里。其余的要走 —— 行星、地图、终端。",
+@@ -29,6 +30,7 @@ export const zhHans: Messages = {
+     studio: "工作室",
+     intro: "入画",
+     publish: "全渠道",
++    career: "默会",
+   },
+   cta: {
+     startReading: "开始阅读",
+@@ -129,6 +131,96 @@ export const zhHans: Messages = {
+     inPlace: "正在呈现",
+     inPlaceLead: "现场应用，嵌在这一页。终端打开 Polymarket。研究打开研究台。",
+   },
++  careerPage: {
++    kicker: "默会 · 职场",
++    title: "工作已经知道的",
++    lead: "我们知道的，多于能说的。能跑的产品才是履历。职位是引力 —— 拉的是同一副形状。",
++    clockLabel: "香港",
++    desk: "台面",
++    deskOpen: "台面已开",
++    deskHint: "求职台在 Google 登录之后留在这台设备上。不是公开履历。草稿先在 Gmail，你点头才发。",
++    proofKicker: "内住",
++    proofTitle: "去走这些活",
++    proofLead: "履历列头衔。这些在跑。",
++    fieldKicker: "场",
++    fieldTitle: "对得上的位子",
++    today: "今天",
++    institutions: "机构",
++    capital: "资本 + AI",
++    cvc: "CVC",
++    stretch: "拉伸",
++    all: "全部",
++    ideal: "理想",
++    closed: "已关",
++    watch: "看住",
++    live: "在招",
++    pay: "薪酬",
++    security: "稳",
++    reputation: "名声",
++    balance: "生活",
++    fit: "贴合",
++    openRole: "打开职位",
++    reminder: "提醒我",
++    reminded: "已看住",
++    suggestKicker: "下一步",
++    suggestTitle: "场建议的下一步",
++    noClose: "仍开",
++    confirmSeat: "确认香港席位",
++    stretchNote: "拉伸 —— 不要声称没有的年资",
++    cityu: "香港城市大学校友。学位名称未填之前，不写。",
++    writeYok: "写信给 Yok",
++    updated: "场已更新",
++    filterEmpty: "这一片场是空的。",
++    notifyAsk: "用这只浏览器提醒",
++    publicNote: "园地给看作品。台面才是求职。现职雇主不出现在这一页。",
++    portalOnly: "只走门户 —— 招聘启事没要求发信，就不要发。",
++    gateKicker: "私人台面",
++    gateTitle: "这一场不是公开的",
++    gateLead: "用 Google 登录。只有 yying2010@gmail.com 能打开这张台面。",
++    gateSignIn: "用 Google 继续",
++    gateDenied: "这个账号打不开这张台面。",
++    gateDeniedHint: "先退出，再用 Google 账号 yying2010@gmail.com 登录。",
++    gateWorking: "在看这扇门…",
++    paneDash: "总览",
++    paneSchedule: "日程",
++    paneMatch: "匹配",
++    panePools: "池",
++    paneProgress: "进度",
++    paneDesk: "台面",
++    signedInAs: "已登录",
++    profileKicker: "现在",
++    profileTitle: "已经坐着的台面",
++    confidential: "名字不出现在园地。履历或门户上，你愿意再填。",
++    priorNote: "此前：",
++    matchKicker: "匹配",
++    matchTitle: "和这张台面对得上的位子",
++    matchLead: "薪酬、稳、名声、生活、贴合 — 对照香港持牌运营、已上线 AI、以及离岸对冲账簿。",
++    whyMatch: "匹配",
++    scheduleKicker: "钟",
++    scheduleTitle: "香港截止",
++    scheduleEmpty: "这一天没有截止。",
++    poolKicker: "池",
++    poolTitle: "今天、机构、资本、CVC、拉伸",
++    progressKicker: "猎场",
++    progressTitle: "每一个在招席的状态",
++    progressLead: "入池、匹配、看住、草稿、已投、面试。这台设备记得。不会代发。",
++    setStatus: "设置求职状态",
++    statusPooled: "入池",
++    statusMatched: "匹配",
++    statusWatching: "看住",
++    statusQueued: "排队",
++    statusDrafted: "草稿",
++    statusApplied: "已投",
++    statusInterview: "面试",
++    statusHold: "暂缓",
++    statusSkipped: "跳过",
++    statusClosed: "已关",
++    statLive: "在招",
++    statClosing: "这口钟",
++    statWatching: "提醒",
++    statDrafted: "草稿",
++    statApplied: "已投",
++  },
+   writingPage: {
+     title: "写作",
+     loading: "加载笔记…",
+diff --git a/lib/messages/zh-Hant.ts b/lib/messages/zh-Hant.ts
+index 5115fd7..f3111b9 100644
+--- a/lib/messages/zh-Hant.ts
++++ b/lib/messages/zh-Hant.ts
+@@ -9,6 +9,7 @@ export const zhHant: Messages = {
+     game: "遊戲",
+     worlds: "世界",
+     share: "分享",
++    career: "職場",
+   },
+   heroLine: "香港。做 AI。走其餘的。",
+   tacitLine: "能寫下的在這裡。其餘的要走 —— 行星、地圖、終端。",
+@@ -29,6 +30,7 @@ export const zhHant: Messages = {
+     studio: "工作室",
+     intro: "入畫",
+     publish: "全渠道",
++    career: "默會",
+   },
+   cta: {
+     startReading: "開始閱讀",
+@@ -129,6 +131,96 @@ export const zhHant: Messages = {
+     inPlace: "正在呈現",
+     inPlaceLead: "現場應用，嵌在這一頁。終端打開 Polymarket。研究打開研究台。",
+   },
++  careerPage: {
++    kicker: "默會 · 職場",
++    title: "工作已經知道的",
++    lead: "我們知道的，多於能說的。能跑的產品才是履歷。職位是引力 —— 拉的是同一副形狀。",
++    clockLabel: "香港",
++    desk: "檯面",
++    deskOpen: "檯面已開",
++    deskHint: "求職檯在 Google 登入之後留在這台裝置上。不是公開履歷。草稿先在 Gmail，你點頭才發。",
++    proofKicker: "內住",
++    proofTitle: "去走這些活",
++    proofLead: "履歷列頭銜。這些在跑。",
++    fieldKicker: "場",
++    fieldTitle: "對得上的位子",
++    today: "今天",
++    institutions: "機構",
++    capital: "資本 + AI",
++    cvc: "CVC",
++    stretch: "拉伸",
++    all: "全部",
++    ideal: "理想",
++    closed: "已關",
++    watch: "看住",
++    live: "在招",
++    pay: "薪酬",
++    security: "穩",
++    reputation: "名聲",
++    balance: "生活",
++    fit: "貼合",
++    openRole: "打開職位",
++    reminder: "提醒我",
++    reminded: "已看住",
++    suggestKicker: "下一步",
++    suggestTitle: "場建議的下一步",
++    noClose: "仍開",
++    confirmSeat: "確認香港席位",
++    stretchNote: "拉伸 —— 不要聲稱沒有的年資",
++    cityu: "香港城市大學校友。學位名稱未填之前，不寫。",
++    writeYok: "寫信給 Yok",
++    updated: "場已更新",
++    filterEmpty: "這一片場是空的。",
++    notifyAsk: "用這只瀏覽器提醒",
++    publicNote: "園地給看作品。檯面才是求職。現職僱主不出現在這一頁。",
++    portalOnly: "只走門戶 —— 招聘啟事沒要求發信，就不要發。",
++    gateKicker: "私人檯面",
++    gateTitle: "這一場不是公開的",
++    gateLead: "用 Google 登入。只有 yying2010@gmail.com 能打開這張檯面。",
++    gateSignIn: "用 Google 繼續",
++    gateDenied: "這個帳號打不開這張檯面。",
++    gateDeniedHint: "先退出，再用 Google 帳號 yying2010@gmail.com 登入。",
++    gateWorking: "在看這扇門…",
++    paneDash: "總覽",
++    paneSchedule: "日程",
++    paneMatch: "匹配",
++    panePools: "池",
++    paneProgress: "進度",
++    paneDesk: "檯面",
++    signedInAs: "已登入",
++    profileKicker: "現在",
++    profileTitle: "已經坐著的檯面",
++    confidential: "名字不出現在園地。履歷或門戶上，你願意再填。",
++    priorNote: "此前：",
++    matchKicker: "匹配",
++    matchTitle: "和這張檯面對得上的位子",
++    matchLead: "薪酬、穩、名聲、生活、貼合 — 對照香港持牌運營、已上線 AI、以及離岸對沖帳簿。",
++    whyMatch: "匹配",
++    scheduleKicker: "鐘",
++    scheduleTitle: "香港截止",
++    scheduleEmpty: "這一天沒有截止。",
++    poolKicker: "池",
++    poolTitle: "今天、機構、資本、CVC、拉伸",
++    progressKicker: "獵場",
++    progressTitle: "每一個在招席的狀態",
++    progressLead: "入池、匹配、看住、草稿、已投、面試。這台裝置記得。不會代發。",
++    setStatus: "設定求職狀態",
++    statusPooled: "入池",
++    statusMatched: "匹配",
++    statusWatching: "看住",
++    statusQueued: "排隊",
++    statusDrafted: "草稿",
++    statusApplied: "已投",
++    statusInterview: "面試",
++    statusHold: "暫緩",
++    statusSkipped: "跳過",
++    statusClosed: "已關",
++    statLive: "在招",
++    statClosing: "這口鐘",
++    statWatching: "提醒",
++    statDrafted: "草稿",
++    statApplied: "已投",
++  },
+   writingPage: {
+     title: "寫作",
+     loading: "載入筆記…",
+diff --git a/lib/site.ts b/lib/site.ts
+index 951a361..9fd883e 100644
+--- a/lib/site.ts
++++ b/lib/site.ts
+@@ -96,6 +96,7 @@ export const quotes = [
+   "Scattered feeds, APIs, datasets and maps — held together and made seekable.",
+   "Football and philosophy sit in the same life. They are not the work. The work is to ship.",
+   "A game id kept as a name: m1zwell.",
++  "We know more than we can tell. The products are the rest.",
+   "No account. Open the tab. The city is already there.",
+ ];
+ 
+diff --git a/package.json b/package.json
+index aa47bc7..231c0c0 100644
+--- a/package.json
++++ b/package.json
+@@ -9,7 +9,8 @@
+     "build": "next build",
+     "start": "next start -p 3100",
+     "verify:sso": "node --experimental-strip-types scripts/verify-auth-callback.ts",
+-    "verify:kiosk": "node --experimental-strip-types --import ./scripts/kiosk-register.mjs scripts/verify-kiosk.ts"
++    "verify:kiosk": "node --experimental-strip-types --import ./scripts/kiosk-register.mjs scripts/verify-kiosk.ts",
++    "verify:career": "node --experimental-strip-types scripts/verify-career-gate.ts"
+   },
+   "dependencies": {
+     "@chenglou/pretext": "^0.0.8",
+diff --git a/scripts/verify-career-gate.ts b/scripts/verify-career-gate.ts
+new file mode 100644
+index 0000000..4e9004f
+--- /dev/null
++++ b/scripts/verify-career-gate.ts
+@@ -0,0 +1,48 @@
++import assert from "node:assert/strict";
++import { existsSync, readFileSync } from "node:fs";
++import { dirname, join } from "node:path";
++import { fileURLToPath } from "node:url";
++import { CAREER_OWNER_EMAIL, isCareerOwner } from "../lib/career/gate.ts";
++
++const treeRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
++
++function testOwner() {
++  assert.equal(CAREER_OWNER_EMAIL, "yying2010@gmail.com");
++  assert.equal(isCareerOwner("yying2010@gmail.com"), true);
++  assert.equal(isCareerOwner(" YYING2010@Gmail.com "), true);
++  assert.equal(isCareerOwner("yok@dseek.ai"), false);
++  assert.equal(isCareerOwner(""), false);
++  assert.equal(isCareerOwner(null), false);
++}
++
++function testProfileSource() {
++  const profile = readFileSync(join(treeRoot, "lib/career/profile.ts"), "utf8");
++  assert.doesNotMatch(profile, /Yunrui|Ruitian/i);
++  assert.match(profile, /IM \/ Director \/ OMO \/ RO/);
++  assert.match(profile, /Founder & Executive Director/);
++  assert.match(profile, /2025-09/);
++  const hunt = readFileSync(join(treeRoot, "lib/career/hunt.ts"), "utf8");
++  assert.match(hunt, /export type CareerPane/);
++  assert.match(hunt, /applied/);
++}
++
++function testBuiltPage() {
++  const out = join(process.cwd(), "out");
++  const candidates = [join(out, "career.html"), join(out, "career/index.html")];
++  const page = candidates.find((file) => existsSync(file));
++  assert.ok(page, "static export must include /career");
++  const html = readFileSync(page, "utf8");
++  assert.doesNotMatch(html, /r-4680797737198275177/);
++  assert.doesNotMatch(html, /Yunrui|Ruitian/i);
++  assert.match(html, /Continue with Google|Private desk|Checking the door|Private/i);
++  assert.doesNotMatch(html, /China top-15|offshore hedge/i);
++}
++
++function main() {
++  testOwner();
++  testProfileSource();
++  if (existsSync(join(process.cwd(), "out"))) testBuiltPage();
++  console.log("verify-career-gate: ok");
++}
++
++main();
+-- 
+2.43.0
+
+
+From 2b6f3ebf93c25d37b021e95c17b14c6d8fb6a60b Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Wed, 9 Sep 2026 19:11:23 +0000
+Subject: [PATCH 2/5] Refresh the hunt field: FWD venture scouting and HKPC AI
+ governance.
+
+Official Workday JR-0027501 and HKPC Phenom 1366848966. Skip OmniClear IT director and ED after isolated JDs.
+---
+ lib/career/roles.ts | 157 ++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 145 insertions(+), 12 deletions(-)
+
+diff --git a/lib/career/roles.ts b/lib/career/roles.ts
+index f99fe82..866122e 100644
+--- a/lib/career/roles.ts
++++ b/lib/career/roles.ts
+@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
+ import { isOpen, msUntil, urgency } from "./clock";
+ 
+ export const snapshot: CareerSnapshot = {
+-  updatedAt: "2026-09-09T18:30:00Z",
++  updatedAt: "2026-09-09T19:12:00Z",
+   thesis:
+     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
+   thesisZh:
+@@ -36,7 +36,33 @@ export const roles: CareerRole[] = [
+       apply: "Portal first. Job ID 5166696c-9849-4733-aba5-5c144514d716. Confirm Hong Kong seat.",
+       draft: "r-4680797737198275177",
+       addendum: "LinkedIn note to LIN Lin after portal: r6795721307197991422",
+-      caution: "Do not email guessed hr@meitu.com.",
++      caution: "Do not email guessed hr@meitu.com. Official Visa Senior Director Innovation & Partnerships REF083278W is B162 after this if partnerships is the want.",
++    },
++  },
++  {
++    id: "B162",
++    rank: 4,
++    title: "Senior Director, Innovation and Strategic Partnerships",
++    org: "Visa",
++    location: "Hong Kong",
++    href: "https://visa.wd5.myworkdayjobs.com/Visa/job/HK---Hong-Kong-China/Senior-Director--Innovation-and-Strategic-Partnerships--Hong-Kong_REF083278W",
++    closeNote: "Workday Visa tenant · canApply true · posted 30+ days · no endDate",
++    tier: "B",
++    bands: ["cvc", "capital", "stretch"],
++    status: "live",
++    pay: 5,
++    security: 4,
++    reputation: 5,
++    balance: 3,
++    fit: 3,
++    rhyme: "Hong Kong innovation partnerships next to live products. After Meitu. Fifteen years and fluent Cantonese are stretches — do not invent either.",
++    rhymeZh: "香港创新与生态合作。美图之后。十五年与粤语都是拉伸 —— 不要编。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "Official Workday visa.wd5 /Visa REF083278W. HK - Hong Kong, China. canApply true.",
++      draft: "r-2983781475055829866",
++      caution: "15+ years. Fluent English, Cantonese and Mandarin on JD — do not claim Cantonese. Skip Director Client Consulting CMS/Stablecoin/AI REF083051W (consulting origination). Skip Director FP&A REF085112W.",
+     },
+   },
+   {
+@@ -164,7 +190,8 @@ export const roles: CareerRole[] = [
+     portalOnly: true,
+     desk: {
+       apply: "https://erecruit.hkma.gov.hk/",
+-      caution: "Skip OmniClear Director (IT & System Development) vs this product seat.",
++      caution:
++        "Skip OmniClear Director (IT & System Development) recruit-20260828-5 (12 Sep): 8 years IT leadership + 3 years custody/fund admin, CS degree, Cantonese, SWIFT/SQL — A0c. Skip Executive Director (IT & System Development) recruit-20260904-3 (19 Sep): 10 years IT architecture, mainframe-to-modular, post-trade, Cantonese — A0d. Product Development stays the OmniClear seat.",
+     },
+   },
+   {
+@@ -342,6 +369,34 @@ export const roles: CareerRole[] = [
+       caution: "Do not email hr@hkstp.org. Cantonese on JD — do not claim. Do not invent 15 AI/DS years.",
+     },
+   },
++  {
++    id: "A35",
++    rank: 19,
++    title: "Head, Cybersecurity and AI Governance",
++    titleZh: "网络安全与人工智能治理主管",
++    org: "Hong Kong Productivity Council",
++    location: "Hong Kong",
++    href: "https://careers.hkpc.org/job/Head%2C-Cybersecurity-and-AI-Governance/1366848966/",
++    closeNote: "Phenom 1366848966 · Ref DTD/11055 · posted 3 Sep 2026 · apply in 2 weeks then until filled · 12–15-year cyber stretch",
++    tier: "A",
++    bands: ["institutions", "stretch"],
++    status: "live",
++    pay: 3,
++    security: 5,
++    reputation: 4,
++    balance: 4,
++    fit: 2,
++    rhyme: "Statutory AI trust next to HKCERT. Flexi-work. Governance, not a live product or CVC seat. After HKSTP AI director only if public AI security is the want.",
++    rhymeZh: "法定机构的 AI 信任，贴着香港电脑保安事故协调中心。弹性工时。治理，不是已上线产品或 CVC。只若公共 AI 安全是想要的，才在科学园 AI 总监之后。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "HKPC e-Recruitment careers.hkpc.org Phenom 1366848966. Digital Trust and AI Transformation Division. Flexi-work hour on JD.",
++      draft: "r7302180608840283025",
++      caution:
++        "12–15 years cybersecurity / digital risk / AI governance including 5 years leadership. Do not invent CISSP/CISM/ISO 42001. Not an AI-native builder desk. Skip HKPC Senior Consultant Cyber Security vs this Head seat. Skip FWD Director GenAI Digital Delivery R-0022016 (15-year SWE architecture) vs HSBC B4 / MS B34.",
++    },
++  },
+   {
+     id: "A31",
+     rank: 15,
+@@ -366,7 +421,7 @@ export const roles: CareerRole[] = [
+     desk: {
+       apply: "jobs1.cityu.edu.hk NACAD Apply Now. Ref R/305/26. LinkedIn 4463824877 is a mirror.",
+       draft: "r981486238148765924",
+-      caution: "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk.",
++      caution: "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk. Skip HKU CIO & University Librarian 533668 (Korn Ferry HKU-CIO@kornferry.com, dual librarian desk) vs this alumni CDTO.",
+     },
+   },
+   {
+@@ -508,7 +563,7 @@ export const roles: CareerRole[] = [
+     reputation: 5,
+     balance: 3,
+     fit: 4,
+-    rhyme: "Bank AI that has to run. First HSBC gravity well — then commercialization, then currencies.",
++    rhyme: "Bank AI that has to run. First HSBC gravity well — then digital platforms, then IWPB commercialization.",
+     rhymeZh: "银行里必须能跑的 AI。汇丰第一口井 —— 再商业化，再货币。",
+     desk: { apply: "HSBC Apply Now. Still live 9 Sep." },
+   },
+@@ -535,7 +590,7 @@ export const roles: CareerRole[] = [
+     desk: {
+       apply: "HSBC Apply. After B4. GCB 4. 8–12 years management consulting / enterprise strategy / business architecture — do not invent.",
+       draft: "r1038150271801325589",
+-      caution: "Skip Senior Strategic Planner 1367731657 (cost/FTE). Skip Sr AD 1370245557 (GPS architecture). Skip Treasury BM 1370434357. Skip Alts Business Architect 1369577157 vs B154.",
++      caution: "Skip Senior Strategic Planner 1367731657 (cost/FTE). Skip Sr AD 1370245557 (GPS architecture). Skip Treasury BM 1370434357. Skip Alts Business Architect 1369577157 vs B154. Sibling IWPB AI/ML commercialization is B146.",
+     },
+   },
+   {
+@@ -558,7 +613,12 @@ export const roles: CareerRole[] = [
+     rhyme: "Wealth AI commercialization. After the solution lead. Hands-on analytics bar is a stretch.",
+     rhymeZh: "财富 AI 商业化。方案负责人之后。动手分析门槛是拉伸。",
+     stretch: true,
+-    desk: { apply: "After B4 then this then B138.", draft: "r-4207723545408746455" },
++    desk: {
++      apply: "HSBC Apply 1359802857. After B4. GCB 4. Rechecked live validThrough Sat 19 Sep 16:00 UTC.",
++      draft: "r-2204173744577221507",
++      addendum: "Earlier pack r-4207723545408746455.",
++      caution: "Minimum 12 years hands-on analytics — do not invent. Same close clock as B146's week-end with B138 Fri 18 Sep. Do not spray B144 (closes Sat 12) unless CE-office growth is also the want.",
++    },
+   },
+   {
+     id: "B154",
+@@ -700,7 +760,7 @@ export const roles: CareerRole[] = [
+       apply: "Official Workday External PT-JR037195. canApply true. Hong Kong. Posted 30+ days.",
+       draft: "r2694556748870183470",
+       addendum: "r3980890194948961269",
+-      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years.",
++      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years. Skip Applied AI Engineer VP IST PT-JR043455 vs this ED lead — do not spray both.",
+     },
+   },
+   {
+@@ -723,6 +783,33 @@ export const roles: CareerRole[] = [
+     rhymeZh: "平台 CVC。组合是手艺。中资背景，香港台面。",
+     desk: { apply: "Tencent career postId 2089180506259374080.", draft: "r-2146671588397327289" },
+   },
++  {
++    id: "B163",
++    rank: 16,
++    title: "AVP, Health Innovation & Venture Scouting Lead",
++    org: "FWD Group",
++    location: "Taikoo Shing (Group Office), Hong Kong",
++    href: "https://fwd.wd3.myworkdayjobs.com/FWDcareersite/job/Hong-Kong---Taikoo-Shing-Group-Office/Assistant-Vice-President--Health-Innovation---Venture-Scouting-Lead_JR-0027501",
++    closeNote: "Workday FWDcareersite JR-0027501 · canApply true · posted 30+ days · no endDate",
++    tier: "B",
++    bands: ["cvc", "capital", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 3,
++    reputation: 4,
++    balance: 3,
++    fit: 4,
++    rhyme: "Listed-insurer venture scouting next to AI-enabled health. Angel-adjacent. Health-tech years are a stretch. After Meitu if the scouting desk is the want.",
++    rhymeZh: "上市保险公司的风投扫描，贴着带 AI 的健康。贴近天使。健康科技年资是拉伸。美图之后，若扫描席是想要的。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "Official Workday fwd.wd3 FWDcareersite JR-0027501. Hong Kong - Taikoo Shing (Group Office). canApply true.",
++      draft: "r-5576916900423828272",
++      caution:
++        "Minimum 8 years health technology / insurtech / digital health / innovation or venture partnerships — do not invent a health-tech decade. LinkedIn 4451617224 is a mirror. Skip Director, GenAI Digital Delivery R-0022016 (15+ years SWE/architecture, CS degree) vs B4/B34. Skip OCBC VP Head of Digital Wealth & Payments until an official careers URL exists (LinkedIn-only 4460947342). Skip RGA Executive Director Digital Product Solutions J27314 — official careers: no longer posted.",
++    },
++  },
+   {
+     id: "B36",
+     rank: 17,
+@@ -743,7 +830,7 @@ export const roles: CareerRole[] = [
+     rhyme: "Asia AI strategy in a life-company. Then digitization (B100), then optional manager (B35).",
+     rhymeZh: "寿险公司的亚洲 AI 策略。然后数字化（B100），再可选经理（B35）。",
+     desk: {
+-      apply: "Tenant manulife.wd3.myworkdayjobs.com/MFCJH_Jobs. Cover r5801903241139313616.",
++      apply: "Tenant manulife.wd3.myworkdayjobs.com/MFCJH_Jobs. Cover r5801903241139313616. Rechecked canApply true, endDate 2026-09-30.",
+       draft: "r5801903241139313616",
+       addendum: "r4654668089183427838",
+     },
+@@ -791,10 +878,12 @@ export const roles: CareerRole[] = [
+     reputation: 5,
+     balance: 3,
+     fit: 3,
+-    rhyme: "AM-platform product owner for equity and fixed income. After multi-asset. Fund craft, not AI-native building.",
+-    rhymeZh: "股债平台产品负责人。先多元资产。基金手艺，不是原生 AI 建造。",
++    rhyme: "AM-platform product owner for fixed income. After multi-asset. Fund craft, not AI-native building. London Equity J70839 is a different seat — skip it.",
++    rhymeZh: "固收平台产品负责人。先多元资产。基金手艺，不是原生 AI 建造。伦敦股权席不要投。",
+     desk: {
+       apply: "Workday 001 J70844. Hong-Kong-Office-New. After B19 only if the FI platform seat is the one you want.",
++      draft: "r7682432615610235067",
++      caution: "Do not spray J69405 and J70844. Skip London Equity J70839 (Cannon Street, close 25 Sep).",
+     },
+   },
+   {
+@@ -840,7 +929,7 @@ export const roles: CareerRole[] = [
+     desk: {
+       apply: "Workday External JR-68436-1. Path Hong-Kong-HK-AIA-Group-Office. AFTER B9b, before B117.",
+       draft: "r-1064563125725395723",
+-      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering.",
++      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering. Skip JR-68841 People Digital (Digital HR). Skip JR-67573-1 Data Analytics and AI (DS delivery). Skip JR-68248 Agency Digital Principal (Cantonese). Skip JR-69776-1 Customer Digital BD (wellness, Cantonese).",
+     },
+   },
+   {
+@@ -1141,6 +1230,50 @@ export const roles: CareerRole[] = [
+       caution: "Do not guess HR.",
+     },
+   },
++  {
++    id: "A0c",
++    rank: 99,
++    title: "Director (IT & System Development)",
++    org: "HKMA / CMU OmniClear",
++    location: "Hong Kong",
++    href: "https://www.hkma.gov.hk/eng/about-us/join-us/current-vacancies/recruit-20260828-5/",
++    closeAt: "2026-09-12T23:59:00+08:00",
++    closeNote: "Sat 12 Sep 2026 · isolated official JD",
++    tier: "A",
++    bands: ["institutions", "stretch"],
++    status: "skip",
++    pay: 4,
++    security: 5,
++    reputation: 5,
++    balance: 4,
++    fit: 1,
++    rhyme: "Custody-platform IT director. Not the product seat.",
++    rhymeZh: "托管平台 IT 总监。不是产品席。",
++    skipWhy:
++      "Official JD: 8 years IT leadership including 3 years custody / fund administration / asset servicing; CS/IT degree; SWIFT/FIX/ISO 20022; SQL + Python/C#/Java; English + Chinese including Cantonese and Putonghua. Keep A0b Director, Product Development.",
++  },
++  {
++    id: "A0d",
++    rank: 99,
++    title: "Executive Director (IT & System Development)",
++    org: "HKMA / CMU OmniClear",
++    location: "Hong Kong",
++    href: "https://www.hkma.gov.hk/eng/about-us/join-us/current-vacancies/recruit-20260904-3/",
++    closeAt: "2026-09-19T23:59:00+08:00",
++    closeNote: "Fri 19 Sep 2026 · isolated official JD",
++    tier: "A",
++    bands: ["institutions", "stretch"],
++    status: "skip",
++    pay: 5,
++    security: 5,
++    reputation: 5,
++    balance: 3,
++    fit: 1,
++    rhyme: "CTO-class FMI architecture. AI is a line on innovation, not the job.",
++    rhymeZh: "金融基建的 CTO 级架构。AI 只是创新里的一行，不是这份工作。",
++    skipWhy:
++      "Official JD: 10 years IT leadership owning architectures and enterprise services; in-house team build; mainframe-to-modular; post-trade/custody domain; SWIFT and ICSD connectivity; Cantonese and Putonghua. Higher than Director IT. Keep A0b.",
++  },
+ ];
+ 
+ export type FieldFilter = "all" | "today" | "institutions" | "capital" | "cvc" | "stretch";
+-- 
+2.43.0
+
+
+From a668635fe8ab3bff670a9f85ec7083873b6754a0 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Wed, 9 Sep 2026 19:14:34 +0000
+Subject: [PATCH 3/5] Rank FWD Group Digital Platforms after venture scouting.
+
+Official Workday JR-0023912. Do not spray both FWD seats. Skip Head of IM.
+---
+ lib/career/roles.ts | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/lib/career/roles.ts b/lib/career/roles.ts
+index 866122e..60e0bef 100644
+--- a/lib/career/roles.ts
++++ b/lib/career/roles.ts
+@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
+ import { isOpen, msUntil, urgency } from "./clock";
+ 
+ export const snapshot: CareerSnapshot = {
+-  updatedAt: "2026-09-09T19:12:00Z",
++  updatedAt: "2026-09-09T19:16:00Z",
+   thesis:
+     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
+   thesisZh:
+@@ -807,7 +807,34 @@ export const roles: CareerRole[] = [
+       apply: "Official Workday fwd.wd3 FWDcareersite JR-0027501. Hong Kong - Taikoo Shing (Group Office). canApply true.",
+       draft: "r-5576916900423828272",
+       caution:
+-        "Minimum 8 years health technology / insurtech / digital health / innovation or venture partnerships — do not invent a health-tech decade. LinkedIn 4451617224 is a mirror. Skip Director, GenAI Digital Delivery R-0022016 (15+ years SWE/architecture, CS degree) vs B4/B34. Skip OCBC VP Head of Digital Wealth & Payments until an official careers URL exists (LinkedIn-only 4460947342). Skip RGA Executive Director Digital Product Solutions J27314 — official careers: no longer posted.",
++        "Minimum 8 years health technology / insurtech / digital health / innovation or venture partnerships — do not invent a health-tech decade. LinkedIn 4451617224 is a mirror. Sibling Group Digital Platforms is B164 — do not spray both. Skip Director, GenAI Digital Delivery R-0022016 (15+ years SWE/architecture, CS degree) vs B4/B34. Skip Head of Investment Management JR-0027167 (15-year insurance AM / CFA). Skip OCBC VP Head of Digital Wealth & Payments until an official careers URL exists (LinkedIn-only 4460947342). Skip RGA Executive Director Digital Product Solutions J27314 — official careers: no longer posted.",
++    },
++  },
++  {
++    id: "B164",
++    rank: 18,
++    title: "Director, Group Digital Platforms",
++    org: "FWD Group",
++    location: "Taikoo Shing (Group Office), Hong Kong",
++    href: "https://fwd.wd3.myworkdayjobs.com/FWDcareersite/job/Hong-Kong---Taikoo-Shing-Group-Office/Director--Product-Management_JR-0023912",
++    closeNote: "Workday FWDcareersite JR-0023912 · canApply true · posted 30+ days · slug Director--Product-Management",
++    tier: "B",
++    bands: ["capital", "stretch"],
++    status: "live",
++    pay: 4,
++    security: 3,
++    reputation: 4,
++    balance: 3,
++    fit: 3,
++    rhyme: "Regional digital product platform for distribution. After venture scouting. Ten-year insurtech and seven-year mobile are stretches.",
++    rhymeZh: "区域数字产品平台，给分销用。先风投扫描。十年保险科技与七年移动是拉伸。",
++    stretch: true,
++    portalOnly: true,
++    desk: {
++      apply: "Official Workday JR-0023912. Title Director, Group Digital Platforms. Path Director--Product-Management. AFTER B163. Do not spray both FWD seats.",
++      draft: "r4900752038167597996",
++      caution:
++        "10+ years e-commerce/InsurTech-Fintech and 7+ years mobile + Agile product. Do not invent those years. Skip Head of Investment Management JR-0027167 vs this product seat.",
+     },
+   },
+   {
+-- 
+2.43.0
+
+
+From 6cf2f35e5a4e0864f3f8887171a24ae4131c5054 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Wed, 9 Sep 2026 19:17:46 +0000
+Subject: [PATCH 4/5] Rank Manulife digitization director and AI adoption
+ manager after official Workday.
+
+B100 after B36. Optional B35. Skip BOCHK 500080 (four-year manager).
+---
+ lib/career/roles.ts | 63 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 59 insertions(+), 4 deletions(-)
+
+diff --git a/lib/career/roles.ts b/lib/career/roles.ts
+index 60e0bef..83d53b0 100644
+--- a/lib/career/roles.ts
++++ b/lib/career/roles.ts
+@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
+ import { isOpen, msUntil, urgency } from "./clock";
+ 
+ export const snapshot: CareerSnapshot = {
+-  updatedAt: "2026-09-09T19:16:00Z",
++  updatedAt: "2026-09-09T19:20:00Z",
+   thesis:
+     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
+   thesisZh:
+@@ -860,6 +860,58 @@ export const roles: CareerRole[] = [
+       apply: "Tenant manulife.wd3.myworkdayjobs.com/MFCJH_Jobs. Cover r5801903241139313616. Rechecked canApply true, endDate 2026-09-30.",
+       draft: "r5801903241139313616",
+       addendum: "r4654668089183427838",
++      caution: "Then B100 digitization. Optional B35 AI Adoption Manager. Do not spray all three.",
++    },
++  },
++  {
++    id: "B100",
++    rank: 18,
++    title: "Director, Digitization & Automation, GWAM & GA Asia Operations",
++    org: "Manulife",
++    location: "Hong Kong",
++    href: "https://manulife.wd3.myworkdayjobs.com/MFCJH_Jobs/job/Hong-Kong/Director--Digitization---Automation--GWAM---GA-Asia-Operations_JR26031019-1",
++    closeAt: "2026-12-31T23:59:00+08:00",
++    closeNote: "Workday canApply true · endDate 31 Dec 2026 · AFTER B36",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 4,
++    security: 4,
++    reputation: 4,
++    balance: 3,
++    fit: 4,
++    rhyme: "Asset-management operations with automation and AI. After the Asia AI strategy director. Microsoft stack on the JD is a tool, not a claim.",
++    rhymeZh: "资管运营，带着自动化与 AI。先亚洲 AI 策略总监。招聘启事上的微软栈是工具，不要当成声称。",
++    portalOnly: true,
++    desk: {
++      apply: "Workday MFCJH_Jobs JR26031019-1. Hong Kong. AFTER B36. Do not spray B35.",
++      draft: "r-2420965189264840193",
++      caution: "No Cantonese on JD. Do not invent Power Platform years. Skip Manager/SM AI JR26070767 vs B36. Skip Senior AI Developer / ML Engineer vs this director seat.",
++    },
++  },
++  {
++    id: "B35",
++    rank: 28,
++    title: "AI Adoption Manager, Asia",
++    org: "Manulife",
++    location: "Hong Kong",
++    href: "https://manulife.wd3.myworkdayjobs.com/MFCJH_Jobs/job/Hong-Kong/AI-Adoption-Manager--Asia_JR26060321-1",
++    closeAt: "2026-09-30T23:59:00+08:00",
++    closeNote: "Workday canApply true · endDate 30 Sep 2026 · manager step-down after B36",
++    tier: "B",
++    bands: ["capital"],
++    status: "live",
++    pay: 3,
++    security: 4,
++    reputation: 4,
++    balance: 3,
++    fit: 3,
++    rhyme: "Copilot enablement for Asia staff. After the director seats only if a manager path is the want.",
++    rhymeZh: "亚洲员工的 Copilot 采用。只若要经理路径，才在总监席之后。",
++    desk: {
++      apply: "Workday JR26060321-1. AFTER B36 then B100. Do not spray with the director seats.",
++      draft: "r-2416333065168456684",
++      caution: "5+ years change management. Reports to AI Change Enablement Lead. Not a high-pay director desk.",
+     },
+   },
+   {
+@@ -1208,9 +1260,12 @@ export const roles: CareerRole[] = [
+     reputation: 4,
+     balance: 3,
+     fit: 4,
+-    rhyme: "Bank innovation with a product-management name. Then digital strategy 500080.",
+-    rhymeZh: "银行创新，名字叫产品管理。然后数字策略 500080。",
+-    desk: { apply: "PageUp 500073 still Apply 9 Sep. Then 500080." },
++    rhyme: "Bank innovation with a product-management name. Skip the 4-year digital-strategy manager beside it.",
++    rhymeZh: "银行创新，名字叫产品管理。旁边那条四年数字策略经理不要投。",
++    desk: {
++      apply: "PageUp 500073 still Apply 9 Sep.",
++      caution: "Skip Digital Strategy and Transformation Manager 500080 — official JD is 4 years, close 30 Nov 2026, Putonghua. Too junior vs this innovation seat.",
++    },
+   },
+   {
+     id: "B40b",
+-- 
+2.43.0
+
+
+From 61b4374ab068e16071a618314ead6aef4fa592ee Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Wed, 9 Sep 2026 19:20:30 +0000
+Subject: [PATCH 5/5] Skip Blackstone BXMA Asia VP after official Workday
+ isolation.
+
+Seven to ten years Asia hedge-fund manager selection. Not an AI-native seat.
+---
+ lib/career/roles.ts | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/lib/career/roles.ts b/lib/career/roles.ts
+index 83d53b0..b28180f 100644
+--- a/lib/career/roles.ts
++++ b/lib/career/roles.ts
+@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
+ import { isOpen, msUntil, urgency } from "./clock";
+ 
+ export const snapshot: CareerSnapshot = {
+-  updatedAt: "2026-09-09T19:20:00Z",
++  updatedAt: "2026-09-09T19:22:00Z",
+   thesis:
+     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
+   thesisZh:
+@@ -1312,6 +1312,27 @@ export const roles: CareerRole[] = [
+       caution: "Do not guess HR.",
+     },
+   },
++  {
++    id: "B165",
++    rank: 99,
++    title: "Vice President, Blackstone Multi-Asset Investing (BXMA) Asia",
++    org: "Blackstone",
++    location: "Hong Kong",
++    href: "https://blackstone.wd1.myworkdayjobs.com/en-US/Blackstone_Careers/job/Hong-Kong/Blackstone-Multi-Asset-Investing--BXMA----Asia--Vice-President_45356",
++    closeNote: "Workday 45356 · canApply true · posted 2 days · Absolute Return FoF",
++    tier: "cvc",
++    bands: ["capital", "stretch"],
++    status: "skip",
++    pay: 5,
++    security: 3,
++    reputation: 5,
++    balance: 2,
++    fit: 2,
++    rhyme: "Hedge-fund allocator, not an AI product or CVC seat.",
++    rhymeZh: "对冲基金配置，不是 AI 产品或 CVC 席。",
++    skipWhy:
++      "Official JD: 7–10+ years hedge fund industry, preferably Asia manager selection. Absolute Return LP investments. Fluent English and Mandarin. Not AI-native building. Skip vs Meitu B71 and Fidelity B19. Skip Talent Acquisition 45015. Skip Singapore PE IR Product 45127 vs HK seat.",
++  },
+   {
+     id: "A0c",
+     rank: 99,
+-- 
+2.43.0
+
