@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T22:55:00Z",
+  updatedAt: "2026-09-09T23:05:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -455,7 +455,7 @@ export const roles: CareerRole[] = [
       apply: "jobs1.cityu.edu.hk NACAD Apply Now button on Chief Digital and Technology Officer. Official JD uad-r30526. LinkedIn 4463824877 is a mirror.",
       draft: "r981486238148765924",
       caution:
-        "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk. Skip CityU Post-Investment Manager — still absent from the 102-row NACAD dump 9 Sep 21:00 UTC. Skip HKU CIO & University Librarian 533668 vs this alumni CDTO. Skip CUHK EO II Project Manager (Technology Transfer) 2600017B / 2600011K — already closed July 2026.",
+        "Do not email hrojob@cityu.edu.hk. HRO administrative.asp is Incapsula from this desk. Skip CityU Post-Investment Manager — still absent from the 102-row NACAD dump 9 Sep 21:00 UTC. Skip HKU CIO & University Librarian 533668 (A50) — Flora Ng is in seat; jobs.hku.hk listing is stale. Skip CUHK EO II Project Manager (Technology Transfer) 2600017B / 2600011K — already closed July 2026.",
     },
   },
   {
@@ -1082,7 +1082,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "Workday External JR-68436-1. Path Hong-Kong-HK-AIA-Group-Office. AFTER B9b, before B117.",
       draft: "r-1064563125725395723",
-      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering (B188 — canApply true, endDate 12 Sep, 10–15 year SWE stretch). Skip JR-68841 People Digital (Digital HR). Skip JR-67573-1 Data Analytics and AI (DS delivery). Skip JR-68248 Agency Digital Principal (Cantonese). Skip JR-69776-1 Customer Digital BD (wellness, Cantonese).",
+      caution: "Do not use JR-68436 without -1. Skip JR-69111 Digital Engineering (B188 — canApply true, endDate 12 Sep, 10–15 year SWE stretch). Skip JR-68841 People Digital (Digital HR). Skip JR-67573-1 Data Analytics and AI (DS delivery). Skip JR-68141 Innovation Excellence (B213 — SDLC/review governance). Skip JR-68248 Agency Digital Principal (Cantonese). Skip JR-69776-1 Customer Digital BD (wellness, Cantonese).",
     },
   },
   {
@@ -2763,6 +2763,91 @@ export const roles: CareerRole[] = [
     rhymeZh: "亚太工程总监。守住香港产品副总裁。",
     skipWhy:
       "Official Greenhouse 7668862003 is live, but the location is APAC (engineering / agent harness), not a Hong Kong product seat. Master's or PhD and 10+ years AI/ML at globally recognized tech companies. Keep B73 then ONE of B174 / B177 / B187. Skip Singapore VP Product clone 7691998003 vs B177.",
+  },
+  {
+    id: "A50",
+    rank: 99,
+    title: "Chief Information Officer and University Librarian",
+    org: "The University of Hong Kong",
+    location: "Hong Kong",
+    href: "https://jobs.hku.hk/en_US/job/533668/chief-information-officer-and-university-librarian",
+    closeNote: "jobs.hku.hk 533668 still listed 9 Sep 21:55 UTC · Applications close blank · Flora Ng in seat",
+    tier: "A",
+    bands: ["institutions"],
+    status: "skip",
+    pay: 4,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 2,
+    rhyme: "The CIO chair already has a name. Keep the alma-mater CDTO.",
+    rhymeZh: "CIO 席已经有名字。守住母校的数字与技术官。",
+    skipWhy:
+      "Official jobs.hku.hk 533668 is still on the board with Applications close blank, but Flora Ng is Chief Information Officer and University Librarian (its.hku.hk organisation chart and library staff list). Apply to HKU-CIO@kornferry.com would be a stale search. Keep A31 CityU CDTO R/305/26. Skip HKU 533392 Director of Development and Alumni Affairs (fundraising) vs A31. Skip HKU 537197 Assistant Manager Faculty of Engineering vs A31.",
+  },
+  {
+    id: "B213",
+    rank: 99,
+    title: "Associate Director, Innovation Excellence",
+    org: "AIA",
+    location: "Hong Kong, AIA Group Office",
+    href: "https://aia.wd3.myworkdayjobs.com/en-US/External/job/Hong-Kong-HK-AIA-Group-Office/Associate-Director--Innovation-Excellence_JR-68141",
+    closeAt: "2026-09-30T23:59:00+08:00",
+    closeNote: "Official External CXS JR-68141 · canApply true · endDate 2026-09-30 · isolated 9 Sep 21:55 UTC",
+    tier: "B",
+    bands: ["capital"],
+    status: "skip",
+    pay: 3,
+    security: 4,
+    reputation: 4,
+    balance: 3,
+    fit: 2,
+    rhyme: "A review-committee chair for the AI era. Keep the Customer AI product seat.",
+    rhymeZh: "给 AI 时代用的审查委员会席。守住客户 AI 产品席。",
+    skipWhy:
+      "Official CXS canApply true through 30 Sep 2026, Group Office Hong Kong, but the JD is engineering excellence / SDLC review / mobile technical review committee for Group Innovation Office — not LLM-era product building. Keep B9b then B153 then B117. Skip sibling JR-67573-1 Data Analytics and AI (DS delivery) the same week.",
+  },
+  {
+    id: "B214",
+    rank: 99,
+    title: "Data & AI Specialist — Digital Transformation Team (Corporate Banking)",
+    org: "Bank of China (Hong Kong)",
+    location: "Hong Kong",
+    href: "https://careers.pageuppeople.com/798/cw/en/listing/",
+    closeNote: "Official PageUp 798 listing live 9 Sep 21:55 UTC · specialist / engineer family",
+    tier: "B",
+    bands: ["capital"],
+    status: "skip",
+    pay: 3,
+    security: 5,
+    reputation: 4,
+    balance: 3,
+    fit: 2,
+    rhyme: "A specialist desk at a large bank. Keep the HSBC AI solution lead.",
+    rhymeZh: "企业银行数字转型专员。守住汇丰 AI 方案负责人。",
+    skipWhy:
+      "Official PageUp 798 lists Data & AI Specialist (Corporate Banking), Senior Generative AI architectural Engineer, and Senior Customer Analytics & Data Science Manager — IC/engineer seats, not director-class AI product. Keep B4. Skip BOCHK Senior Wealth Management Product Manager (Insurance) vs B69 / B36.",
+  },
+  {
+    id: "A51",
+    rank: 99,
+    title: "Chief Manager (Advanced Manufacturing and New Energy Technology)",
+    org: "OASES",
+    location: "Central, Hong Kong",
+    href: "https://www.oases.gov.hk/en/careers.html",
+    closeNote: "Official careers: no vacancy at the moment · CSB job 50146 closed 13 Aug 2026",
+    tier: "A",
+    bands: ["institutions"],
+    status: "skip",
+    pay: 3,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 3,
+    rhyme: "The strategic-enterprise office has no open door. Keep InvestHK if today is the civic clock.",
+    rhymeZh: "引进重点企业办公室现在没有门。若今天的公共钟有意义，守住投资推广署。",
+    skipWhy:
+      "Official oases.gov.hk/en/careers.html: There is no vacancy at the moment. CSB job 50146 Chief Manager AMNET closed 13 Aug 2026. Ada Lam already Chief Manager (AI and Data Science). About-page “Recruitment in progress” is stale vs the careers page. Keep InvestHK / A30 / A36. Robert Half unnamed USD VC ED Growth Investment AI & Hardware stays after APPROVE only.",
   },
 ];
 
