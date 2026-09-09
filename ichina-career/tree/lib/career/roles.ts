@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T18:20:00Z",
+  updatedAt: "2026-09-09T18:30:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -768,9 +768,33 @@ export const roles: CareerRole[] = [
     rhyme: "Multi-asset product owner. Fund craft, not a chatbot seat.",
     rhymeZh: "多元资产产品负责人。基金手艺，不是聊天机器人席。",
     desk: {
-      apply: "Workday J69405. Pack r7257447307743357641.",
+      apply: "Workday J69405. Pack r7257447307743357641. Rechecked live validThrough 2026-09-30.",
       draft: "r7257447307743357641",
       addendum: "r4621871729198491241",
+      caution: "Sibling Product Owner - Fixed Income J70844 is B160. Do not spray both.",
+    },
+  },
+  {
+    id: "B160",
+    rank: 21,
+    title: "Product Owner - Fixed Income",
+    org: "Fidelity",
+    location: "Hong Kong",
+    href: "https://fil.wd3.myworkdayjobs.com/001/job/Hong-Kong-Office-New/Product-Owner---Fixed-Income_J70844",
+    closeAt: "2026-10-31T23:59:00+08:00",
+    closeNote: "validThrough 31 Oct 2026 · after B19 · do not spray both",
+    tier: "B",
+    bands: ["capital"],
+    status: "live",
+    pay: 4,
+    security: 4,
+    reputation: 5,
+    balance: 3,
+    fit: 3,
+    rhyme: "AM-platform product owner for equity and fixed income. After multi-asset. Fund craft, not AI-native building.",
+    rhymeZh: "股债平台产品负责人。先多元资产。基金手艺，不是原生 AI 建造。",
+    desk: {
+      apply: "Workday 001 J70844. Hong-Kong-Office-New. After B19 only if the FI platform seat is the one you want.",
     },
   },
   {
