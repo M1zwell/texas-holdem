@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T23:50:00Z",
+  updatedAt: "2026-09-09T23:58:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -178,7 +178,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.hkma.gov.hk/eng/about-us/join-us/current-vacancies/recruit-20260828-4/",
     closeAt: "2026-09-12T23:59:00+08:00",
-    closeNote: "Sat 12 Sep 2026 · still on official join-us list recruit-20260828-4 · erecruit.hkma.gov.hk still lists Director, Product Development 12 September 2026 · rechecked 9 Sep 23:03 UTC",
+    closeNote: "Sat 12 Sep 2026 · erecruit E00012281-1 still listed 12 September 2026 · rechecked 9 Sep 23:55 UTC",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -193,7 +193,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "https://erecruit.hkma.gov.hk/",
       caution:
-        "Skip OmniClear Director (IT & System Development) recruit-20260828-5 (12 Sep): 8 years IT leadership + 3 years custody/fund admin, CS degree, Cantonese, SWIFT/SQL — A0c. Skip Executive Director (IT & System Development) recruit-20260904-3 (19 Sep): 10 years IT architecture, mainframe-to-modular, post-trade, Cantonese — A0d. Product Development stays the OmniClear seat.",
+        "Skip OmniClear Director (IT & System Development) recruit-20260828-5 / E00012279-1 (12 Sep) — A0c. Skip Executive Director (IT & System Development) recruit-20260904-3 / E00012285-1 (19 Sep) — A0d. Skip remaining erecruit siblings (B240): Communications E00012286-1, Internal Audit E00012284-1, Asset Servicing Operations E00012280-1, IT IC, Counsel, Manager Trainee. Product Development E00012281-1 stays the OmniClear seat. Portal only.",
     },
   },
   {
@@ -3541,6 +3541,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "园区卖地席。守住人工智能与数据总监。",
     skipWhy:
       "Official careers.hsitp.org search returned 14 jobs this pass. Director, Business Development 1365593466 Apply now through Fri 27 Nov 16:00 UTC, but the JD is sales/leasing for Batch 2/3 land (EOIs, land-lease tenders, lobby market players) — 15 years property development / land administration, not AI product or CVC. Associate Director, Supercomputing Center 1364417766 Apply now through Sat 31 Oct 16:00 UTC is HPC/GPU data-centre P&L vs A37. Senior Manager, Ecosystem Development (Strategic Partnership) 1366912566 Apply now through Fri 27 Nov is internal process / budget / counterparty research, not partnership CVC — keep A1 / A27. Sean Chen is Associate Director, AI & Data Science in seat; do not invent an HSITP Director AI vacancy. Do not email recruit@hsitp.org. Keep A30 / A36 / Meitu B71. HKU jobs.hku.hk recovered HTTP 200 this pass; CIO 533668 still has no Apply now and Flora Ng is in seat (A50); remaining board is academic / IT IC vs A31. ByteDance official HK search API total 0. AIRDI official DPO page still board-only — keep A54 watch. InvestHK / B76 / B69 TODAY clocks still open at 9 Sep 23:42 UTC.",
+  },
+  {
+    id: "B240",
+    rank: 99,
+    title: "Associate Director (Communications) · remaining HKMA erecruit siblings",
+    org: "HKMA / CMU OmniClear",
+    location: "Hong Kong",
+    href: "https://erecruit.hkma.gov.hk/",
+    closeNote: "Official erecruit E00012286-1 close 19 Sep 2026 · comms vs A0b product · isolated 9 Sep 23:55 UTC",
+    tier: "A",
+    bands: ["institutions"],
+    status: "skip",
+    pay: 4,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 1,
+    rhyme: "Comms and audit next to the product chair. Keep OmniClear product.",
+    rhymeZh: "产品席旁边的传播和审计。守住 OmniClear 产品。",
+    skipWhy:
+      "Official erecruit.hkma.gov.hk still lists Director, Product Development E00012281-1 closing 12 September 2026 — keep A0b. Remaining current openings this pass are not the product chair: Associate Director (Communications) E00012286-1 (19 Sep, brand/press/social); Director, Internal Audit E00012284-1 (26 Sep, custody/clearing audit); Associate Director, Asset Servicing Operations E00012280-1 (12 Sep, GSS / post-trade ops); Associate IT Infrastructure Engineer E00012283-1 and Senior Associate Application System Development E00012278-1 (IC); Counsel E00012277-1 (26 Sep); Manager Trainee 2027 Intake E00012276-1 (3 Oct). A0c Director IT E00012279-1 and A0d Executive Director IT E00012285-1 stay skipped. Portal only — do not email a guessed HKMA HR address. Meitu B71 and Tencent B72 remain live. HKEX Group Strategy B170 canApply true.",
   },
 ];
 
