@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T22:10:00Z",
+  updatedAt: "2026-09-09T22:15:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO + Fidelity CXS recovered: r-1325396012783240225",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -832,7 +832,7 @@ export const roles: CareerRole[] = [
       apply: "Official Workday External PT-JR037195. canApply true. Hong Kong. Posted 30+ days.",
       draft: "r2694556748870183470",
       addendum: "r3980890194948961269",
-      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years. Skip Applied AI Engineer VP IST PT-JR043455 vs this ED lead — do not spray both.",
+      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years. Skip Applied AI Engineer VP IST PT-JR043455 vs this ED lead — do not spray both. Skip VP/ED Asia Equity Research Product JR035863 (B220) — research product, not Applied AI.",
     },
   },
   {
@@ -1134,7 +1134,7 @@ export const roles: CareerRole[] = [
       apply: "AIA Workday JR-68056. Path Hong-Kong-HK-AIA-Hong-Kong--Macau. CXS canApply true, no endDate rechecked 9 Sep 21:18 UTC.",
       addendum: "r-1766768802526645146",
       caution:
-        "Skip sibling Customer AI Principal / Senior Manager JR-68058 (B192). Skip Agency Digital & Innovation Principal JR-68248 (B193). Skip JR-69111 engineering-strategy (B188). TDA Transformation AI Product Principal is still absent from official External CXS — keep B176 on watch.",
+        "Skip sibling Customer AI Principal / Senior Manager JR-68058 (B192). Skip Agency Digital & Innovation Principal JR-68248 (B193). Skip JR-69111 engineering-strategy (B188). Skip JR-62927 AI Data Architecture (HK & Macau) vs this product seat. TDA Transformation AI Product Principal is still absent from official External CXS — keep B176 on watch.",
     },
   },
   {
@@ -2127,7 +2127,33 @@ export const roles: CareerRole[] = [
       apply: "Official Ashby 66aedc1a. Confirm Hong Kong on the form. After OKX B73; pick this or Sentient B184 or OKX B177, not all the same week.",
       draft: "r-4142603404519534271",
       caution:
-        "SEA insurtech building ActAI. CEO-of-a-line, not a listed-bank C-suite. Do not invent a consumer-wealth P&L decade. Do not email a guessed Bjak HR inbox. Do not spray sibling CEO AI Finance / Neobank / Stockbroking, Business Unit Head, COO, Head of Strategy and Product 37ebfc14 (B205), or IC PM / PO Technical 2ee74aa2 the same week.",
+        "SEA insurtech building ActAI. CEO-of-a-line, not a listed-bank C-suite. Do not invent a consumer-wealth P&L decade. Do not email a guessed Bjak HR inbox. Do not spray sibling CEO AI Finance / Neobank / Stockbroking, Business Unit Head, COO, Head of Strategy and Product 37ebfc14 (B205) or clone 639c1f04, CTO 8abc814e, Founder's Office Lead 1111c947, PM AI Finance 6a711a8f, or IC PM / PO Technical 2ee74aa2 the same week. Noah Nexus careers@ is B219 watch — after APPROVE only.",
+    },
+  },
+  {
+    id: "B219",
+    rank: 29,
+    title: "Nexus — AI-native wealth OS (EAM / IFA)",
+    org: "Noah Holdings",
+    location: "Hong Kong (Lippo Centre) / Singapore",
+    href: "https://noahnexus.ai/",
+    closeNote: "Official noahnexus.ai careers@noahnexus.ai · general builder inbox · Yuesong Cai is AI Product Lead · watch 9 Sep 22:15 UTC",
+    tier: "cvc",
+    bands: ["cvc", "capital", "stretch"],
+    status: "watch",
+    pay: 4,
+    security: 3,
+    reputation: 4,
+    balance: 3,
+    fit: 4,
+    rhyme: "Listed wealth, second-curve AI OS. The inbox is real. The named product lead already has a name.",
+    rhymeZh: "上市财富的第二曲线 AI 操作系统。邮箱是真的。产品负责人席已经有名字。",
+    stretch: true,
+    desk: {
+      apply: "Watch. After APPROVE only: CV + brief note to careers@noahnexus.ai. Do not treat LinkedIn DM as apply. After B186 / Animoca B178 if EAM AI wealth OS is the want.",
+      draft: "r-2031205850486343406",
+      caution:
+        "No isolated Head of Product JD. Official page lists PMs, engineers, designers, BD. Do not invent a director title. Do not send until APPROVE. Keep B186 if founding the AI-investing line is the want.",
     },
   },
   {
@@ -2960,6 +2986,48 @@ export const roles: CareerRole[] = [
     rhymeZh: "数字产品，椅子在天津。守住九龙的变革席。",
     skipWhy:
       "Official jobs.standardchartered.com 61997 (Digital Banking) and 58588 (Digital Wealth and Fund Journey) are live Apply now, but Job Location is Tianjin. AI Chapter Lead WRB 57368 is Guangzhou. Keep B172 60809 Kowloon City (posting end 30/09/2026) and HSBC B4. ByteDance BytePlus HK sales specialist 7165738508861458718 stays skip — enterprise sales, not director-class AI product.",
+  },
+  {
+    id: "A53",
+    rank: 99,
+    title: "Director / Associate Director of Alumni Affairs",
+    org: "The Hong Kong University of Science and Technology",
+    location: "Clear Water Bay, Hong Kong",
+    href: "https://hkust.wd102.myworkdayjobs.com/HKUST/job/Clear-Water-Bay-Campus-Hong-Kong/Director-of-Alumni-Affairs---Development---Alumni-Office_JR100007-1",
+    closeNote: "Official HKUST CXS JR100007-1 · canApply true · no endDate · isolated 9 Sep 22:15 UTC",
+    tier: "A",
+    bands: ["institutions"],
+    status: "skip",
+    pay: 3,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 1,
+    rhyme: "Alumni fundraising, not knowledge transfer. Keep the innovation-officer chairs.",
+    rhymeZh: "校友筹款，不是知识转移。守住创新官席。",
+    skipWhy:
+      "Official HKUST Workday CXS JR100007-1 canApply true, but it is Development & Alumni Office fundraising. Keep A31 CityU CDTO, A52 HKBU CINO, A4 PolyU entrepreneurship, A21 Director KTEO. Full HKUST staff board still has no remaining KT/entrepreneurship director-class seat this pass.",
+  },
+  {
+    id: "B220",
+    rank: 99,
+    title: "VP / ED, Asia Equity Research Product",
+    org: "Morgan Stanley",
+    location: "Hong Kong",
+    href: "https://ms.wd5.myworkdayjobs.com/External/job/Hong-Kong-Hong-Kong/VP-ED---Asia-Equity-Research-Product_JR035863",
+    closeNote: "Official External CXS JR035863 · Hong Kong · isolated 9 Sep 22:15 UTC",
+    tier: "B",
+    bands: ["capital"],
+    status: "skip",
+    pay: 5,
+    security: 5,
+    reputation: 5,
+    balance: 3,
+    fit: 2,
+    rhyme: "Research product, not Applied AI. Keep the ED lead.",
+    rhymeZh: "研究产品，不是应用 AI。守住执行董事那一席。",
+    skipWhy:
+      "Official ms.wd5 External CXS lists JR035863 in Hong Kong, but it is Asia equity-research product, not LLM-era building. Keep B34 Applied AI Lead ED PT-JR037195. Skip Applied AI Engineer VP IST PT-JR043455 vs B34. Asia WM GenAI Product Owner VP remains aggregator-only this pass.",
   },
 ];
 
