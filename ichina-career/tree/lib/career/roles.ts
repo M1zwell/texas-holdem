@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-10T19:30:00Z",
+  updatedAt: "2026-09-10T19:40:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -10120,6 +10120,48 @@ export const roles: CareerRole[] = [
     rhymeZh: "大学列表仍是那二十二个。母校数字官仍开。主权研究时钟是今天。理大创业与知识转移席恢复 Apply Now。",
     skipWhy:
       "Official jobs.hku.hk/en/listing/ still 22 IDs, same set as A200. CIO 533668 still has no Apply now — Flora Ng in seat (A50). Not Provost/VP Global. Official jobs1.cityu.edu.hk NACAD HTTP 200: A31 uad-r30526 still listed Apply Now (Chief Digital and Technology Officer). Remaining NACAD vs A31. Do not email hrojob@cityu.edu.hk. Official erecruit.hkic.org.hk HTTP 200 — keep A0 Senior Manager (Research & Development) through Fri 11 Sep 17:00 TODAY; remaining Assistant Counsel / Officer PR close 21 Sep vs this R&D seat. Official jobs.polyu.edu.hk A4 260827002 Senior Manager (Entrepreneurship) recovered Apply Now this desk; A21 260827012 Director of Knowledge Transfer and Entrepreneurship still Apply Now — keep A4 then A21 from 15 Sep (not new chairs). Official careers.hkpc.org A35 1366848966 still Apply now after A30. Official careers.hkstp.org remaining A30 1366190466 (still Apply now through Sun 13 Sep 16:00 UTC) then A27 1366195766 (still Apply now). Head of Investment 1358259866 still no longer valid. Official careers.astri.org A22 56190244 still Apply now then A32 53997644 (still Apply now). Official www.investhk.gov.hk/en/careers/ empty Position Title listing — permalink still skip. Simon Tsang is InvestHK CDO in seat. Do not email jasonfong. Official www.sfc.hk / HKMA current-vacancies HTTP 0 this desk — keep A0b from earlier isolation. Official hkmu.taleo.net 26001XV still Career Section Unavailable this desk — keep A33 through 14 Sep from earlier isolation. Official hro.hkbu.edu.hk/career/ HTTP 0 this desk — keep A34 after A4; A52 watch. Official www.hro.cuhk.edu.hk/en-gb/career/career-opportunities recovered HTTP 200 this pass but HTML has no KT / CDTO JD. Kelvin Wong is CUHK KTO Director in seat. Keep A31. Official themillsfabrica.com manager-investment-hk still HTTP 200 — keep A25. EdUHK SSL fail — keep A61. A54 AIRDI DNS fail this desk — watch. JobsDB still Cloudflare HTTP 403 from this desk. B76 Apply now gone (fresh 19:20 UTC). B69 posting end passed. B313 still Apply now through 27 Sep.",
+  },
+  {
+    id: "B408",
+    rank: 99,
+    title: "HashKey remaining 3030001-3830000 empty · AIA remaining SM vs B117 · Yicura remaining biotech 35k vs B71",
+    org: "HashKey Capital / AIA / Yicura / Binance / Point72 / Galaxy",
+    location: "Hong Kong",
+    href: "https://hashkey.capital/careers/details44_3030001.html",
+    closeNote: "Official details44_3030001 empty Portfolio Ventures shell · no Apply · vs HashKey 611 · isolated 10 Sep 19:40 UTC",
+    tier: "B",
+    bands: ["cvc", "capital"],
+    status: "skip",
+    pay: 3,
+    security: 2,
+    reputation: 3,
+    balance: 3,
+    fit: 1,
+    rhyme: "Another empty ventures shell next to Capital. AIA remaining is a senior-manager sibling. Yicura's strategic-investment chair is biotech pre-IPO at thirty-five thousand a month.",
+    rhymeZh: "又一个空的创投壳，贴着 Capital。友邦剩余是高级经理旁支。医克战略投资席是生物科技上市前、月薪三万五。",
+    skipWhy:
+      "Official hashkey.capital remaining vs Capital 611 (details44_611.html still Apply Now, title Product Manager_Hashkey, len ~13979): details44_3030001–3430000 are empty Portfolio Ventures shells with no Apply (sampled 3030001/3032001/3034001/3036001/3040001/3050001/3060001/3070001/3130001/3230001/3330001/3430001 same empty title, len ~20686); 614–3030000 already empty except 692 Singapore Quantitative Developer and 694 HK Crypto Derivatives Structurer already B306. 3430001–3830000 also empty this desk (sampled 3430001/3530001/3630001/3730001/3830001 plus 10k steps from 3030001, same empty title). Next empty check starts at 3830001. Keep 611 or RWA B191 (group.hashkey.com/en/rwa-product-manager/ still HTTP 200), pick one. Official aia.wd3 remaining Customer AI Analytics Product Principal Senior Manager JR-68058 still jobPosting vs B117 JR-68056 (keep from earlier isolation). Official www.yicura.hk/en/careers/ HTTP 200 lists Director of Strategic Investment (biotech pre-IPO / healthcare IB, HK$35,000/month) — not high-pay and not AI-native; do not email hr@yicura.hk until APPROVE vs B71. GratiCore remaining Director of Venture Investment Management / PE Investment Director is recruiter unnamed — after APPROVE only vs B71. Official api.lever.co/v0/postings/binance remaining Hong Kong Head of Financial Systems / Head of Risk NTL vs B73 (count 293). Official boards-api.greenhouse.io/v1/boards/point72 remaining AI Data Scientist 8658618002 / L/S Product Strategist 8530259002 vs B4. Official boards-api.greenhouse.io/v1/boards/galaxydigitalservices remaining HK is OnChain Ops / Production Support / Lending Java vs B73; Head of AI Infrastructure Markets 6111023004 is New York. Official boards-api.greenhouse.io/v1/boards/gitlab remaining has no Hong Kong AI Strategy Director — Principal PM AI Software Factory 8658878002 is Remote Canada/United States. Official boards-api.greenhouse.io/v1/boards/okx count still 345 — B73 7531920003 still listed then ONE of B174 7684888003 / B177 7691999003 / B187 7814862003. Tencent Query cityId=37 Count still 8 — keep B72. Official apply.workable.com/api/v1/widget/accounts/hex-trust jobs [] vs B73. Official api.lever.co/v0/postings/animocabrands Director dc6409fc still listed — keep B178; skip AD sibling df34e394. Official Ashby sentient-foundation Head of Product still isListed — keep B184 (confirm HK). Official Ashby bjakcareer CEO AI Investing 66aedc1a still isListed — keep B186; remaining Head of Strategy clones 37ebfc14 / 639c1f04 / 52279213 vs B186. Official welab.bamboohr.com remaining Head of Sales Management Wealth 921 vs B245 or B258. Official www.fano.ai/careers remaining Business Analyst Hong Kong vs B4; do not email hr@fano.ai. Official apply.careers.hsbc.com Head of HK AI 1369156757 still filled (Sorry). B4 1330173757 still Apply now through Wed 30 Sep 16:00 UTC. B144 1363613557 still Apply now through Sat 12 Sep 16:00 UTC — after B4. B313 53531 still Apply now (keep through 27 Sep from earlier isolation). B69 / B76 still closed. Official hr.meitu.com B71 HTTP 200 job UUID on page — portal first, confirm HK. Official themillsfabrica.com manager-investment-hk still HTTP 200 — keep A25. Official careers.reap.global/jobs/8342685 still HTTP 200 — keep B149 after B73. JobsDB still Cloudflare HTTP 403 from this desk. Official www.investhk.gov.hk/en/careers/ empty Position Title listing — permalink still skip; do not email jasonfong. Airwallex / Circle Greenhouse boards-api HTTP 404 vs B73.",
+  },
+  {
+    id: "A202",
+    rank: 99,
+    title: "HKU listing still 22 · CityU A31 still Apply Now · HKIC keep A0 through Fri 11 Sep 17:00 TODAY · HKBU-Lingnan-HSUHK HTTP 0 keep prior",
+    org: "HKU / CityU / HKIC / HKBU / Lingnan / HSUHK",
+    location: "Hong Kong",
+    href: "https://jobs.hku.hk/en/listing/",
+    closeNote: "Official jobs.hku.hk/en/listing/ still 22 IDs · CityU NACAD A31 still Apply Now · isolated 10 Sep 19:40 UTC",
+    tier: "A",
+    bands: ["institutions"],
+    status: "skip",
+    pay: 2,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 1,
+    rhyme: "The university listing is the same twenty-two. The alma-mater digital officer is still open. The sovereign research clock is today. HKBU, Lingnan and HSUHK listings are 0 this desk.",
+    rhymeZh: "大学列表仍是那二十二个。母校数字官仍开。主权研究时钟是今天。浸会、岭南与恒大列表这台是 0。",
+    skipWhy:
+      "Official jobs.hku.hk/en/listing/ still 22 IDs, same set as A201: 533392, 533668, 537182, 537271, 537277, 537285, 537287, 537293, 537298, 537299, 537302, 537309, 537314, 537315, 537317, 537326, 537327, 537329, 537330, 537331, 537338, 537343. CIO 533668 still has no Apply now — Flora Ng in seat (A50). Not Provost/VP Global. Official jobs1.cityu.edu.hk NACAD HTTP 200: A31 uad-r30526 still listed Apply Now (Chief Digital and Technology Officer). Remaining NACAD vs A31: Data Architect uad-r09124 / AD Research Grants uad-R35125 / AD SDS uad-r12526 / Finance Manager Investment uad-r26826 / CTO uad-r18526 / Technical Officer uad-r00826. Do not email hrojob@cityu.edu.hk. Official erecruit.hkic.org.hk HTTP 200 — keep A0 Senior Manager (Research & Development) through Fri 11 Sep 17:00 TODAY; remaining Assistant Counsel / Officer PR close 21 Sep vs this R&D seat. Official careers.hkpc.org A35 1366848966 still HTTP 200 Apply now after A30. Official careers.hkstp.org remaining A30 1366190466 (still Apply now through Sun 13 Sep 16:00 UTC) then A27 1366195766 (still Apply now). Head of Investment 1358259866 still no longer valid. Official careers.astri.org A22 56190244 still Apply now then A32 53997644 (still Apply now). Official jobs.polyu.edu.hk A4 260827002 and A21 260827012 still Apply Now — keep A4 then A21 from 15 Sep. Official www.investhk.gov.hk/en/careers/ recovered HTTP 200 with an empty Position Title listing — permalink still skip (title 404 Error Page | InvestHK). Simon Tsang is InvestHK CDO in seat. Do not email jasonfong. Official www.sfc.hk / HKMA current-vacancies HTTP 404/0 this desk — keep A0b from earlier isolation. Official hkmu.taleo.net 26001XV still Career Section Unavailable this desk — keep A33 through 14 Sep from earlier isolation. Official hro.hkbu.edu.hk/career/ HTTP 404 this desk — keep A34 after A4; A52 watch. Official www.ln.edu.hk/career/ HTTP 404 this desk — Lingnan remaining academic dean vs A31. Official recruitment.hsu.edu.hk DNS fail this desk — keep A31. Official www.hro.cuhk.edu.hk/en-gb/career/career-opportunities HTTP 200 this pass but HTML has no KT / CDTO JD. Kelvin Wong is CUHK KTO Director in seat. Keep A31. Official themillsfabrica.com manager-investment-hk still HTTP 200 — keep A25. EdUHK SSL fail — keep A61. A54 AIRDI DNS fail this desk — watch. JobsDB still Cloudflare HTTP 403 from this desk. B76 Apply now gone (fresh 19:40 UTC). B69 posting end passed. B313 still Apply now through 27 Sep.",
   },
 ];
 
