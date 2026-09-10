@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-10T00:05:00Z",
+  updatedAt: "2026-09-10T00:12:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829. FWD GenAI delivery / ASTRI RFIC / HKEX depository skip: r-6055028655598897223",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829. FWD GenAI delivery / ASTRI RFIC / HKEX depository skip: r-6055028655598897223. MS PWM CTB PO / JPM FinTech coverage skip: r2278079964706695569",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -835,7 +835,7 @@ export const roles: CareerRole[] = [
       apply: "Official Workday External PT-JR037195. canApply true. Hong Kong. Posted 30+ days.",
       draft: "r2694556748870183470",
       addendum: "r3980890194948961269",
-      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years. Skip Applied AI Engineer VP IST PT-JR043455 vs this ED lead — do not spray both. Skip VP/ED Asia Equity Research Product JR035863 (B220) — research product, not Applied AI. Skip IM Product Development Manager VP JR039202 vs this Applied AI ED.",
+      caution: "12+ years FS tech strategy/PMO/TPM and 5 years VP+ at a global FI. Technical roots in SWE/data/applied AI. Do not invent those years. Skip Applied AI Engineer VP IST PT-JR043455 vs this ED lead — do not spray both. Skip VP/ED Asia Equity Research Product JR035863 (B220) — research product, not Applied AI. Skip IM Product Development Manager VP JR039202 vs this Applied AI ED. Skip PWM Asia Product Owner CTB VP JR025891 (B242) — Client Portfolio Accounting PMO, not Applied AI. Still no Asia WM GenAI Product Owner VP Id.",
     },
   },
   {
@@ -1711,7 +1711,7 @@ export const roles: CareerRole[] = [
     org: "JPMorganChase",
     location: "Kwun Tong, Hong Kong",
     href: "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210739466",
-    closeNote: "Oracle CX 210739466 · ExternalPostedStartDate 18 May 2026 · no endDate · Kwun Tong Quayside",
+    closeNote: "Oracle CX 210739466 still in CX_1001 search · Kwun Tong · rechecked 10 Sep 00:08 UTC",
     tier: "B",
     bands: ["capital", "stretch"],
     status: "live",
@@ -1728,7 +1728,7 @@ export const roles: CareerRole[] = [
       apply: "Official Oracle CX_1001 job/210739466. REST confirms HK. LinkedIn 4405870571 is a mirror.",
       draft: "r7906757809933544180",
       caution:
-        "10+ years payments/banking/treasury + top-tier consulting or internal strategy. Do not invent MBB or a payments decade. Wrong id 210763531 was JS-empty. Skip sibling FIG Sales ED/MD. Skip Payments Industry Solutions VP until official CX.",
+        "10+ years payments/banking/treasury + top-tier consulting or internal strategy. Do not invent MBB or a payments decade. Wrong id 210763531 was JS-empty. Skip sibling FIG Sales ED/MD. Skip Payments Industry Solutions VP until official CX. Skip APAC FinTechs & Digital Assets Sector Lead 210786505 (coverage/origination vs this strategy chair). Skip Head of Hong Kong Client Onboarding WM Ops ED 210750830.",
     },
   },
   {
@@ -3583,6 +3583,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "汇报给在任 VP 的 GenAI 技术栈。守住风投扫描和数字平台席。",
     skipWhy:
       "Official fwd.wd3 FWDcareersite R-0022016 canApply true in Hong Kong - Taikoo Shing (Group Office), but the JD reports to VP, GenAI Digital Delivery and leads senior developers / core GenAI tech-stack architecture / open-source platform integration — engineering delivery, not Health Innovation & Venture Scouting (B163) or Group Digital Platforms product (B164). Singapore Director Data Scientist JR-0027771 and Japan GenAI Digital Delivery JR-0025617 are not Hong Kong product chairs. ASTRI Director, RFS 56549444 Apply now through Wed 2 Jun 16:00 UTC 2027 is mmWave RFIC (24-60 GHz) silicon vs A22 then optional A32. HKEX VP Depository Payment & Transformation R004254 canApply true is DPS post-trade fees/payments transformation vs Group Strategy B170 / ETP B40b. Manulife Manager / Senior Manager, AI JR26070767-1 canApply true through 30 Sep is hands-on ML delivery IC vs B36 then B100 then optional B35. DPO vacancies remain 1823 Customer Service Officer CSB 50261 (close 21 Sep) — keep A54 watch; do not email enquiry@digitalpolicy.gov.hk. Michael Page Head of Product AI & Agent (Web3) JN-062026-7029243 and Randstad AI-native IoT (closed 18 Jul 2026) remain recruiter / unnamed — after APPROVE only. JobsDB still Cloudflare 403. AIA JR-67284 still 0 on External CXS; keep B176 watch. MS External still no Asia WM GenAI Product Owner VP; keep B34. HKBU CINO public search TotalJobsCount 0; keep A52 watch. TODAY InvestHK / B76 / B69 still open at 9 Sep 23:53 UTC. PolyU deans_heads.php HTTP 200 again lists A21 260827012-IE.",
+  },
+  {
+    id: "B242",
+    rank: 99,
+    title: "PWM Asia Product Owner CTB · JPM FinTech coverage",
+    org: "Morgan Stanley / JPMorganChase",
+    location: "Hong Kong",
+    href: "https://ms.wd5.myworkdayjobs.com/External/job/Hong-Kong-Hong-Kong/Asia-Wealth-Management---Product-Owner--Vice-President--Hong-Kong_JR025891",
+    closeNote: "Official External CXS JR025891 canApply true · Client Portfolio Accounting PMO vs B34 · isolated 10 Sep 00:08 UTC",
+    tier: "B",
+    bands: ["capital"],
+    status: "skip",
+    pay: 4,
+    security: 5,
+    reputation: 5,
+    balance: 3,
+    fit: 2,
+    rhyme: "A portfolio-accounting PMO next to the Applied AI lead. Keep the strategy chair.",
+    rhymeZh: "客户组合会计的 PMO，贴着应用 AI 负责人。守住策略席。",
+    skipWhy:
+      "Official ms.wd5 External JR025891 canApply true in Hong Kong, but the JD is Private Wealth Management Asia Product Owner CTB for Client Portfolio Accounting (scope, UAT, client-report platforms, working-group PMO) — not Applied AI. Keep B34 PT-JR037195. Still no Asia WM GenAI Product Owner VP Id. JPM CX_1001 still lists APAC Payments Strategy ED 210739466 (B171). Skip Payments ED APAC FinTechs & Digital Assets Sector Lead 210786505 (Hong Kong listing: FinTech / TP3 / VASP franchise origination — cash, liquidity, FX) and Singapore clone 210786498 vs B171. Skip Head of Hong Kong Client Onboarding WM Ops ED 210750830 vs B171. Tencent Query keyword Hong Kong this pass returned Shenzhen IC only; keep B72 by PostId 2089180506259374080 (still Hong Kong). AIA JR-67284 still 0 on External CXS; keep B176 watch. HKBU CINO 25260577 public search TotalJobsCount 0; keep A52 watch. A34 25260765 still in search. CSC AI Fund and Robert Half ED Growth Investment AI & Hardware remain recruiter / unnamed — after APPROVE only. TODAY InvestHK / B76 / B69 still open at 10 Sep 00:08 UTC. Meitu B71, A30, B4, HKIC A0, DBS B158, HashKey 611 remain live.",
   },
 ];
 
