@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-10T00:18:00Z",
+  updatedAt: "2026-09-10T00:28:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -74,7 +74,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
     closeAt: "2026-09-10T17:00:00+08:00",
-    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 9 Sep 23:42 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
+    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 10 Sep 00:24 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829. FWD GenAI delivery / ASTRI RFIC / HKEX depository skip: r-6055028655598897223. MS PWM CTB PO / JPM FinTech coverage skip: r2278079964706695569. AIA savings-product principal vs B117: r6632748938875272163",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829. FWD GenAI delivery / ASTRI RFIC / HKEX depository skip: r-6055028655598897223. MS PWM CTB PO / JPM FinTech coverage skip: r2278079964706695569. AIA savings-product principal vs B117: r6632748938875272163. Jane Street SP intern / park comms-MedTech / Hang Seng FX: r1256501750730048029",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -100,7 +100,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Digital-Currencies-Hong/1369854357/",
     closeAt: "2026-09-10T16:00:00Z",
-    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 9 Sep 23:38 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
+    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 10 Sep 00:24 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
     tier: "B",
     bands: ["today", "capital"],
     status: "live",
@@ -125,7 +125,7 @@ export const roles: CareerRole[] = [
     location: "Hung Hom, Hong Kong",
     href: "https://sunlife.wd3.myworkdayjobs.com/Experienced-Jobs/job/Hunghom-Kowloon-Hong-Kong/AVP--Agency-Digital-Lead_JR00126149-3",
     closeAt: "2026-09-10T23:59:00+08:00",
-    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS listed Hunghom-Kowloon-Hong-Kong / AVP--Agency-Digital-Lead_JR00126149-3 rechecked 9 Sep 23:38 UTC · canApply true · endDate 11 Sep 2026 · title AVP, Agency Digital Strategy & Development",
+    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS listed Hunghom-Kowloon-Hong-Kong / AVP--Agency-Digital-Lead_JR00126149-3 rechecked 10 Sep 00:24 UTC · canApply true · endDate 11 Sep 2026 · title AVP, Agency Digital Strategy & Development",
     tier: "B",
     bands: ["today", "capital", "stretch"],
     status: "live",
@@ -151,7 +151,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.hkic.org.hk/careers/d1vgj5hkqkfsmy6a0lhsmjpe",
     closeAt: "2026-09-11T17:00:00+08:00",
-    closeNote: "Fri 11 Sep 2026, 5:00 p.m. · portal only · careers page still lists 11-09-2026 · rechecked 9 Sep 23:04 UTC",
+    closeNote: "Fri 11 Sep 2026, 5:00 p.m. · portal only · careers page still lists 11-09-2026 · rechecked 10 Sep 00:24 UTC",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -355,7 +355,7 @@ export const roles: CareerRole[] = [
     location: "Island East, Hong Kong",
     href: "https://careers.hkstp.org/job/Island-East-Director%2C-AI-and-Data-HK-H/1366190466/",
     closeAt: "2026-09-13T16:00:00Z",
-    closeNote: "validThrough Sun 13 Sep 16:00 UTC · Apply now rechecked 9 Sep 23:04 UTC · page says remain open until filled · 15-year stretch · Head of Investment 1358259866 filled (B233) · HSITP land/HPC BD is A58 skip",
+    closeNote: "validThrough Sun 13 Sep 16:00 UTC · Apply now rechecked 10 Sep 00:24 UTC · page says remain open until filled · 15-year stretch · Head of Investment 1358259866 filled (B233) · HSITP land/HPC BD is A58 skip · park comms/MedTech/New Ventures marketing is B244 skip",
     tier: "A",
     bands: ["today", "institutions", "stretch"],
     status: "live",
@@ -371,7 +371,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "HKSTP Apply Now. Phenom 1366190466. After A1 if the director seat is the want.",
       draft: "r4261511564452071214",
-      caution: "Do not email hr@hkstp.org. Cantonese on JD — do not claim. Do not invent 15 AI/DS years. Cyberport Director of Strategic Business Planning is A36 after this if public-mission strategy is the want. Skip HSITP Director BD / AD Supercomputing / SM Ecosystem Partnership (A58). Do not email recruit@hsitp.org.",
+      caution: "Do not email hr@hkstp.org. Cantonese on JD — do not claim. Do not invent 15 AI/DS years. Cyberport Director of Strategic Business Planning is A36 after this if public-mission strategy is the want. Skip HSITP Director BD / AD Supercomputing / SM Ecosystem Partnership (A58). Skip park Head of Corporate Communications 1064992466 / Manager MedTech Cocreate 1363733566 / Senior Manager New Ventures Programmes 1367071866 (B244). Do not email recruit@hsitp.org.",
     },
   },
   {
@@ -3625,6 +3625,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "储蓄产品首席，贴着客户 AI。守住 AI 产品席。",
     skipWhy:
       "Official AIA External CXS JR-67212 canApply true in Hong Kong & Macau, but the JD is Product Development Senior Principal for traditional savings / Investment-Linked / Universal Life (agency channel design, pricing, frontline training) — not Customer AI product. Keep B117 JR-68056. JR-67284 still 0 on External CXS; keep B176 watch. HKBU CX_1 remaining this pass: Director of Internal Audit 25260326; Senior Systems Analyst (Digital Experience Services) 26270184; Digital Experience IC already B239. Keep A34 25260765. CINO 25260577 public search still TotalJobsCount 0 — keep A52 watch. HKEX VP Credit Product Development R003288 still canApply true — 15+ years DCM / credit trading vs B170 / B40b. CUHK KTO Director remains in seat; aggregator EO II Technology Transfer closed 28 Jul 2026. Pictet HK careers page has no isolated JD. Invesco/Eastspring CXS 422 from this desk. Sentient B184 still live on jobs.ashbyhq.com/sentient-foundation (board slug sentient-foundation). Bjak B186 still isListed true. HKMU A33 Taleo shell loaded 10 Sep 00:13 UTC but Job/Unit/Closing Date fields empty without JS — keep 26001XV until 14 Sep. TODAY InvestHK / B76 / B69 still open.",
+  },
+  {
+    id: "B244",
+    rank: 99,
+    title: "Strategy and Product intern · remaining park comms / MedTech / Hang Seng FX",
+    org: "Jane Street / HKSTP / Hang Seng",
+    location: "Hong Kong",
+    href: "https://job-boards.greenhouse.io/janestreet/jobs/8630713002",
+    closeNote: "Official Greenhouse 8630713002 SP Intern · FTE 2028 · park comms 1064992466 through Tue 22 Sep 16:00 UTC · Hang Seng FX 1351674057 Apply now · isolated 10 Sep 00:25 UTC",
+    tier: "B",
+    bands: ["capital", "institutions"],
+    status: "skip",
+    pay: 4,
+    security: 4,
+    reputation: 5,
+    balance: 3,
+    fit: 1,
+    rhyme: "An intern year and a park comms chair. Keep the AI-and-data director and the currency seat.",
+    rhymeZh: "实习年和园区传播席。守住人工智能与数据总监，以及货币席。",
+    skipWhy:
+      "Official Jane Street Greenhouse Strategy and Product 8630713002 Hong Kong is an SP Intern (available to start full-time in 2028), not a director chair. Workplace Services & Experience APAC Lead 8583968002 is facilities / food / front-of-house. Remaining HK board is IC (ML researcher, quant trader, SWE). Point72 remaining HK stays the B236 skip family. Hang Seng Head of Investment FX, Capital Markets 1351674057 Apply now is 5–8 years investment FX product development vs B4 / B76. HKSTP Head of Corporate Communications and Public Affairs 1064992466 Apply now through Tue 22 Sep 16:00 UTC is comms vs A30. Manager, MedTech Cocreate 1363733566 Apply now is 8 years healthcare-technology BD vs A1 / A27. Senior Manager, New Ventures Programmes 1367071866 Apply now through Wed 23 Sep 16:00 UTC is marketing / events / membership conversion supporting Business Development, not an incubator GM — keep A4. HSBC keyword Head of AI remaining this pass is actuarial / PB coach / Hang Seng RM / product specialist / ops / funds commercialization / real-estate principal; keep B4 1330173757 through Wed 30 Sep 16:00 UTC. Circle Greenhouse HK 0; Coinbase HK 0. SenseTime /en/careers 404. CSOP careers 403. ChinaAMC HK career is a JS shell with no isolated JD. Julius Baer Head of Data & AI is in seat. Bjak hyphenated CEO - AI Investing 8f1eb791 is a sibling clone of B186. Cathay Head of Digital Transformation (36-month) and HKPC MAC/11062 remain LinkedIn-only / Incapsula this pass — do not paste LinkedIn as apply. Morgan McKinley Director of AI JN-012026-1994454 remains recruiter / unnamed — after APPROVE only. TODAY InvestHK / B76 / B69 still open at 10 Sep 00:24 UTC. Meitu B71, Tencent B72, HashKey 611, Sentient B184 (Hong Kong still an official applicant location), Bjak B186, PolyU A4 Apply Now, A21 deans_heads 260827012-IE, HKIC A0, A30 remain live. HKBU CINO public search TotalJobsCount 0; keep A52 watch. AIA JR-67284 still 0; keep B176 watch.",
   },
 ];
 
