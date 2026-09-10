@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-10T02:28:00Z",
+  updatedAt: "2026-09-10T02:40:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -74,7 +74,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
     closeAt: "2026-09-10T17:00:00+08:00",
-    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 10 Sep 01:26 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
+    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official page HTTP 200 rechecked 10 Sep 01:29 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · old hyphenated slug 404s · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829. FWD GenAI delivery / ASTRI RFIC / HKEX depository skip: r-6055028655598897223. MS PWM CTB PO / JPM FinTech coverage skip: r2278079964706695569. AIA savings-product principal vs B117: r6632748938875272163. Jane Street SP intern / park comms-MedTech / Hang Seng FX: r1256501750730048029. DBS ED WM Platform rank + IBG CX/EX skip: r-2650724973358359269. HSITP Biobank / HashKey LinkedIn Product Director skip: r-8011039226850807333. WRISE JobsDB COO / HKUST alumni director skip: r1786832558698764720. BlackRock FIG / CHANEL luxury CX / ERB ED skip: r594426625109029664. RGA ED rank + AIA agency/engineering skip: r-2861920923230686960. HKEX IT PMO / Nomura equity strategist skip: r-1082956442513330438. OKX Local Growth / PayerMax LinkedIn skip: r-422844215682063115. Blue Owl Capital Strategies / OKX Wholesale / Manulife Distribution Transformation skip: r-779902812800482800",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829. FWD GenAI delivery / ASTRI RFIC / HKEX depository skip: r-6055028655598897223. MS PWM CTB PO / JPM FinTech coverage skip: r2278079964706695569. AIA savings-product principal vs B117: r6632748938875272163. Jane Street SP intern / park comms-MedTech / Hang Seng FX: r1256501750730048029. DBS ED WM Platform rank + IBG CX/EX skip: r-2650724973358359269. HSITP Biobank / HashKey LinkedIn Product Director skip: r-8011039226850807333. WRISE JobsDB COO / HKUST alumni director skip: r1786832558698764720. BlackRock FIG / CHANEL luxury CX / ERB ED skip: r594426625109029664. RGA ED rank + AIA agency/engineering skip: r-2861920923230686960. HKEX IT PMO / Nomura equity strategist skip: r-1082956442513330438. OKX Local Growth / PayerMax LinkedIn skip: r-422844215682063115. Blue Owl Capital Strategies / OKX Wholesale / Manulife Distribution Transformation skip: r-779902812800482800. CHANEL Digital SM / UOB Singapore Digital Delivery / HKSTP Upskill skip: r6943581150332087252",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -100,7 +100,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Digital-Currencies-Hong/1369854357/",
     closeAt: "2026-09-10T16:00:00Z",
-    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 10 Sep 01:26 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
+    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 10 Sep 01:29 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
     tier: "B",
     bands: ["today", "capital"],
     status: "live",
@@ -125,7 +125,7 @@ export const roles: CareerRole[] = [
     location: "Hung Hom, Hong Kong",
     href: "https://sunlife.wd3.myworkdayjobs.com/Experienced-Jobs/job/Hunghom-Kowloon-Hong-Kong/AVP--Agency-Digital-Lead_JR00126149-3",
     closeAt: "2026-09-10T23:59:00+08:00",
-    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS listed Hunghom-Kowloon-Hong-Kong / AVP--Agency-Digital-Lead_JR00126149-3 rechecked 10 Sep 01:26 UTC · canApply true · endDate 11 Sep 2026 · title AVP, Agency Digital Strategy & Development",
+    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS listed Hunghom-Kowloon-Hong-Kong / AVP--Agency-Digital-Lead_JR00126149-3 rechecked 10 Sep 01:29 UTC · canApply true · CXS total 1 · title AVP, Agency Digital Strategy & Development",
     tier: "B",
     bands: ["today", "capital", "stretch"],
     status: "live",
@@ -151,7 +151,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.hkic.org.hk/careers/d1vgj5hkqkfsmy6a0lhsmjpe",
     closeAt: "2026-09-11T17:00:00+08:00",
-    closeNote: "Fri 11 Sep 2026, 5:00 p.m. · portal only · careers page still lists 11-09-2026 · rechecked 10 Sep 01:26 UTC",
+    closeNote: "Fri 11 Sep 2026, 5:00 p.m. · portal only · careers page still lists 11-09-2026 · rechecked 10 Sep 01:29 UTC",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -355,7 +355,7 @@ export const roles: CareerRole[] = [
     location: "Island East, Hong Kong",
     href: "https://careers.hkstp.org/job/Island-East-Director%2C-AI-and-Data-HK-H/1366190466/",
     closeAt: "2026-09-13T16:00:00Z",
-    closeNote: "validThrough Sun 13 Sep 16:00 UTC · Apply now rechecked 10 Sep 01:26 UTC · page says remain open until filled · 15-year stretch · Head of Investment 1358259866 filled (B233) · HSITP land/HPC BD is A58 skip · park comms/MedTech/New Ventures marketing is B244 skip · HSITP Biobank is B247 skip",
+    closeNote: "validThrough Sun 13 Sep 16:00 UTC · Apply now rechecked 10 Sep 01:29 UTC · page says remain open until filled · 15-year stretch · Head of Investment 1358259866 filled (B233) · HSITP land/HPC BD is A58 skip · park comms/MedTech/New Ventures marketing is B244 skip · HSITP Biobank is B247 skip · SM Upskill Practice 1364341066 is B255 skip",
     tier: "A",
     bands: ["today", "institutions", "stretch"],
     status: "live",
@@ -622,7 +622,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-AI-Solution-Lead-Hong/1330173757/",
     closeAt: "2026-09-30T16:00:00Z",
-    closeNote: "validThrough Wed 30 Sep 16:00 UTC · Apply now rechecked 10 Sep 01:26 UTC · not filled",
+    closeNote: "validThrough Wed 30 Sep 16:00 UTC · Apply now rechecked 10 Sep 01:29 UTC · not filled",
     tier: "B",
     bands: ["capital"],
     status: "live",
@@ -3869,6 +3869,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "配售投关席，贴着 CVC。守住美图席。",
     skipWhy:
       "Official blueowl.wd1 /blueowl R-101470-1 Business Services Platform Capital Strategies Assoc/VP, Hong Kong canApply true is GP Stakes value-creation fundraising / LP IR (3–8 years private markets, placement or IR). Opening copy asks for a fluent Japanese speaker; requirements say Mandarin, Cantonese or Japanese plus English — do not claim Cantonese. Rita Ng and Jeong Kim are APAC Capital Strategy MDs in seat. Sibling R-101921 Institutional Capital, Institutional Sales Greater China – Principal canApply true is coverage sales, not CVC. Keep Meitu B71. Official OKX Greenhouse 7559099003 Head of Wholesale, NEA (VIP) is VIP/wholesale coverage vs B73 — keep B73 then ONE of B174 / B177 / B187 / Sentient B184 / Bjak B186. HSBC Head of HK AI 1369156757, AI Tooling Risk and Control Manager 1368091857, and Senior Manager Future Design ML and AI Standards 1355271257 are official filled — keep B4. Manulife MFCJH JR26070700 Director, Distribution Transformation canApply through 30 Sep is Asia distribution strategy vs B36 AI & Data Strategy; skip Technical Director MarTech JR26061488, Director Asia Operations Excellence JR26070786, and Asia Group Functions Lead Data Engineer JR26081193 the same way. Aggregator Director, Group Functions AI (Asia) has no official MFCJH Id this pass. HKPC Head, AI & Innovation Lab SCD113/25 LinkedIn no longer accepting; Stanley Chow is in seat — keep A35. Bullish Head of Data Platform LinkedIn no longer accepting; Iman Poernomo is in seat (London). Value Partners Head of AIT Zhang Lei and Head of Product YAHUI Li are in seat. JPM AM AI Strategist VP LinkedIn no longer accepting. UBS Head of AI Orchestration Aidan Bonel is in seat. MC Group Head of AI Productivity remains LinkedIn-only 4457415399. TODAY InvestHK / B76 / B69 still open at 10 Sep 01:26 UTC. Meitu B71, B250, B245, B4, A30, HKIC A0 remain live.",
+  },
+  {
+    id: "B255",
+    rank: 99,
+    title: "Senior Manager, Digital and Data Solutions · remaining UOB Singapore Digital Delivery / HKSTP Upskill",
+    org: "CHANEL / UOB / HKSTP / DPO",
+    location: "Hong Kong / Singapore",
+    href: "https://cc.wd3.myworkdayjobs.com/ChanelCareers/job/Hong-Kong-SAR/Senior-Manager---Digital-and-Data-Solutions_JOBREQ00116257",
+    closeNote: "Official cc.wd3 ChanelCareers JOBREQ00116257 canApply true · luxury digital vs B4 · isolated 10 Sep 01:29 UTC",
+    tier: "B",
+    bands: ["capital", "institutions"],
+    status: "skip",
+    pay: 4,
+    security: 4,
+    reputation: 4,
+    balance: 3,
+    fit: 1,
+    rhyme: "A luxury digital chair next to the bank AI seat. Keep B4.",
+    rhymeZh: "奢侈品数字席，贴着银行 AI。守住 B4。",
+    skipWhy:
+      "Official cc.wd3 ChanelCareers JOBREQ00116257 Senior Manager, Digital and Data Solutions canApply true in Hong Kong SAR is HKMO luxury digital/data (WhatsApp/WeChat, clienteling) vs B4 / B249 CHANEL Head of Digital Product Experience JOBREQ00112646. Official uobgroup.wd3 UOBExternal JR74553-1 ED Head of Digital Delivery, GADT canApply true is Singapore Central Region (TMRW / Infinity; ≥500 engineers) — not a Hong Kong chair; keep B4 / B245. HKSTP Phenom Senior Manager, Upskill Practice (Startup growth and scaling) 1364341066 Apply now is 10 years MNC services/product plus startup training vs A30 / A4; skip SM Technical Services 1367039466 / 1366979766, SM Therapeutics 1366216366, SM Partnerships 1366226266, and Assistant Manager Upskill 1366223666 the same way. Keep A30 / A1 / A27. ITC official job_vacancies page: There is no new recruitment at the moment. DPO vacancies remain the 1823 Customer Service Officer family — keep A54 AIRDI watch; do not email enquiry@digitalpolicy.gov.hk. HKU remaining this pass is academic AI / IT IC vs A31. AIA External JR-67284 still 0 hits — keep B176 watch. HKBU CINO 25260577 public search still TotalJobsCount 0 — keep A52 watch. A34 25260765 still listed. CSC / NexusSearch / Robert Half AI-fund / PE Director remain recruiter/unnamed — after APPROVE only. ByteDance FDE Manager BytePlus is engineering vs B4. HashKey Capital 611 still HTTP 200 (B155). FWD B163 JR-0027501 still canApply true. ASTRI A22 Apply now. Citi B6 still Apply. TODAY InvestHK / B76 / B69 still open at 10 Sep 01:29 UTC. Meitu B71, B250, B245, B4, A30, HKIC A0 remain live.",
   },
 ];
 
