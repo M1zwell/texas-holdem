@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-09T23:58:00Z",
+  updatedAt: "2026-09-10T00:05:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829",
+      addendum: "Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829. FWD GenAI delivery / ASTRI RFIC / HKEX depository skip: r-6055028655598897223",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -303,7 +303,7 @@ export const roles: CareerRole[] = [
     location: "Hung Hom, Hong Kong",
     href: "https://jobs.polyu.edu.hk/job_detail.php?job=260827012",
     closeAt: "2026-09-15T00:00:00+08:00",
-    closeNote: "Consideration from 15 Sep 2026 until filled · job_detail Apply Now rechecked 9 Sep 22:40 UTC",
+    closeNote: "Consideration from 15 Sep 2026 until filled · deans_heads.php HTTP 200 again and lists 260827012-IE · job_detail Apply Now rechecked 9 Sep 23:53 UTC",
     tier: "A",
     bands: ["institutions", "stretch"],
     status: "live",
@@ -3104,7 +3104,7 @@ export const roles: CareerRole[] = [
     org: "Hong Kong Artificial Intelligence Research and Development Institute",
     location: "Hong Kong",
     href: "https://www.digitalpolicy.gov.hk/en/our_work/data_governance/policies_standards/hk_ai_research_development_institute/",
-    closeNote: "Board appointed Mar 2026 · operations H2 2026 · no staff JD on DPO vacancies 9 Sep 23:04 UTC · DPO current listing is Customer Service Officer close 21 Sep",
+    closeNote: "Board appointed Mar 2026 · operations H2 2026 · no staff JD · DPO vacancies rechecked 9 Sep 23:53 UTC still 1823 Customer Service Officer CSB 50261 close 21 Sep",
     tier: "A",
     bands: ["institutions", "stretch"],
     status: "watch",
@@ -3562,6 +3562,27 @@ export const roles: CareerRole[] = [
     rhymeZh: "产品席旁边的传播和审计。守住 OmniClear 产品。",
     skipWhy:
       "Official erecruit.hkma.gov.hk still lists Director, Product Development E00012281-1 closing 12 September 2026 — keep A0b. Remaining current openings this pass are not the product chair: Associate Director (Communications) E00012286-1 (19 Sep, brand/press/social); Director, Internal Audit E00012284-1 (26 Sep, custody/clearing audit); Associate Director, Asset Servicing Operations E00012280-1 (12 Sep, GSS / post-trade ops); Associate IT Infrastructure Engineer E00012283-1 and Senior Associate Application System Development E00012278-1 (IC); Counsel E00012277-1 (26 Sep); Manager Trainee 2027 Intake E00012276-1 (3 Oct). A0c Director IT E00012279-1 and A0d Executive Director IT E00012285-1 stay skipped. Portal only — do not email a guessed HKMA HR address. Meitu B71 and Tencent B72 remain live. HKEX Group Strategy B170 canApply true.",
+  },
+  {
+    id: "B241",
+    rank: 99,
+    title: "Director, GenAI Digital Delivery · ASTRI RFIC · HKEX depository",
+    org: "FWD / ASTRI / HKEX / Manulife",
+    location: "Hong Kong",
+    href: "https://fwd.wd3.myworkdayjobs.com/FWDcareersite/job/Hong-Kong---Taikoo-Shing-Group-Office/Director--GenAI-Digital-Delivery_R-0022016",
+    closeNote: "Official FWDcareersite R-0022016 canApply true Taikoo Shing · engineering delivery vs B163 · isolated 9 Sep 23:53 UTC",
+    tier: "B",
+    bands: ["capital"],
+    status: "skip",
+    pay: 4,
+    security: 3,
+    reputation: 4,
+    balance: 3,
+    fit: 2,
+    rhyme: "A GenAI stack under an in-seat VP. Keep venture scouting and the digital-platforms chair.",
+    rhymeZh: "汇报给在任 VP 的 GenAI 技术栈。守住风投扫描和数字平台席。",
+    skipWhy:
+      "Official fwd.wd3 FWDcareersite R-0022016 canApply true in Hong Kong - Taikoo Shing (Group Office), but the JD reports to VP, GenAI Digital Delivery and leads senior developers / core GenAI tech-stack architecture / open-source platform integration — engineering delivery, not Health Innovation & Venture Scouting (B163) or Group Digital Platforms product (B164). Singapore Director Data Scientist JR-0027771 and Japan GenAI Digital Delivery JR-0025617 are not Hong Kong product chairs. ASTRI Director, RFS 56549444 Apply now through Wed 2 Jun 16:00 UTC 2027 is mmWave RFIC (24-60 GHz) silicon vs A22 then optional A32. HKEX VP Depository Payment & Transformation R004254 canApply true is DPS post-trade fees/payments transformation vs Group Strategy B170 / ETP B40b. Manulife Manager / Senior Manager, AI JR26070767-1 canApply true through 30 Sep is hands-on ML delivery IC vs B36 then B100 then optional B35. DPO vacancies remain 1823 Customer Service Officer CSB 50261 (close 21 Sep) — keep A54 watch; do not email enquiry@digitalpolicy.gov.hk. Michael Page Head of Product AI & Agent (Web3) JN-062026-7029243 and Randstad AI-native IoT (closed 18 Jul 2026) remain recruiter / unnamed — after APPROVE only. JobsDB still Cloudflare 403. AIA JR-67284 still 0 on External CXS; keep B176 watch. MS External still no Asia WM GenAI Product Owner VP; keep B34. HKBU CINO public search TotalJobsCount 0; keep A52 watch. TODAY InvestHK / B76 / B69 still open at 9 Sep 23:53 UTC. PolyU deans_heads.php HTTP 200 again lists A21 260827012-IE.",
   },
 ];
 
