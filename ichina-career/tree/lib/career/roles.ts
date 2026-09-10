@@ -2,7 +2,7 @@ import type { CareerRole, CareerSnapshot } from "./types";
 import { isOpen, msUntil, urgency } from "./clock";
 
 export const snapshot: CareerSnapshot = {
-  updatedAt: "2026-09-10T07:10:00Z",
+  updatedAt: "2026-09-10T07:20:00Z",
   thesis:
     "Licensed Hong Kong IM / Director / OMO / RO at a China top-15 quantitative fund, founder-executive of live AI products, and operator of an offshore hedge trading book since Sep 2025. Not a classic PE modeller. The edge is indwelling: ships, then holds the desk.",
   thesisZh:
@@ -74,7 +74,7 @@ export const roles: CareerRole[] = [
     location: "Hong Kong",
     href: "https://www.investhk.gov.hk/en/careers/senior-vice-president-thought-leadership-marketing-and-pr-family-office_svp022026/",
     closeAt: "2026-09-10T17:00:00+08:00",
-    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official /en/careers/…_svp022026/ HTTP 200 rechecked 10 Sep 03:26 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · /en/job-vacancies/ slug 301s to page-not-found · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
+    closeNote: "Thu 10 Sep 2026, 5:00 p.m. HK · GF 340 + email · official /en/careers/…_svp022026/ HTTP 200 rechecked 10 Sep 03:45 UTC · closing text still 10 September 2026, 5:00 p.m. (Hong Kong time) · /en/job-vacancies/ slug 301s to page-not-found · remaining InvestHK SVP FO/DTDI/BPS/Strategy pages are closed",
     tier: "A",
     bands: ["today", "institutions"],
     status: "live",
@@ -88,7 +88,7 @@ export const roles: CareerRole[] = [
     desk: {
       apply: "BOTH GF 340 at csb.gov.hk AND letter+CV to job@investhk.gov.hk",
       draft: "r-929527304975604502",
-      addendum: "Tencent remaining HK / Invesco RE official / Citi IB / Sun Life FI / PolyU academic skip: r3376965801181725281. Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829. FWD GenAI delivery / ASTRI RFIC / HKEX depository skip: r-6055028655598897223. MS PWM CTB PO / JPM FinTech coverage skip: r2278079964706695569. AIA savings-product principal vs B117: r6632748938875272163. Jane Street SP intern / park comms-MedTech / Hang Seng FX: r1256501750730048029. DBS ED WM Platform rank + IBG CX/EX skip: r-2650724973358359269. HSITP Biobank / HashKey LinkedIn Product Director skip: r-8011039226850807333. WRISE JobsDB COO / HKUST alumni director skip: r1786832558698764720. BlackRock FIG / CHANEL luxury CX / ERB ED skip: r594426625109029664. RGA ED rank + AIA agency/engineering skip: r-2861920923230686960. HKEX IT PMO / Nomura equity strategist skip: r-1082956442513330438. OKX Local Growth / PayerMax LinkedIn skip: r-422844215682063115. Blue Owl Capital Strategies / OKX Wholesale / Manulife Distribution Transformation skip: r-779902812800482800. CHANEL Digital SM / UOB Singapore Digital Delivery / HKSTP Upskill skip: r6943581150332087252. HKUST Shenzhen GD skip vs A31 / Rubix aggregator / Sompo LinkedIn closed / CSOP AI Agent IC: r5327663922625703575. Zurich Head of Data and AI official closed / Julius Baer HK graduate / Xiaomi in-seat: r-8095174067036078726. OCBC Digital Wealth Head official Workday: r164937013202205524. Manulife Data Architecture skip vs B36 / EdUHK Deputy Librarian: r1823578237348179001. Wellington Product Strategy APAC official: r-5314734804991798100. Fidelity marketing / HKU clerical / HSBC real-estate skip: r-3470814710146311575. Hang Seng ecosystem VP / ASTRI client-dev skip: r2578982371096144805. Hex Trust partnerships / Futu IC / PolyU mainland skip: r3242439469593446864. FWD alts / Manulife MarTech / Airwallex remaining skip: r505068311777894170. WeLab remaining SM wealth / Endowus IC skip: r-4534734862360082132. Cathay FOP Head 32063 / AIA CX principal skip: r-3154282509882882282. PolyU KTEO AM / FWD remaining skip: r1580766302613982952. Prudential remaining Group HO / Hang Seng Insurance SM skip: r7043056021978143904. HKJC Data Office Platform EM skip: r-2207084845390911555.",
+      addendum: "Hang Seng ecosystem VP sibling / Mills partnership SE / AIA analyst / HKU academic skip: r-5755322258006784668. Tencent remaining HK / Invesco RE official / Citi IB / Sun Life FI / PolyU academic skip: r3376965801181725281. Living hunt 10 Sep clocks (unsent): r7459526320002467331. HKU CIO / AIA excellence skip: r-3029475980684345856. InvestHK URL + B76/B69 clocks: r1342859368576394891. HKBU CINO: r-1325396012783240225. Noah watch + HKUST alumni skip: r-8222060670802450417. OKX remaining / AIA analytics skip: r7742742770790806684. AIRDI watch / Link analytics skip: r4500905755380754233. CityU NACAD / Visa consulting skip: r6781072066701738430. HashKey BD/OTC + HKEX IFP + Hang Seng equities filled: r-5270938768980553686. Bjak sibling CEOs + HKUST remaining staff: r7928449377176676783. HashKey Risk Director + HSBC Equities DAC aggregator: r6853933090973136634. AXA 26008 in-seat / HKSTP Head of Investment filled / Goldman PWM talent: r75243528308076636. MS IM product VP / Prudential Digital IC: r8117839353004253731. Citi ETF VP vs AI Adoption: r6298370481467046351. Mastercard HK manager skip vs B76/Visa: r-3933569716698685512. HSBC supplier-engagement skip vs B4/B76: r-1955740300558365966. HKGAI research IC skip vs A30/A32: r7777878636928359451. UiPath CE / BOCHK AI IC skip vs B4: r-5205352468092984242. HKBU CINO A52 to watch: r-7576346429665093148. HSITP land/HPC skip vs A30: r-1143110443427450047. HKMA remaining comms/audit/ops skip vs A0b: r185402084025842829. FWD GenAI delivery / ASTRI RFIC / HKEX depository skip: r-6055028655598897223. MS PWM CTB PO / JPM FinTech coverage skip: r2278079964706695569. AIA savings-product principal vs B117: r6632748938875272163. Jane Street SP intern / park comms-MedTech / Hang Seng FX: r1256501750730048029. DBS ED WM Platform rank + IBG CX/EX skip: r-2650724973358359269. HSITP Biobank / HashKey LinkedIn Product Director skip: r-8011039226850807333. WRISE JobsDB COO / HKUST alumni director skip: r1786832558698764720. BlackRock FIG / CHANEL luxury CX / ERB ED skip: r594426625109029664. RGA ED rank + AIA agency/engineering skip: r-2861920923230686960. HKEX IT PMO / Nomura equity strategist skip: r-1082956442513330438. OKX Local Growth / PayerMax LinkedIn skip: r-422844215682063115. Blue Owl Capital Strategies / OKX Wholesale / Manulife Distribution Transformation skip: r-779902812800482800. CHANEL Digital SM / UOB Singapore Digital Delivery / HKSTP Upskill skip: r6943581150332087252. HKUST Shenzhen GD skip vs A31 / Rubix aggregator / Sompo LinkedIn closed / CSOP AI Agent IC: r5327663922625703575. Zurich Head of Data and AI official closed / Julius Baer HK graduate / Xiaomi in-seat: r-8095174067036078726. OCBC Digital Wealth Head official Workday: r164937013202205524. Manulife Data Architecture skip vs B36 / EdUHK Deputy Librarian: r1823578237348179001. Wellington Product Strategy APAC official: r-5314734804991798100. Fidelity marketing / HKU clerical / HSBC real-estate skip: r-3470814710146311575. Hang Seng ecosystem VP / ASTRI client-dev skip: r2578982371096144805. Hex Trust partnerships / Futu IC / PolyU mainland skip: r3242439469593446864. FWD alts / Manulife MarTech / Airwallex remaining skip: r505068311777894170. WeLab remaining SM wealth / Endowus IC skip: r-4534734862360082132. Cathay FOP Head 32063 / AIA CX principal skip: r-3154282509882882282. PolyU KTEO AM / FWD remaining skip: r1580766302613982952. Prudential remaining Group HO / Hang Seng Insurance SM skip: r7043056021978143904. HKJC Data Office Platform EM skip: r-2207084845390911555.",
       caution: "Do not email jasonfong@investhk.gov.hk. English + Putonghua required. Do not claim Cantonese.",
     },
   },
@@ -100,7 +100,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-Product-Manager-Digital-Currencies-Hong/1369854357/",
     closeAt: "2026-09-10T16:00:00Z",
-    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 10 Sep 03:26 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
+    closeNote: "validThrough Thu 10 Sep 16:00 UTC · Apply now rechecked 10 Sep 03:45 UTC · use apply.careers.hsbc.com slug URL · sibling DAC Settlement Director 1370170757 filled",
     tier: "B",
     bands: ["today", "capital"],
     status: "live",
@@ -125,7 +125,7 @@ export const roles: CareerRole[] = [
     location: "Hung Hom, Hong Kong",
     href: "https://sunlife.wd3.myworkdayjobs.com/Experienced-Jobs/job/Hunghom-Kowloon-Hong-Kong/AVP--Agency-Digital-Lead_JR00126149-3",
     closeAt: "2026-09-10T23:59:00+08:00",
-    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS Hunghom-Kowloon-Hong-Kong / AVP--Agency-Digital-Lead_JR00126149-3 rechecked 10 Sep 03:26 UTC · canApply true · endDate 2026-09-11 · title AVP, Agency Digital Strategy & Development",
+    closeNote: "JD posting end 10/09/2026 · treat 10 Sep as binding · CXS Hunghom-Kowloon-Hong-Kong / AVP--Agency-Digital-Lead_JR00126149-3 rechecked 10 Sep 03:45 UTC · canApply true · endDate 2026-09-11 · title AVP, Agency Digital Strategy & Development",
     tier: "B",
     bands: ["today", "capital", "stretch"],
     status: "live",
@@ -623,7 +623,7 @@ export const roles: CareerRole[] = [
     location: "Central, Hong Kong",
     href: "https://apply.careers.hsbc.com/job/Central-Senior-AI-Solution-Lead-Hong/1330173757/",
     closeAt: "2026-09-30T16:00:00Z",
-    closeNote: "validThrough Wed 30 Sep 16:00 UTC · Apply now rechecked 10 Sep 03:26 UTC · not filled",
+    closeNote: "validThrough Wed 30 Sep 16:00 UTC · Apply now rechecked 10 Sep 03:45 UTC · not filled",
     tier: "B",
     bands: ["capital"],
     status: "live",
@@ -639,7 +639,7 @@ export const roles: CareerRole[] = [
       apply: "HSBC Apply Now. Rechecked live 9 Sep 19:50 UTC. Prior isolation: validThrough Wed 30 Sep 16:00 UTC.",
       draft: "r-5150334973348395509",
       caution:
-        "First HSBC gravity well. Then B159 (27 Sep) then B146 (19 Sep). Do not spray all HSBC seats the same week. Do not invent a numbered ML decade. Skip Head of HK AI Phenom 1369156757 — official: position filled (rechecked 9 Sep 22:42 UTC). Skip Guangzhou Head of AI Software Development 1356439457 and Singapore HSBC Life Head of Data, AI & Intelligence 1369596457 vs this HK seat. Skip Hang Seng Investment Head of Equities and Multi-Assets 1355539357 (B230) — official filled. Skip Principal, Real Estate HSBC Global Asset Management 1371505257 (B263) — real-estate investing vs this AI solution lead. Skip Hang Seng VP Lead, Business Growth and Ecosystem, BBD 1369325057 (B264) — commercial-banking frontline vs this AI chair.",
+        "First HSBC gravity well. Then B159 (27 Sep) then B146 (19 Sep). Do not spray all HSBC seats the same week. Do not invent a numbered ML decade. Skip Head of HK AI Phenom 1369156757 — official: position filled (rechecked 9 Sep 22:42 UTC). Skip Guangzhou Head of AI Software Development 1356439457 and Singapore HSBC Life Head of Data, AI & Intelligence 1369596457 vs this HK seat. Skip Hang Seng Investment Head of Equities and Multi-Assets 1355539357 (B230) — official filled. Skip Principal, Real Estate HSBC Global Asset Management 1371505257 (B263) — real-estate investing vs this AI solution lead. Skip Hang Seng VP Lead, Business Growth and Ecosystem, BBD 1369325057 (B264) and sibling VP 1364504957 (B273) — commercial-banking frontline vs this AI chair.",
     },
   },
   {
@@ -1238,7 +1238,7 @@ export const roles: CareerRole[] = [
     org: "AIA",
     location: "Hong Kong / Macau",
     href: "https://aia.wd3.myworkdayjobs.com/en-US/External/job/Hong-Kong-HK-AIA-Hong-Kong--Macau/Associate-Director--Customer-AI---Analytics-Product-Management_JR-68056",
-    closeNote: "Official External CXS JR-68056 · canApply true · no endDate · rechecked 9 Sep 23:08 UTC · JR-67284 TDA Principal still 0 hits",
+    closeNote: "Official External CXS JR-68056 · canApply true · no endDate · rechecked 10 Sep 03:48 UTC · JR-67284 TDA Principal still 0 hits",
     tier: "B",
     bands: ["capital"],
     status: "live",
@@ -1253,7 +1253,7 @@ export const roles: CareerRole[] = [
       apply: "AIA Workday JR-68056. Path Hong-Kong-HK-AIA-Hong-Kong--Macau. CXS canApply true, no endDate rechecked 9 Sep 22:40 UTC.",
       addendum: "r-1766768802526645146",
       caution:
-        "Skip sibling Customer AI Principal / Senior Manager JR-68058 (B192). Skip Agency Digital & Innovation Principal JR-68248 (B193). Skip JR-69111 engineering-strategy (B188). Skip JR-62927 AI Data Architecture (HK & Macau) vs this product seat. Skip Associate Director, Data Analytics and AI JR-67573 (B222) — Group Office analytics/ML, not customer AI product. Skip Associate Director, Distribution Digital JR-68436 (B223) vs B9b / this product seat. Skip Product Development Senior Principal JR-67212 (B243) — savings / ILP / Universal Life, not Customer AI. TDA Transformation AI Product Principal is still absent from official External CXS — keep B176 on watch.",
+        "Skip sibling Customer AI Principal / Senior Manager JR-68058 (B192). Skip Agency Digital & Innovation Principal JR-68248 (B193). Skip JR-69111 engineering-strategy (B188). Skip JR-62927 AI Data Architecture (HK & Macau) vs this product seat. Skip Associate Director, Data Analytics and AI JR-67573 (B222) — Group Office analytics/ML, not customer AI product. Skip Associate Director, Distribution Digital JR-68436 (B223) vs B9b / this product seat. Skip Product Development Senior Principal JR-67212 (B243) — savings / ILP / Universal Life, not Customer AI. Skip AI Solution Analyst JR-69899 and Channel Innovation Consultant JR-69075 (B273). TDA Transformation AI Product Principal is still absent from official External CXS — keep B176 on watch.",
     },
   },
   {
@@ -1617,7 +1617,7 @@ export const roles: CareerRole[] = [
     rhymeZh: "气候/时尚 CVC。贴近天使。不要把总邮箱当成 HR。",
     desk: {
       apply: "Listing only. contact@themillsfabrica.com is general contact, not a job-apply instruction.",
-      caution: "Do not guess HR.",
+      caution: "Do not guess HR. Skip Senior Executive Partnership (HK) (B273) vs this Manager Investment chair.",
     },
   },
   {
@@ -4435,6 +4435,48 @@ export const roles: CareerRole[] = [
     rhymeZh: "学术系主任，贴着创业主任。守住办公室席。",
     skipWhy:
       "Official jobs.polyu.edu.hk/deans_heads.php HTTP 200 still lists Director of Knowledge Transfer and Entrepreneurship 260827012-IE (A21) with consideration from 15 September 2026; job_detail Apply Now rechecked 10 Sep 03:40 UTC. Remaining dean/head rows this pass are academic or already skipped: Head of Department of Land Surveying and Geospatial Science 260724019-IE Apply Now (screening 7 September 2026); Director of Mainland Development 260717010-IE (A64); Department of Construction Management and Intelligence; School of Hotel and Tourism Management; Director of Global Engagement 260312003; Faculty of Computer and Mathematical Sciences; Director of Industrial Centre; Faculty of Humanities; Dean of School of Design; Hong Kong Branch of National Engineering Research Center for Steel Construction; Director of English Language Centre. Keep A4 Senior Manager Entrepreneurship 260827002-IE (Apply Now) then A21 / A31. CityU HRO still Incapsula; keep A31 until official filled. HKBU CINO 25260577 remains A52 watch. HKUST CXS remaining director-class is still Alumni Affairs JR100007-1 / Finance AD / Internal Audit — no KT director. TODAY InvestHK / B76 / B69 still open at 10 Sep 03:40 UTC.",
+  },
+  {
+    id: "B273",
+    rank: 99,
+    title: "Hang Seng BBD ecosystem VP sibling · Mills partnership SE · AIA AI analyst",
+    org: "Hang Seng / The Mills Fabrica / AIA",
+    location: "Hong Kong",
+    href: "https://apply.careers.hsbc.com/job/Central-VP%2C-Business-Growth-and-Ecosystem%2C-BBD-Hang-Seng-Bank-%28HK%29-Hong/1364504957/",
+    closeNote: "Official Phenom 1364504957 Apply now · validThrough Sun 27 Sep 16:00 UTC · Commercial Banking vs B4 · Mills SE partnership · AIA JR-69899 · isolated 10 Sep 03:50 UTC",
+    tier: "B",
+    bands: ["capital", "cvc"],
+    status: "skip",
+    pay: 4,
+    security: 4,
+    reputation: 4,
+    balance: 3,
+    fit: 2,
+    rhyme: "A commercial-banking ecosystem VP next to the AI chair. Keep the AI desk.",
+    rhymeZh: "商业银行生态副总裁，贴着 AI 席。守住 AI 台。",
+    skipWhy:
+      "Official apply.careers.hsbc.com 1364504957 VP, Business Growth and Ecosystem, BBD Hang Seng Bank (HK) Apply now through Sun 27 Sep 16:00 UTC. Job family is Commercial Banking; page carries KYC / lending / trade / cash — sibling of B264 VP Lead 1369325057, not LLM-era product. Keep B4. Official Phenom search “Head of Innovation” AND Hong Kong: currently no open positions; Bojan Obradović LinkedIn (21 Jul 2026) Head of Innovation and Digital Partnerships is not an Apply URL — do not paste. Official themillsfabrica.com/careers/senior-executive-partnership-hk/ is Senior Executive Partnership vs Manager, Investment A25; store assistant skip. Official AIA External JR-69899 AI Solution, Analyst canApply true is IC vs Customer AI product B117 JR-68056 (still canApply true, no endDate). JR-69075 Channel Innovation & Marketing Consultant is manager/events vs B117 / B153. JR-68141 / JR-68248 remain B213 / B193. JR-67284 still 0 on External CXS; keep B176 watch. Ant International LinkedIn AD Partnerships (AlipayHK) and Premium Financing are coverage BD, not CVC; Investment AD previously no longer accepting — do not paste LinkedIn. HongShan / GGV / Hillhouse careers 404/403 this pass; KKR Workday still 422. JobsDB 404. HKPC A35 403 this desk — keep from earlier Apply isolation until filled. ASTRI phenom DNS fail this pass — keep A22 / A32. ByteDance experienced board did not isolate a Hong Kong director AI-product JD. Fidelity B19 J69405 still canApply through 30 Sep. SC 60809 still Apply. HashKey 611 still Apply Now. TODAY InvestHK / B76 / B69 still open at 10 Sep 03:50 UTC.",
+  },
+  {
+    id: "A67",
+    rank: 99,
+    title: "Assistant Professor · Frontier Technologies governance · remaining HKU academic",
+    org: "The University of Hong Kong",
+    location: "Hong Kong",
+    href: "https://jobs.hku.hk/en_US/job/537338",
+    closeNote: "Official jobs.hku.hk 537338 Apply now · academic AP vs A31 · isolated 10 Sep 03:50 UTC",
+    tier: "A",
+    bands: ["institutions"],
+    status: "skip",
+    pay: 3,
+    security: 5,
+    reputation: 5,
+    balance: 4,
+    fit: 1,
+    rhyme: "An academic chair next to the alma-mater CIO. Keep the digital officer.",
+    rhymeZh: "学术席，贴着母校 CIO。守住数字官。",
+    skipWhy:
+      "Official jobs.hku.hk listing HTTP 200. 537338 is Tenure-track Assistant Professor in International Governance of Frontier Technologies, School of Governance and Policy — academic, not CityU CDTO. Remaining HKU this pass is academic/support: Technical Officer 537309; School of Innovation clerical 537271 (already A63 family); CIO 533668 still has no Apply now — Flora Ng in seat (A50); DAAO 533392 fundraising vs A31. CUHK HRO remaining senior appointments are still academic (Dean of Education; Director of Neuroscience Centre; Founding Dean of the School of Medicine, CUHK(SZ)). Kelvin Wong is CUHK KTO Director in seat. Keep A31 / A4 / A21. HKBU CINO 25260577 remains A52 watch. TODAY InvestHK / B76 / B69 still open at 10 Sep 03:50 UTC.",
   },
 ];
 
