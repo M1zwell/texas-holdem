@@ -24,6 +24,8 @@ function testProfileSource() {
   const hunt = readFileSync(join(treeRoot, "lib/career/hunt.ts"), "utf8");
   assert.match(hunt, /export type CareerPane/);
   assert.match(hunt, /applied/);
+  assert.match(hunt, /ichina-career-hunt/);
+  assert.doesNotMatch(hunt, /ichina-funding-hunt/);
 }
 
 function testBuiltPage() {
