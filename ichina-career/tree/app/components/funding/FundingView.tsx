@@ -1,11 +1,11 @@
 "use client";
 
-/** Owner-only field. Mount only behind CareerGate. */
+/** Owner-only field. Mount only behind FundingGate. Independent of /career. */
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Reveal } from "@/app/components/Reveal";
-import "./career.css";
+import "../career/career.css";
 import { PretextLines } from "@/app/components/PretextLines";
 import type { Locale } from "@/lib/i18n";
 import { localizeHref } from "@/lib/i18n";
@@ -13,8 +13,9 @@ import { signOutFamilySession } from "@/lib/jubit-sso";
 import { t } from "@/lib/messages";
 import { links } from "@/lib/site";
 import { countdown, formatHk, formatHkDate, isOpen, urgency } from "@/lib/career/clock";
+import { fundingDesk } from "@/lib/funding/desk";
 import {
-  type CareerPane,
+  type FundingPane,
   type HuntBook,
   type HuntStatus,
   PANE_KEY,
@@ -30,15 +31,21 @@ import {
   resolveStatus,
   scheduleDays,
   setHuntStatus,
-} from "@/lib/career/hunt";
-import { careerOwner, priorSeats, seats } from "@/lib/career/profile";
-import { proofs } from "@/lib/career/proof";
-import { inField, nextMoves, roles, snapshot, sortField, type FieldFilter } from "@/lib/career/roles";
-import type { CareerRole, Felt } from "@/lib/career/types";
+} from "@/lib/funding/hunt";
+import {
+  fundingNeed,
+  inField,
+  nextMoves,
+  programs,
+  snapshot,
+  sortField,
+  type FieldFilter,
+} from "@/lib/funding/programs";
+import type { Felt, FundingProgram } from "@/lib/funding/types";
 
-const DESK_KEY = "ichina-career-desk";
+const DESK_KEY = "ichina-funding-desk";
 
-const filters: FieldFilter[] = ["all", "today", "institutions", "capital", "cvc", "stretch"];
+const filters: FieldFilter[] = ["all", "grant", "incubation", "angel", "cvc", "platform"];
 
 function FeltRow({ value, label }: { value: Felt; label: string }) {
   return (
@@ -72,12 +79,12 @@ function useNow(ms = 30000) {
   return now;
 }
 
-function paneFromLocation(): CareerPane {
+function paneFromLocation(): FundingPane {
   try {
     const q = new URLSearchParams(window.location.search).get("pane");
     const hash = window.location.hash.replace("#", "");
     const stored = localStorage.getItem(PANE_KEY);
-    const candidate = (q || hash || stored || "dash") as CareerPane;
+    const candidate = (q || hash || stored || "dash") as FundingPane;
     if (panes.includes(candidate)) return candidate;
   } catch {
     /* private mode */
@@ -85,12 +92,12 @@ function paneFromLocation(): CareerPane {
   return "dash";
 }
 
-export function CareerView({ locale = "en" }: { locale?: Locale }) {
+export function FundingView({ locale = "en" }: { locale?: Locale }) {
   const m = t(locale);
-  const c = m.careerPage;
+  const c = m.fundingPage;
   const zh = locale === "zh-Hans" || locale === "zh-Hant";
   const now = useNow();
-  const [pane, setPane] = useState<CareerPane>("dash");
+  const [pane, setPane] = useState<FundingPane>("dash");
   const [filter, setFilter] = useState<FieldFilter>("all");
   const [watch, setWatch] = useState<string[]>([]);
   const [book, setBook] = useState<HuntBook>({});
@@ -107,7 +114,7 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
     }
   }, []);
 
-  const persistPane = (next: CareerPane) => {
+  const persistPane = (next: FundingPane) => {
     setPane(next);
     try {
       localStorage.setItem(PANE_KEY, next);
@@ -131,12 +138,12 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
   };
 
   const live = useMemo(
-    () => roles.filter((r) => r.status === "live" || r.status === "watch"),
+    () => programs.filter((p) => p.status === "live" || p.status === "watch"),
     [],
   );
 
   const field = useMemo(() => {
-    const list = live.filter((r) => inField(r, filter, now));
+    const list = live.filter((p) => inField(p, filter));
     return sortField(list, now).sort((a, b) => {
       if (pane !== "match") return 0;
       return matchScore(b) - matchScore(a);
@@ -144,28 +151,28 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
   }, [filter, now, pane, live]);
 
   const moves = useMemo(() => nextMoves(now), [now]);
-  const closing = live.filter((r) => r.closeAt && isOpen(r.closeAt, now) && urgency(r.closeAt, now) === "now");
+  const closing = live.filter((p) => p.closeAt && isOpen(p.closeAt, now) && urgency(p.closeAt, now) === "now");
   const week = useMemo(() => scheduleDays(live, now, 10), [now, live]);
   const counts = useMemo(() => progressCounts(live, book, now, watch), [book, now, watch, live]);
   const ranked = useMemo(
-    () => [...live].filter((r) => isOpen(r.closeAt, now)).sort((a, b) => matchScore(b) - matchScore(a)),
+    () => [...live].filter((p) => isOpen(p.closeAt, now)).sort((a, b) => matchScore(b) - matchScore(a)),
     [now, live],
   );
 
   useEffect(() => {
     if (!("Notification" in window) || Notification.permission !== "granted") return;
     for (const id of watch) {
-      const role = roles.find((r) => r.id === id);
-      if (!role?.closeAt || urgency(role.closeAt, now) !== "now") continue;
-      const key = `ichina-career-ping-${role.id}-${role.closeAt}`;
+      const program = programs.find((p) => p.id === id);
+      if (!program?.closeAt || urgency(program.closeAt, now) !== "now") continue;
+      const key = `ichina-funding-ping-${program.id}-${program.closeAt}`;
       try {
         if (sessionStorage.getItem(key)) continue;
         sessionStorage.setItem(key, "1");
       } catch {
         /* ignore */
       }
-      new Notification(`${role.org} · ${countdown(role.closeAt, now)}`, {
-        body: role.title,
+      new Notification(`${program.org} · ${countdown(program.closeAt, now)}`, {
+        body: program.title,
       });
     }
   }, [now, watch]);
@@ -176,7 +183,7 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
     await Notification.requestPermission();
   };
 
-  const paneLabel: Record<CareerPane, string> = {
+  const paneLabel: Record<FundingPane, string> = {
     dash: c.paneDash,
     schedule: c.paneSchedule,
     match: c.paneMatch,
@@ -198,6 +205,15 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
     closed: c.statusClosed,
   };
 
+  const kindLabel: Record<FieldFilter, string> = {
+    all: c.all,
+    grant: c.grant,
+    incubation: c.incubation,
+    angel: c.angel,
+    cvc: c.cvc,
+    platform: c.platform,
+  };
+
   return (
     <main className="career-field">
       <div className="career-clock glass-header sticky top-[5.75rem] z-30 border-b border-hair sm:top-[3.6rem] lg:top-[3.35rem]">
@@ -207,15 +223,15 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
             {c.clockLabel} · {formatHk(now)}
           </p>
           <div className="flex flex-wrap items-center gap-2">
-            {closing.slice(0, 3).map((role) => (
+            {closing.slice(0, 3).map((program) => (
               <button
-                key={role.id}
+                key={program.id}
                 type="button"
                 onClick={() => persistPane("schedule")}
                 className="career-chip career-chip-now"
               >
-                {role.org}
-                <span className="font-mono text-[10px]">{countdown(role.closeAt!, now)}</span>
+                {program.org}
+                <span className="font-mono text-[10px]">{countdown(program.closeAt!, now)}</span>
               </button>
             ))}
             <span className="hidden font-mono text-[10px] text-muted sm:inline">{c.signedInAs}</span>
@@ -262,17 +278,17 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
             {week.map((day) => (
               <li key={day.key} className="career-day rounded-[16px] border border-hair bg-surface/70 p-4">
                 <p className="font-mono text-[11px] text-accent">{day.label}</p>
-                {day.roles.length === 0 ? (
+                {day.programs.length === 0 ? (
                   <p className="mt-3 text-[12px] text-muted">{c.scheduleEmpty}</p>
                 ) : (
                   <ul className="mt-3 space-y-2">
-                    {day.roles.map((role) => (
-                      <li key={role.id}>
-                        <a href={`#role-${role.id}`} onClick={() => persistPane("match")} className="text-[13px] text-fg hover:text-accent">
-                          {role.org}
+                    {day.programs.map((program) => (
+                      <li key={program.id}>
+                        <a href={`#program-${program.id}`} onClick={() => persistPane("match")} className="text-[13px] text-fg hover:text-accent">
+                          {program.org}
                         </a>
                         <p className="font-mono text-[10px] text-muted">
-                          {role.closeAt ? countdown(role.closeAt, now) : c.noClose}
+                          {program.closeAt ? countdown(program.closeAt, now) : c.noClose}
                         </p>
                       </li>
                     ))}
@@ -302,7 +318,7 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
                   onClick={() => setFilter(id)}
                   className={filter === id ? "career-chip is-on" : "career-chip"}
                 >
-                  {c[id]}
+                  {kindLabel[id]}
                 </button>
               ))}
             </div>
@@ -312,23 +328,23 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
             <p className="mt-10 text-sm text-muted">{c.filterEmpty}</p>
           ) : (
             <ul className="mt-8 space-y-4">
-              {field.map((role) => (
-                <RoleCard
-                  key={role.id}
-                  role={role}
+              {field.map((program) => (
+                <ProgramCard
+                  key={program.id}
+                  program={program}
                   now={now}
                   desk={pane === "desk"}
                   zh={zh}
                   copy={c}
-                  status={resolveStatus(role, book, now, watch.includes(role.id))}
+                  status={resolveStatus(program, book, now, watch.includes(program.id))}
                   statusLabel={statusLabel}
-                  watching={watch.includes(role.id)}
+                  watching={watch.includes(program.id)}
                   onWatch={() => {
-                    const next = watch.includes(role.id) ? watch.filter((id) => id !== role.id) : [...watch, role.id];
+                    const next = watch.includes(program.id) ? watch.filter((id) => id !== program.id) : [...watch, program.id];
                     persistWatch(next);
                     void askNotify();
                   }}
-                  onStatus={(status) => setBook(setHuntStatus(book, role.id, status))}
+                  onStatus={(status) => setBook(setHuntStatus(book, program.id, status))}
                 />
               ))}
             </ul>
@@ -341,22 +357,19 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
           <p className="kicker">{c.poolKicker}</p>
           <h2 className="mt-3 font-display text-3xl tracking-tight">{c.poolTitle}</h2>
           <div className="mt-8 grid gap-4 lg:grid-cols-5">
-            {poolOrder.map((band) => {
-              const list = sortField(
-                live.filter((r) => inPool(r, band, now)),
-                now,
-              );
+            {poolOrder.map((kind) => {
+              const list = sortField(live.filter((p) => inPool(p, kind)), now);
               return (
-                <article key={band} className="rounded-[16px] border border-hair bg-surface/70 p-4">
-                  <p className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">{c[band]}</p>
+                <article key={kind} className="rounded-[16px] border border-hair bg-surface/70 p-4">
+                  <p className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">{c[kind]}</p>
                   <p className="mt-2 font-display text-3xl">{list.length}</p>
                   <ul className="mt-4 space-y-2">
-                    {list.slice(0, 5).map((role) => (
-                      <li key={role.id}>
+                    {list.slice(0, 5).map((program) => (
+                      <li key={program.id}>
                         <button type="button" className="text-left text-[13px] hover:text-accent" onClick={() => persistPane("match")}>
-                          {role.org}
+                          {program.org}
                         </button>
-                        <p className="font-mono text-[10px] text-muted">{matchScore(role).toFixed(1)}</p>
+                        <p className="font-mono text-[10px] text-muted">{matchScore(program).toFixed(1)}</p>
                       </li>
                     ))}
                   </ul>
@@ -391,19 +404,19 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
                 </tr>
               </thead>
               <tbody>
-                {sortField(live, now).map((role) => {
-                  const status = resolveStatus(role, book, now, watch.includes(role.id));
+                {sortField(live, now).map((program) => {
+                  const status = resolveStatus(program, book, now, watch.includes(program.id));
                   return (
-                    <tr key={role.id} className="border-t border-hair">
+                    <tr key={program.id} className="border-t border-hair">
                       <td className="py-3 pr-4">
-                        <p className="font-medium">{role.org}</p>
-                        <p className="text-muted">{zh && role.titleZh ? role.titleZh : role.title}</p>
+                        <p className="font-medium">{program.org}</p>
+                        <p className="text-muted">{zh ? program.titleZh : program.title}</p>
                       </td>
                       <td className="pr-4">
                         <select
                           className="career-select"
                           value={status}
-                          onChange={(e) => setBook(setHuntStatus(book, role.id, e.target.value as HuntStatus))}
+                          onChange={(e) => setBook(setHuntStatus(book, program.id, e.target.value as HuntStatus))}
                           aria-label={c.setStatus}
                         >
                           {huntStatuses.map((statusOption) => (
@@ -413,9 +426,9 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
                           ))}
                         </select>
                       </td>
-                      <td className="pr-4 font-mono text-[12px] text-accent">{matchScore(role).toFixed(1)}</td>
+                      <td className="pr-4 font-mono text-[12px] text-accent">{matchScore(program).toFixed(1)}</td>
                       <td className="font-mono text-[12px] text-muted">
-                        {role.closeAt ? countdown(role.closeAt, now) : c.noClose}
+                        {program.closeAt ? countdown(program.closeAt, now) : c.noClose}
                       </td>
                     </tr>
                   );
@@ -435,8 +448,8 @@ export function CareerView({ locale = "en" }: { locale?: Locale }) {
             <button type="button" onClick={askNotify} className="btn btn-ghost">
               {c.notifyAsk}
             </button>
-            <Link href={href("/funding")} className="btn btn-ghost">
-              {m.nav.funding}
+            <Link href={href("/career")} className="btn btn-ghost">
+              {m.nav.career}
             </Link>
             <Link href={href("/products")} className="btn btn-ghost">
               {m.cta.allProducts}
@@ -463,17 +476,17 @@ function Dashboard({
   zh: boolean;
   now: Date;
   counts: ReturnType<typeof progressCounts>;
-  moves: CareerRole[];
+  moves: FundingProgram[];
   week: ReturnType<typeof scheduleDays>;
-  ranked: CareerRole[];
-  copy: ReturnType<typeof t>["careerPage"];
-  onOpen: (pane: CareerPane) => void;
+  ranked: FundingProgram[];
+  copy: ReturnType<typeof t>["fundingPage"];
+  onOpen: (pane: FundingPane) => void;
 }) {
   const m = t(locale);
   const href = (path: string) => localizeHref(path, locale);
   const stats = [
-    { label: copy.statLive, value: roles.filter((r) => r.status === "live").length },
-    { label: copy.statClosing, value: week.reduce((n, d) => n + d.roles.length, 0) },
+    { label: copy.statLive, value: programs.filter((p) => p.status === "live").length },
+    { label: copy.statClosing, value: week.reduce((n, d) => n + d.programs.length, 0) },
     { label: copy.statWatching, value: counts.watching },
     { label: copy.statDrafted, value: counts.drafted },
     { label: copy.statApplied, value: counts.applied },
@@ -489,20 +502,17 @@ function Dashboard({
           locale={locale}
           className="mt-4 font-display text-[clamp(2.3rem,6.6vw,4.3rem)] leading-[0.98] tracking-tight"
         />
-        <p className="mt-5 font-mono text-[12px] text-accent">{careerOwner.email}</p>
+        <p className="mt-5 font-mono text-[12px] text-accent">{fundingDesk.ownerEmail}</p>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-secondary">
           {zh ? snapshot.thesisZh : snapshot.thesis}
         </p>
-        <p className="mt-3 text-[12px] text-muted">{zh ? careerOwner.cityuZh : careerOwner.cityu}</p>
+        <p className="mt-3 text-[12px] text-muted">{zh ? fundingDesk.dualTrack.zh : fundingDesk.dualTrack.en}</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <a href={links.emailGmail} className="btn btn-primary cta-pop">
             {copy.writeYok}
           </a>
-          <Link href={href("/funding")} className="btn btn-ghost">
-            {m.nav.funding}
-          </Link>
-          <Link href={href("/products")} className="btn btn-ghost">
-            {m.cta.allProducts}
+          <Link href={href("/career")} className="btn btn-ghost">
+            {m.nav.career}
           </Link>
           <button type="button" className="btn btn-ghost" onClick={() => onOpen("schedule")}>
             {copy.paneSchedule}
@@ -514,24 +524,15 @@ function Dashboard({
       </section>
 
       <section className="page-x mx-auto max-w-6xl pb-12">
-        <p className="kicker">{copy.profileKicker}</p>
-        <h2 className="mt-3 font-display text-3xl tracking-tight">{copy.profileTitle}</h2>
-        <ul className="mt-6 grid gap-3 md:grid-cols-3">
-          {seats.map((seat) => (
-            <li key={seat.id} className="rounded-[16px] border border-accent/25 bg-deep/50 p-4">
-              <p className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">
-                {zh ? seat.titleZh : seat.title}
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-secondary">{zh ? seat.orgZh : seat.org}</p>
-              {seat.since ? <p className="mt-2 font-mono text-[11px] text-accent">since {seat.since}</p> : null}
-              {seat.confidential ? <p className="mt-2 text-[11px] text-muted">{copy.confidential}</p> : null}
+        <p className="kicker">{copy.needKicker}</p>
+        <h2 className="mt-3 font-display text-3xl tracking-tight">{copy.needTitle}</h2>
+        <ul className="mt-6 grid gap-3 md:grid-cols-2">
+          {fundingNeed.map((item) => (
+            <li key={item} className="rounded-[16px] border border-accent/25 bg-deep/50 p-4">
+              <p className="text-sm leading-relaxed text-secondary">{item}</p>
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-[12px] text-muted">
-          {copy.priorNote}{" "}
-          {priorSeats.map((seat) => (zh ? `${seat.titleZh} · ${seat.orgZh}` : `${seat.title} · ${seat.org}`)).join(" · ")}
-        </p>
       </section>
 
       <section className="page-x mx-auto max-w-6xl pb-12">
@@ -550,46 +551,20 @@ function Dashboard({
         </div>
       </section>
 
-      <section className="page-x mx-auto max-w-6xl pb-12">
-        <Reveal>
-          <p className="kicker">{copy.proofKicker}</p>
-          <h2 className="mt-3 font-display text-3xl tracking-tight sm:text-4xl">{copy.proofTitle}</h2>
-          <p className="mt-3 max-w-xl text-sm text-muted">{copy.proofLead}</p>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {proofs.map((p) => (
-              <li key={p.id}>
-                <a
-                  href={p.href}
-                  target={p.href.startsWith("http") ? "_blank" : undefined}
-                  rel={p.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="career-proof group block h-full rounded-[16px] border border-hair bg-surface/70 p-4 transition-colors hover:border-accent/40"
-                >
-                  <p className="font-display text-xl tracking-tight group-hover:text-accent">{p.title}</p>
-                  <p className="mt-2 text-[13px] leading-relaxed text-muted">{zh ? p.tacitZh : p.tacit}</p>
-                  <p className="mt-3 font-mono text-[10px] text-accent">{p.path}</p>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-      </section>
-
       <section className="page-x mx-auto max-w-5xl pb-12">
         <Reveal>
           <p className="kicker">{copy.suggestKicker}</p>
           <h2 className="mt-3 font-display text-3xl tracking-tight">{copy.suggestTitle}</h2>
           <ol className="mt-6 space-y-3">
-            {moves.map((role, i) => (
-              <li key={role.id} className="flex gap-4 border-t border-hair pt-3">
+            {moves.map((program, i) => (
+              <li key={program.id} className="flex gap-4 border-t border-hair pt-3">
                 <span className="font-mono text-[11px] text-accent">{String(i + 1).padStart(2, "0")}</span>
                 <div className="min-w-0">
                   <button type="button" onClick={() => onOpen("match")} className="font-medium text-fg hover:text-accent">
-                    {role.org} · {zh && role.titleZh ? role.titleZh : role.title}
+                    {program.org} · {zh ? program.titleZh : program.title}
                   </button>
                   <p className="mt-1 text-[13px] text-muted">
-                    {role.closeAt ? `${countdown(role.closeAt, now)} · ${formatHkDate(role.closeAt)}` : copy.noClose}
-                    {role.confirmSeat ? ` · ${copy.confirmSeat}` : ""}
-                    {role.stretch ? ` · ${copy.stretchNote}` : ""}
+                    {program.closeAt ? `${countdown(program.closeAt, now)} · ${formatHkDate(program.closeAt)}` : copy.noClose}
                   </p>
                 </div>
               </li>
@@ -602,13 +577,13 @@ function Dashboard({
         <p className="kicker">{copy.matchKicker}</p>
         <h2 className="mt-3 font-display text-3xl tracking-tight">{copy.matchTitle}</h2>
         <ul className="mt-6 space-y-3">
-          {ranked.slice(0, 6).map((role) => (
-            <li key={role.id} className="flex flex-wrap items-baseline justify-between gap-2 border-t border-hair pt-3">
+          {ranked.slice(0, 6).map((program) => (
+            <li key={program.id} className="flex flex-wrap items-baseline justify-between gap-2 border-t border-hair pt-3">
               <button type="button" className="text-left" onClick={() => onOpen("match")}>
-                <span className="font-medium">{role.org}</span>
-                <span className="ml-2 text-muted">{zh && role.titleZh ? role.titleZh : role.title}</span>
+                <span className="font-medium">{program.org}</span>
+                <span className="ml-2 text-muted">{zh ? program.titleZh : program.title}</span>
               </button>
-              <span className="font-mono text-[12px] text-accent">{matchScore(role).toFixed(1)}</span>
+              <span className="font-mono text-[12px] text-accent">{matchScore(program).toFixed(1)}</span>
             </li>
           ))}
         </ul>
@@ -617,8 +592,8 @@ function Dashboard({
   );
 }
 
-function RoleCard({
-  role,
+function ProgramCard({
+  program,
   now,
   desk,
   zh,
@@ -629,68 +604,56 @@ function RoleCard({
   onWatch,
   onStatus,
 }: {
-  role: CareerRole;
+  program: FundingProgram;
   now: Date;
   desk: boolean;
   zh: boolean;
-  copy: ReturnType<typeof t>["careerPage"];
+  copy: ReturnType<typeof t>["fundingPage"];
   status: HuntStatus;
   statusLabel: Record<HuntStatus, string>;
   watching: boolean;
   onWatch: () => void;
   onStatus: (status: HuntStatus) => void;
 }) {
-  const open = isOpen(role.closeAt, now);
-  const u = urgency(role.closeAt, now);
-  const title = zh && role.titleZh ? role.titleZh : role.title;
-  const rhyme = zh ? role.rhymeZh : role.rhyme;
+  const open = isOpen(program.closeAt, now);
+  const u = urgency(program.closeAt, now);
+  const title = zh ? program.titleZh : program.title;
 
   return (
-    <li id={`role-${role.id}`}>
-      <article
-        className={
-          role.tier === "ideal"
-            ? "rounded-[20px] border border-accent/35 bg-deep/70 p-5 sm:p-7"
-            : "rounded-[20px] border border-hair bg-surface/60 p-5 sm:p-7"
-        }
-      >
+    <li id={`program-${program.id}`}>
+      <article className="rounded-[20px] border border-hair bg-surface/60 p-5 sm:p-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="flex flex-wrap items-center gap-2 text-[11px] font-semibold tracking-[0.16em] text-muted uppercase">
-              <span>{role.tier === "ideal" ? copy.ideal : role.org}</span>
-              {role.tier === "ideal" ? <span className="text-accent">{role.org}</span> : null}
+              <span>{program.org}</span>
+              <span className="career-chip">{copy[program.kind]}</span>
               {u === "now" && open ? <span className="career-chip career-chip-now">{copy.today}</span> : null}
-              {!open && role.closeAt ? <span className="career-chip">{copy.closed}</span> : null}
-              {role.stretch ? <span className="career-chip">{copy.stretch}</span> : null}
+              {!open && program.closeAt ? <span className="career-chip">{copy.closed}</span> : null}
+              {program.status === "watch" ? <span className="career-chip">{copy.watch}</span> : null}
               <span className="career-chip is-on">{statusLabel[status]}</span>
             </p>
             <h3 className="mt-2 font-display text-[1.55rem] leading-[1.05] tracking-tight sm:text-3xl">{title}</h3>
-            <p className="mt-1 text-sm text-secondary">
-              {role.org} · {role.location}
-            </p>
           </div>
           <p className="font-mono text-[11px] text-accent">
-            {copy.whyMatch} {matchScore(role).toFixed(1)}
-            {role.closeAt ? ` · ${countdown(role.closeAt, now)}` : ` · ${copy.noClose}`}
+            {copy.whyMatch} {matchScore(program).toFixed(1)}
+            {program.closeAt ? ` · ${countdown(program.closeAt, now)}` : ` · ${copy.noClose}`}
           </p>
         </div>
 
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-secondary">{rhyme}</p>
-        <p className="mt-2 max-w-2xl text-[13px] text-muted">{matchWhy(role, zh)}</p>
-        {role.closeNote ? <p className="mt-2 text-[12px] text-muted">{role.closeNote}</p> : null}
-        {role.confirmSeat ? <p className="mt-2 text-[12px] text-accent">{copy.confirmSeat}</p> : null}
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-secondary">{program.closeNote}</p>
+        <p className="mt-2 max-w-2xl text-[13px] text-muted">{matchWhy(program, zh)}</p>
+        {program.skipWhy ? <p className="mt-2 text-[12px] text-muted">{program.skipWhy}</p> : null}
 
         <div className="mt-5 grid max-w-md gap-2">
-          <FeltRow value={role.pay} label={copy.pay} />
-          <FeltRow value={role.security} label={copy.security} />
-          <FeltRow value={role.reputation} label={copy.reputation} />
-          <FeltRow value={role.balance} label={copy.balance} />
-          <FeltRow value={role.fit} label={copy.fit} />
+          <FeltRow value={program.burden} label={copy.burden} />
+          <FeltRow value={program.leverage} label={copy.leverage} />
+          <FeltRow value={program.halo} label={copy.halo} />
+          <FeltRow value={program.fit} label={copy.fit} />
         </div>
 
         <div className="mt-6 flex flex-wrap gap-2">
-          <a href={role.href} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-            {copy.openRole}
+          <a href={program.href} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+            {copy.openProgram}
           </a>
           <button type="button" onClick={onWatch} className={watching ? "btn btn-ghost text-accent" : "btn btn-ghost"}>
             {watching ? copy.reminded : copy.reminder}
@@ -709,13 +672,12 @@ function RoleCard({
           </select>
         </div>
 
-        {desk && role.desk ? (
+        {desk ? (
           <div className="mt-5 rounded-xl border border-hair bg-bg/40 p-4 font-mono text-[12px] leading-relaxed text-secondary">
-            <p>{role.desk.apply}</p>
-            {role.desk.draft ? <p className="mt-2 text-accent">draft {role.desk.draft}</p> : null}
-            {role.desk.addendum ? <p className="mt-1">addendum {role.desk.addendum}</p> : null}
-            {role.desk.caution ? <p className="mt-2 text-muted">{role.desk.caution}</p> : null}
-            {role.portalOnly ? <p className="mt-2">{copy.portalOnly}</p> : null}
+            <p>{program.apply}</p>
+            {program.officialMail ? <p className="mt-2">{program.officialMail}</p> : null}
+            {program.draft ? <p className="mt-2 text-accent">draft {program.draft}</p> : null}
+            <p className="mt-2 text-muted">{program.caution}</p>
           </div>
         ) : null}
       </article>
